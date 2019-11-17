@@ -18,19 +18,19 @@ CDFluidClassParserTest >> classDefinitionParserClass [
 	^ CDFluidClassDefinitionParser
 ]
 
-{ #category : #tests }
+{ #category : #helpers }
 CDFluidClassParserTest >> className [
 
 	^ #Point
 ]
 
-{ #category : #tests }
+{ #category : #helpers }
 CDFluidClassParserTest >> firstClassVariableName [
 
 	^ 'XX'
 ]
 
-{ #category : #tests }
+{ #category : #helpers }
 CDFluidClassParserTest >> firstInstanceVariableName [
 
 	^ 'x'
@@ -41,13 +41,13 @@ CDFluidClassParserTest >> packageName [
 	^ #'Kernel-BasicObjects'
 ]
 
-{ #category : #tests }
+{ #category : #helpers }
 CDFluidClassParserTest >> secondClassVariableName [
 
 	^ 'YY'
 ]
 
-{ #category : #tests }
+{ #category : #helpers }
 CDFluidClassParserTest >> secondInstanceVariableName [
 
 	^ 'y'
@@ -60,7 +60,7 @@ CDFluidClassParserTest >> setUp [
 	
 ]
 
-{ #category : #tests }
+{ #category : #helpers }
 CDFluidClassParserTest >> superclassName [
 
 	^ #Object 
@@ -73,7 +73,7 @@ CDFluidClassParserTest >> testClassDefFromLegacyStringHasSlots [
 	self assert: classDefinition slotNodes second name equals: self secondInstanceVariableName.
 ]
 
-{ #category : #helpers }
+{ #category : #tests }
 CDFluidClassParserTest >> testProperties [
 
 	self assert: classDefinition binding equals: Point binding
