@@ -13,7 +13,7 @@ CDAutonomousFluidClassParserTest >> classDefinitionParserClass [
 	^ CDFluidClassDefinitionParser
 ]
 
-{ #category : #'standalone tests' }
+{ #category : #'test <' }
 CDAutonomousFluidClassParserTest >> testClassSideDefinitionIsClassSide [
 
 	| def |
@@ -23,7 +23,7 @@ CDAutonomousFluidClassParserTest >> testClassSideDefinitionIsClassSide [
 	self assert: def isClassSideDefinition 
 ]
 
-{ #category : #'standalone tests' }
+{ #category : #'test <' }
 CDAutonomousFluidClassParserTest >> testInstanceClassDefinitionIsInstanceSide [
 
 	| def |
@@ -33,7 +33,7 @@ CDAutonomousFluidClassParserTest >> testInstanceClassDefinitionIsInstanceSide [
 	self assert: def isInstanceSideDefinition 
 ]
 
-{ #category : #'standalone tests' }
+{ #category : #'test <' }
 CDAutonomousFluidClassParserTest >> testWrongClassDefShouldNotBeClassSide [
 
 	self should: [ self classDefinitionParserClass parse: 'Object --- #Point
@@ -41,7 +41,7 @@ CDAutonomousFluidClassParserTest >> testWrongClassDefShouldNotBeClassSide [
 
 ]
 
-{ #category : #'standalone tests' }
+{ #category : #'test <' }
 CDAutonomousFluidClassParserTest >> testWrongClassDefShouldNotBeClassSide2 [
 
 	self should: [ self classDefinitionParserClass parse: 'Object blbl: #Point

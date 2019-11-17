@@ -20,7 +20,6 @@ CDAutonomousManualFluidClassParserTest >> testClassDefPackageIsCorrect [
 	def := self classDefinitionParserClass parse: 'Object < #Point
 			package: #''Kernel-BasicObjects'''.
 	self assert: def packageName equals: #'Kernel-BasicObjects'
-
 ]
 
 { #category : #'test  <' }

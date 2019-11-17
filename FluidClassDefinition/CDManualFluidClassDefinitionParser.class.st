@@ -23,6 +23,9 @@ In addition having a binary message makes () unneccessary.
 Class {
 	#name : #CDManualFluidClassDefinitionParser,
 	#superclass : #CDAbstractClassDefinitionParser,
+	#instVars : [
+		'array'
+	],
 	#category : #FluidClassDefinition
 }
 
@@ -73,21 +76,12 @@ CDManualFluidClassDefinitionParser >> isInstanceSideDefinition: aNode [
 
 { #category : #visiting }
 CDManualFluidClassDefinitionParser >> parse: aString [
-
-	| array |
 	array := Character space split: aString.
-	array second = '<'
-		ifTrue: [ self beClassDefinition ]
-		ifFalse: [ array second = 'class' 
-						ifTrue: [ array third = '<' 
-										ifTrue: [ self beMetaclassDefinition ]
-										ifFalse: [ self basicError ] ]
-						ifFalse: [ self basicError ]].
+	self validateInstanceOrClassSide.
 	self isInstanceDefinition
-		ifTrue: [ self validateSuperclass: array first].
-		
-	^ classDefinition	
-		
+		ifTrue: [ self validateSuperclass: array first.
+				 	self validatePackage: array last ].
+	^ classDefinition
 ]
 
 { #category : #visiting }
@@ -100,6 +94,28 @@ CDManualFluidClassDefinitionParser >> parseSelectorPart: selectorPart withArgume
 
 { #category : #accessing }
 CDManualFluidClassDefinitionParser >> superclass [
+]
+
+{ #category : #visiting }
+CDManualFluidClassDefinitionParser >> validateInstanceOrClassSide [
+	array second = '<'
+		ifTrue: [ self beClassDefinition ]
+		ifFalse: [ array second = 'class'
+				ifTrue: [ array third = '<'
+						ifTrue: [ self beMetaclassDefinition ]
+						ifFalse: [ self basicError ] ]
+				ifFalse: [ self basicError ] ]
+]
+
+{ #category : #visiting }
+CDManualFluidClassDefinitionParser >> validatePackage: aString [
+ 
+	| packageNode |
+	"we should validate that aString is not 333 or 3C or point"
+	packageNode := CDPackageNode new packageName: (RBParser parseLiterals: aString) first.
+	classDefinition
+		packageNameNode: packageNode astNode: packageNode
+
 ]
 
 { #category : #visiting }
