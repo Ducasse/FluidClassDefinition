@@ -65,16 +65,3 @@ CDFluidClassParserTest >> superclassName [
 
 	^ #Object 
 ]
-
-{ #category : #tests }
-CDFluidClassParserTest >> testClassDefFromLegacyStringHasSlots [
-	
-	self assert: classDefinition slotNodes first name equals: self firstInstanceVariableName.
-	self assert: classDefinition slotNodes second name equals: self secondInstanceVariableName.
-]
-
-{ #category : #tests }
-CDFluidClassParserTest >> testProperties [
-
-	self assert: classDefinition binding equals: Point binding
-]
