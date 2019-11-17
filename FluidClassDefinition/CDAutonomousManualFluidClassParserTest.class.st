@@ -13,7 +13,17 @@ CDAutonomousManualFluidClassParserTest >> classDefinitionParserClass [
 	^ CDManualFluidClassDefinitionParser
 ]
 
-{ #category : #tests }
+{ #category : #'test package' }
+CDAutonomousManualFluidClassParserTest >> testClassDefPackageIsCorrect [
+	
+	| def |
+	def := self classDefinitionParserClass parse: 'Object < #Point
+			package: #''Kernel-BasicObjects'''.
+	self assert: def packageName equals: #'Kernel-BasicObjects'
+
+]
+
+{ #category : #'test  <' }
 CDAutonomousManualFluidClassParserTest >> testClassSideDefinitionIsClassSide [
 
 	| def |
@@ -23,7 +33,7 @@ CDAutonomousManualFluidClassParserTest >> testClassSideDefinitionIsClassSide [
 	self assert: def isClassSideDefinition 
 ]
 
-{ #category : #tests }
+{ #category : #'test  <' }
 CDAutonomousManualFluidClassParserTest >> testInstanceClassDefinitionIsInstanceSide [
 
 	| def |
@@ -33,7 +43,7 @@ CDAutonomousManualFluidClassParserTest >> testInstanceClassDefinitionIsInstanceS
 	self assert: def isInstanceSideDefinition 
 ]
 
-{ #category : #tests }
+{ #category : #'test  <' }
 CDAutonomousManualFluidClassParserTest >> testWrongClassDefShouldNotBeClassSide [
 
 	self should: [ self classDefinitionParserClass parse: 'Object --- #Point
@@ -41,7 +51,7 @@ CDAutonomousManualFluidClassParserTest >> testWrongClassDefShouldNotBeClassSide 
 
 ]
 
-{ #category : #tests }
+{ #category : #'test  <' }
 CDAutonomousManualFluidClassParserTest >> testWrongClassDefShouldNotBeClassSide2 [
 
 	self should: [ self classDefinitionParserClass parse: 'Object blbl: #Point
