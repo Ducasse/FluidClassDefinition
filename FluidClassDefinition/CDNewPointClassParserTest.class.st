@@ -53,6 +53,13 @@ CDNewPointClassParserTest >> secondInstanceVariableName [
 	^ 'y'
 ]
 
+{ #category : #running }
+CDNewPointClassParserTest >> setUp [
+
+	super setUp.
+	classDefinition := CDFluidClassDefinitionParser parse: self classDefinitionString.
+]
+
 { #category : #tests }
 CDNewPointClassParserTest >> superclassName [
 
