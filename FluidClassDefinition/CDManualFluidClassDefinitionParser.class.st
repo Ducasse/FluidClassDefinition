@@ -76,7 +76,7 @@ CDManualFluidClassDefinitionParser >> isInstanceSideDefinition: aNode [
 
 { #category : #visiting }
 CDManualFluidClassDefinitionParser >> parse: aString [
-	array := Character space split: aString.
+	array := self tokensOf: aString.
 	self validateInstanceOrClassSide.
 	self isInstanceDefinition
 		ifTrue: [ self validateSuperclass: array first.
@@ -97,6 +97,12 @@ CDManualFluidClassDefinitionParser >> superclass [
 ]
 
 { #category : #visiting }
+CDManualFluidClassDefinitionParser >> tokensOf: aString [
+
+	^ RBParser parseLiterals: aString
+]
+
+{ #category : #visiting }
 CDManualFluidClassDefinitionParser >> validateInstanceOrClassSide [
 	array second = '<'
 		ifTrue: [ self beClassDefinition ]
@@ -112,7 +118,7 @@ CDManualFluidClassDefinitionParser >> validatePackage: aString [
  
 	| packageNode |
 	"we should validate that aString is not 333 or 3C or point"
-	packageNode := CDPackageNode new packageName: (RBParser parseLiterals: aString) first.
+	packageNode := CDPackageNode new packageName: aString.
 	classDefinition
 		packageNameNode: packageNode astNode: packageNode
 

@@ -18,8 +18,8 @@ CDAutonomousManualFluidClassParserTest >> testClassDefPackageIsCorrect [
 	
 	| def |
 	def := self classDefinitionParserClass parse: 'Object < #Point
-			package: #''Kernel-BasicObjects'''.
-	self assert: def packageName equals: #'Kernel-BasicObjects'
+			package: ''Kernel-BasicObjects'''.
+	self assert: def packageName equals: 'Kernel-BasicObjects'
 ]
 
 { #category : #'test  <' }
@@ -40,6 +40,16 @@ CDAutonomousManualFluidClassParserTest >> testInstanceClassDefinitionIsInstanceS
 			package: #''Kernel-BasicObjects'''.
 
 	self assert: def isInstanceSideDefinition 
+]
+
+{ #category : #'test package' }
+CDAutonomousManualFluidClassParserTest >> testSplittingTokens [
+
+	self assert: (RBParser parseLiterals: 
+	'Object < #CDAbstractClassDefinitionParser
+	slots: { #classDefinition. #subclass => BooleanSlot };
+	classVariables: {  };
+	package: ''FluidClassDefinition''') equals: #(#Object #< #CDAbstractClassDefinitionParser #slots: #'{' #classDefinition #'.' #subclass #'=>' #BooleanSlot #'}' #';' #classVariables: #'{' #'}' #';' #package: 'FluidClassDefinition')
 ]
 
 { #category : #'test  <' }
