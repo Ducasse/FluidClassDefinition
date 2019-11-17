@@ -42,18 +42,22 @@ CDFluidClassDefinitionParser >> isInstanceDefinition [
 CDFluidClassDefinitionParser >> isInstanceSideDefinition: aNode [
 	"Point < #ColoredPoint vs. Point class < #ColoredPoint"
 	
-	| instanceSide selector |
+	| correctSelector selector |
 	[ selector := aNode receiver selector ] 
 			on: MessageNotUnderstood 
-			do: [ :ex | CDFluidClassParserError new messageText: aNode selector, ' is not a correct way to define a class'; signal ] .
-	instanceSide := aNode receiver selector = #<.
-	instanceSide 
-		ifFalse: [ aNode receiver selector = #class
-						ifTrue: [ "we only return false when class is used"
-						^ false ]
-						ifFalse: [ CDFluidClassParserError new messageText: aNode receiver selector, 'is not a correct way to define a class'; signal ] 
-						].
-	^ instanceSide
+			do: [ :ex | CDFluidClassParserError new messageText: aNode selector, ' is not a correct way to define a class'; signal ].
+	correctSelector := selector = #<.
+	correctSelector 
+			ifTrue: [
+				(aNode receiver receiver class = RBMessageNode)
+						ifTrue: [ aNode receiver receiver selector = #class 
+									ifTrue: [ "we only return false when class is used"
+										^ false ]]
+			ifFalse: [ ^ true]].
+	 CDFluidClassParserError new messageText: aNode receiver selector, 'is not a correct way to define a class'; signal.
+		
+	
+
 ]
 
 { #category : #visiting }
