@@ -24,6 +24,46 @@ Class {
 	#category : #FluidClassDefinition
 }
 
+{ #category : #query }
+CDFluidClassDefinitionParser >> isClassDefinition [
+	"Returns whether the identified class definition is an class side one"
+	
+	^ classDefinition isClassSideDefinition
+]
+
+{ #category : #query }
+CDFluidClassDefinitionParser >> isInstanceDefinition [
+	"returns whether the identified class definition is an instance side one"
+	
+	^ classDefinition isInstanceSideDefinition
+]
+
+{ #category : #visiting }
+CDFluidClassDefinitionParser >> isInstanceSideDefinition: aNode [
+	"Point < #ColoredPoint vs. Point class < #ColoredPoint"
+	
+	| instanceSide selector |
+	[ selector := aNode receiver selector ] 
+			on: MessageNotUnderstood 
+			do: [ :ex | CDFluidClassParserError new messageText: aNode selector, ' is not a correct way to define a class'; signal ] .
+	instanceSide := aNode receiver selector = #<.
+	instanceSide 
+		ifFalse: [ aNode receiver selector = #class
+						ifTrue: [ "we only return false when class is used"
+						^ false ]
+						ifFalse: [ CDFluidClassParserError new messageText: aNode receiver selector, 'is not a correct way to define a class'; signal ] 
+						].
+	^ instanceSide
+]
+
+{ #category : #visiting }
+CDFluidClassDefinitionParser >> parseClassName: aNode [ 
+]
+
+{ #category : #visiting }
+CDFluidClassDefinitionParser >> parseSelectorPart: selectorPart withArgument: anArray [
+]
+
 { #category : #visiting }
 CDFluidClassDefinitionParser >> visitCascadeNode: aRBCascadeNode [ 
 	
@@ -35,9 +75,9 @@ CDFluidClassDefinitionParser >> visitCascadeNode: aRBCascadeNode [
 
 { #category : #visiting }
 CDFluidClassDefinitionParser >> visitMessageNode: aRBMessageNode [
-
-	(self isInstanceSideDefinition: aRBMessageNode)
-		ifTrue: [ self parseSuperclassNode: aRBMessageNode receiver ]
+	"selector is packages"
+	self isInstanceDefinition
+		ifTrue: [ self parseClassName: aRBMessageNode receiver receiver  ]
 		ifFalse: [ self parseClassName: aRBMessageNode receiver receiver ].
 	
 	aRBMessageNode selectorParts

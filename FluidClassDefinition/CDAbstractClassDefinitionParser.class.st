@@ -38,7 +38,7 @@ CDAbstractClassDefinitionParser >> classNameNodeClass [
 { #category : #testing }
 CDAbstractClassDefinitionParser >> isInstanceSideDefinition: aRBMessageNode [
 	"Based on the Point or Point class structure, returns whether the definition is a class or instance side definition."
-	^ aRBMessageNode receiver isMessage not
+	^ self subclassResponsibility 
 ]
 
 { #category : #parsing }
@@ -54,7 +54,6 @@ CDAbstractClassDefinitionParser >> parseRootNode: expressionTree [
 	self setAdequateClassDefinitionFrom: expressionTree.
 	classDefinition originalNode: expressionTree.
 	expressionTree acceptVisitor: self.
-	"why do we need this double dispatch?"
 	^ classDefinition
 ]
 

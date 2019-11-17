@@ -7,7 +7,7 @@ Class {
 { #category : #helpers }
 CDWithPropertiesDefinitionTest >> classDefinitionString [
 
-	^ 'Object <<< #Point
+	^ 'Object < #Point
 			slots: {#x . #y};
 			classVariables: { #XX . #YY};
 			package: #''Kernel-BasicObjects'''

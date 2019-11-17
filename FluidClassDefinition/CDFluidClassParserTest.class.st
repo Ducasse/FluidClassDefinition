@@ -18,6 +18,12 @@ CDFluidClassParserTest >> classDefinitionParserClass [
 	^ CDFluidClassDefinitionParser
 ]
 
+{ #category : #running }
+CDFluidClassParserTest >> classDefinitionString [
+
+	^ self subclassResponsibility 
+]
+
 { #category : #helpers }
 CDFluidClassParserTest >> className [
 
