@@ -53,47 +53,14 @@ CDManualFluidClassDefinitionParser >> isInstanceDefinition [
 ]
 
 { #category : #visiting }
-CDManualFluidClassDefinitionParser >> isInstanceSideDefinition: aNode [
-	"Point < #ColoredPoint vs. Point class < #ColoredPoint"
-	
-	| correctSelector selector |
-	[ selector := aNode receiver selector ] 
-			on: MessageNotUnderstood 
-			do: [ :ex | CDFluidClassParserError new messageText: aNode selector, ' is not a correct way to define a class'; signal ].
-	correctSelector := selector = #<.
-	correctSelector 
-			ifTrue: [
-				(aNode receiver receiver class = RBMessageNode)
-						ifTrue: [ aNode receiver receiver selector = #class 
-									ifTrue: [ "we only return false when class is used"
-										^ false ]]
-			ifFalse: [ ^ true]].
-	 CDFluidClassParserError new messageText: aNode receiver selector, 'is not a correct way to define a class'; signal.
-		
-	
-
-]
-
-{ #category : #visiting }
 CDManualFluidClassDefinitionParser >> parse: aString [
 	array := self tokensOf: aString.
 	self validateInstanceOrClassSide.
 	self isInstanceDefinition
 		ifTrue: [ self validateSuperclass: array first.
 				 	self validatePackage: array last ].
+	self halt.
 	^ classDefinition
-]
-
-{ #category : #visiting }
-CDManualFluidClassDefinitionParser >> parseClassName: aNode [ 
-]
-
-{ #category : #visiting }
-CDManualFluidClassDefinitionParser >> parseSelectorPart: selectorPart withArgument: anArray [
-]
-
-{ #category : #accessing }
-CDManualFluidClassDefinitionParser >> superclass [
 ]
 
 { #category : #visiting }
@@ -132,26 +99,4 @@ CDManualFluidClassDefinitionParser >> validateSuperclass: aString [
 	classDefinition
 		superclassName: aString
 		astNode: superclassNode
-]
-
-{ #category : #visiting }
-CDManualFluidClassDefinitionParser >> visitCascadeNode: aRBCascadeNode [ 
-	
-	"RBCascadeNode((Object <<< #Point)
-	slots: {#x . #y};
-	classVariables: {#XX . #YY};
-	package: #'Kernel-BasicObjects')"	self halt.
-]
-
-{ #category : #visiting }
-CDManualFluidClassDefinitionParser >> visitMessageNode: aRBMessageNode [
-	"selector is packages"
-	self isInstanceDefinition
-		ifTrue: [ self parseClassName: aRBMessageNode receiver receiver  ]
-		ifFalse: [ self parseClassName: aRBMessageNode receiver receiver ].
-	
-	aRBMessageNode selectorParts
-		with: aRBMessageNode arguments
-		do: [ :selectorPart :argument |
-			self parseSelectorPart: selectorPart withArgument: argument ]
 ]

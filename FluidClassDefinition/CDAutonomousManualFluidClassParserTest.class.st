@@ -27,7 +27,7 @@ CDAutonomousManualFluidClassParserTest >> testClassSideDefinitionIsClassSide [
 
 	| def |
 	def := self classDefinitionParserClass parse: 'Object class < #Point
-			package: #''Kernel-BasicObjects'''.
+			package: ''Kernel-BasicObjects'''.
 
 	self assert: def isClassSideDefinition 
 ]
@@ -37,7 +37,7 @@ CDAutonomousManualFluidClassParserTest >> testInstanceClassDefinitionIsInstanceS
 
 	| def |
 	def := self classDefinitionParserClass parse: 'Object < #Point
-			package: #''Kernel-BasicObjects'''.
+			package: ''Kernel-BasicObjects'''.
 
 	self assert: def isInstanceSideDefinition 
 ]
@@ -56,7 +56,7 @@ CDAutonomousManualFluidClassParserTest >> testSplittingTokens [
 CDAutonomousManualFluidClassParserTest >> testWrongClassDefShouldNotBeClassSide [
 
 	self should: [ self classDefinitionParserClass parse: 'Object --- #Point
-			package: #''Kernel-BasicObjects'''] raise: CDFluidClassParserError.
+			package: ''Kernel-BasicObjects'''] raise: CDFluidClassParserError.
 
 ]
 
@@ -64,6 +64,6 @@ CDAutonomousManualFluidClassParserTest >> testWrongClassDefShouldNotBeClassSide 
 CDAutonomousManualFluidClassParserTest >> testWrongClassDefShouldNotBeClassSide2 [
 
 	self should: [ self classDefinitionParserClass parse: 'Object blbl: #Point
-			package: #''Kernel-BasicObjects'''] raise: CDFluidClassParserError 
+			package: ''Kernel-BasicObjects'''] raise: CDFluidClassParserError 
 
 ]
