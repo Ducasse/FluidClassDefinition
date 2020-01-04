@@ -71,17 +71,56 @@ CDManualFluidClassDefinitionParser >> isInstanceDefinition [
 { #category : #visiting }
 CDManualFluidClassDefinitionParser >> parse: aString [
 	array := self tokensOf: aString.
+	self validateMinimalDefinition.
+	self validateSuperclass.
 	self validateInstanceOrClassSide.
 	self isInstanceDefinition
 		ifTrue: [ self validateSuperclass: array first.
-				 	self validatePackage: array last ].
+				self validateClassName: array third.
+				self validatePackage: array last ].
 	^ classDefinition
+]
+
+{ #category : #'private properties' }
+CDManualFluidClassDefinitionParser >> setClassName: aString [
+	"no validation made, use validateClassName: to get one."
+	classDefinition className: aString
+		
+]
+
+{ #category : #'private properties' }
+CDManualFluidClassDefinitionParser >> setSuperclassName: aString [
+	"No validation" 
+	
+	| superclassNode |
+	superclassNode := self classNameNodeClass new className: aString.
+	classDefinition
+		superclassName: aString
+		astNode: superclassNode
 ]
 
 { #category : #visiting }
 CDManualFluidClassDefinitionParser >> tokensOf: aString [
 
 	^ RBParser parseLiterals: aString
+]
+
+{ #category : #testing }
+CDManualFluidClassDefinitionParser >> validClassName: aString [ 
+
+	^ aString first isLetter and: [ aString first isUppercase and: [ aString isAllAlphaNumerics ]]
+]
+
+{ #category : #validating }
+CDManualFluidClassDefinitionParser >> validateClassName: aString [ 
+	
+	(aString isSymbol and: [ self validClassName: aString ])
+		ifFalse: [  CDFluidClassParserError new 
+							messageText: 'A class name should start with an uppercase, followed by letter or digits';
+							parseContext: (CDParseErrorContext new actualTokens: {aString}; fullTokens: array);
+							signal ].
+	self setClassName: aString
+	
 ]
 
 { #category : #visiting }
@@ -96,6 +135,13 @@ CDManualFluidClassDefinitionParser >> validateInstanceOrClassSide [
 ]
 
 { #category : #visiting }
+CDManualFluidClassDefinitionParser >> validateMinimalDefinition [
+
+	array size < 3
+		ifTrue: [ self signal ]
+]
+
+{ #category : #visiting }
 CDManualFluidClassDefinitionParser >> validatePackage: aString [
  
 	| packageNode |
@@ -106,12 +152,21 @@ CDManualFluidClassDefinitionParser >> validatePackage: aString [
 
 ]
 
-{ #category : #visiting }
+{ #category : #validating }
+CDManualFluidClassDefinitionParser >> validateSuperclass [
+
+	self validateSuperclass: array first
+]
+
+{ #category : #validating }
 CDManualFluidClassDefinitionParser >> validateSuperclass: aString [ 
-	| superclassNode |
-	"we should validate that aString is not 333 or 3C or point"
-	superclassNode := self classNameNodeClass new className: aString.
-	classDefinition
-		superclassName: aString
-		astNode: superclassNode
+
+	"We do not check that the class exist because a class definition can be about classes elsewhere than in the image."
+	(aString isString and: [ self validClassName: aString ])
+		ifFalse: [  CDFluidClassParserError new 
+							messageText: 'A class name should start with an uppercase, followed by letter or digits';
+							parseContext: (CDParseErrorContext new actualTokens: {aString}; fullTokens: array);
+							signal ].
+	self setSuperclassName: aString
+	
 ]
