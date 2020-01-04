@@ -73,9 +73,9 @@ CDManualFluidClassDefinitionParser >> parse: aString [
 	array := self tokensOf: aString.
 	self validateMinimalDefinition.
 	self validateInstanceOrClassSide.
-	self validateSuperclass.
+	
 	self isInstanceDefinition
-		ifTrue: [ self validateSuperclass: array first.
+		ifTrue: [ self validateSuperclass.
 				self validateClassName: array third.
 				self validatePackage: array last ].
 	^ classDefinition
@@ -130,8 +130,8 @@ CDManualFluidClassDefinitionParser >> validateInstanceOrClassSide [
 		ifFalse: [ array second = 'class'
 				ifTrue: [ array third = '<'
 						ifTrue: [ self beMetaclassDefinition ]
-						ifFalse: [ self basicError ] ]
-				ifFalse: [ self basicError ] ]
+						ifFalse: [ self wrongClassMessageError ] ]
+				ifFalse: [ self wrongInstanceMessageError ] ]
 ]
 
 { #category : #visiting }
@@ -169,4 +169,24 @@ CDManualFluidClassDefinitionParser >> validateSuperclass: aString [
 							signal ].
 	self setSuperclassName: aString
 	
+]
+
+{ #category : #visiting }
+CDManualFluidClassDefinitionParser >> wrongClassMessageError [
+
+	CDFluidClassParserError new 
+			messageText: 'A class is defined using the message < as in Object < #Point or Object class < #Point';
+			parseContext: (CDParseErrorContext new 
+										actualTokens: {array third}; fullTokens: array);
+										signal
+]
+
+{ #category : #visiting }
+CDManualFluidClassDefinitionParser >> wrongInstanceMessageError [
+
+	CDFluidClassParserError new 
+			messageText: 'A class is defined using the message < as in Object < #Point';
+			parseContext: (CDParseErrorContext new 
+										actualTokens: {array second}; fullTokens: array);
+										signal
 ]

@@ -168,22 +168,35 @@ CDAutonomousManualFluidClassParserTest >> testWrongClassNameShouldRaiseError4 [
 
 { #category : #'test - < validation' }
 CDAutonomousManualFluidClassParserTest >> testWrongMessageShouldRaiseError [
-
-	self should: [ self classDefinitionParserClass parse: 'Object --- #Point
-			package: ''Kernel-BasicObjects'''] raise: CDFluidClassParserError.
+	
+	| defString |
+	defString := 'Object --- #Point
+			package: ''Kernel-BasicObjects'''.
+			
+	self should: [ self classDefinitionParserClass parse: defString ] raise: CDFluidClassParserError.
 		
-	[ self classDefinitionParserClass parse: 'Object --- #Point
-			package: ''Kernel-BasicObjects''' ] 
+	[ self classDefinitionParserClass parse: defString ] 
 			on: CDFluidClassParserError 
-			do: [ :ex | self assert: ex parseContext actualTokens equals: { '---' } ]
+			do: [ :ex | 
+					self assert: ex parseContext actualTokens equals: { '---' }.
+					self assert: ex parseContext fullTokens equals: #(#Object #'---' #Point #package: 'Kernel-BasicObjects')	]
 
 ]
 
 { #category : #'test - < validation' }
 CDAutonomousManualFluidClassParserTest >> testWrongMessageShouldRaiseError2 [
-
-	self should: [ self classDefinitionParserClass parse: 'Object blbl: #Point
-			package: ''Kernel-BasicObjects'''] raise: CDFluidClassParserError 
+	
+	| defString |
+	defString := 'Object bla: #Point
+			package: ''Kernel-BasicObjects'''.
+			
+	self should: [ self classDefinitionParserClass parse: defString ] raise: CDFluidClassParserError.
+		
+	[ self classDefinitionParserClass parse: defString ] 
+			on: CDFluidClassParserError 
+			do: [ :ex | 
+					self assert: ex parseContext actualTokens equals: { 'bla:' }.
+					self assert: ex parseContext fullTokens equals: #(#Object #'bla:' #Point #package: 'Kernel-BasicObjects')	]
 
 ]
 
