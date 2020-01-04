@@ -1,9 +1,7 @@
 "
-I am a copy of class CDFluidClassDefinitionParser. This comment is copied from there, and might not be entirely accurate
-
 The new syntax for class definition (just for the class and not for the methods) is
 
-Superclass <<< #MyObject
+Superclass < #MyObject
 		uses: #MyTrait;
 		slots: { #a. #b };
 		classVariables: { #A. #B };
@@ -12,13 +10,26 @@ Superclass <<< #MyObject
 
 The minimal class definition is the following one: 
 
-Superclass <<< #MyObject
+Superclass < #MyObject
 		package: #MyPackage
 
 
 Note that sending a message to the superclass is close to subclass: and it lets the class selects 
 a class definition parser if the syntax should be extended. 
 In addition having a binary message makes () unneccessary.
+
+Open Questions: what should be a class definition 
+
+Object class < #Point
+	package: ''Kernel-BasicObjects''
+
+?
+
+What is the advantage over 
+
+CDManualFluidClassDefinitionParser class
+	instanceVariableNames: ''
+
 "
 Class {
 	#name : #CDManualFluidClassDefinitionParser,
@@ -26,7 +37,7 @@ Class {
 	#instVars : [
 		'array'
 	],
-	#category : #FluidClassDefinition
+	#category : #'FluidClassDefinition-NewApproach'
 }
 
 { #category : #visiting }
@@ -40,14 +51,19 @@ CDManualFluidClassDefinitionParser >> basicError [
 
 { #category : #testing }
 CDManualFluidClassDefinitionParser >> isClassDefinition [
-	"Returns whether the identified class definition is an class side one"
+	"Returns whether the identified class definition is a class side one.
+	i.e., something like 
+		
+		Object class < #Point
+			package: ''Kernel-BasicObjects''
+	"
 	
 	^ classDefinition isClassSideDefinition
 ]
 
 { #category : #query }
 CDManualFluidClassDefinitionParser >> isInstanceDefinition [
-	"returns whether the identified class definition is an instance side one"
+	"Returns whether the identified class definition is an instance side one."
 	
 	^ classDefinition isInstanceSideDefinition
 ]
@@ -59,7 +75,6 @@ CDManualFluidClassDefinitionParser >> parse: aString [
 	self isInstanceDefinition
 		ifTrue: [ self validateSuperclass: array first.
 				 	self validatePackage: array last ].
-	self halt.
 	^ classDefinition
 ]
 

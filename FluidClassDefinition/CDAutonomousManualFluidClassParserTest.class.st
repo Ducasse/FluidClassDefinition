@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'classDefinition'
 	],
-	#category : #FluidClassDefinition
+	#category : #'FluidClassDefinition-NewApproach'
 }
 
 { #category : #running }
@@ -14,7 +14,7 @@ CDAutonomousManualFluidClassParserTest >> classDefinitionParserClass [
 ]
 
 { #category : #'test package' }
-CDAutonomousManualFluidClassParserTest >> testClassDefPackageIsCorrect [
+CDAutonomousManualFluidClassParserTest >> testClassDefinitionPackageIsCorrect [
 	
 	| def |
 	def := self classDefinitionParserClass parse: 'Object < #Point
