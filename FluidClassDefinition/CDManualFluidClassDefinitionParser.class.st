@@ -40,7 +40,7 @@ Class {
 	#category : #'FluidClassDefinition-NewApproach'
 }
 
-{ #category : #visiting }
+{ #category : #error }
 CDManualFluidClassDefinitionParser >> basicError [
 
 	CDFluidClassParserError new 
@@ -68,7 +68,7 @@ CDManualFluidClassDefinitionParser >> isInstanceDefinition [
 	^ classDefinition isInstanceSideDefinition
 ]
 
-{ #category : #visiting }
+{ #category : #public }
 CDManualFluidClassDefinitionParser >> parse: aString [
 	array := self tokensOf: aString.
 	self validateMinimalDefinition.
@@ -99,7 +99,7 @@ CDManualFluidClassDefinitionParser >> setSuperclassName: aString [
 		astNode: superclassNode
 ]
 
-{ #category : #visiting }
+{ #category : #parsing }
 CDManualFluidClassDefinitionParser >> tokensOf: aString [
 
 	^ RBParser parseLiterals: aString
@@ -123,7 +123,7 @@ CDManualFluidClassDefinitionParser >> validateClassName: aString [
 	
 ]
 
-{ #category : #visiting }
+{ #category : #validating }
 CDManualFluidClassDefinitionParser >> validateInstanceOrClassSide [
 	array second = '<'
 		ifTrue: [ self beClassDefinition ]
@@ -134,14 +134,14 @@ CDManualFluidClassDefinitionParser >> validateInstanceOrClassSide [
 				ifFalse: [ self wrongInstanceMessageError ] ]
 ]
 
-{ #category : #visiting }
+{ #category : #error }
 CDManualFluidClassDefinitionParser >> validateMinimalDefinition [
 
 	array size < 3
 		ifTrue: [ self signal ]
 ]
 
-{ #category : #visiting }
+{ #category : #error }
 CDManualFluidClassDefinitionParser >> validatePackage: aString [
  
 	| packageNode |
@@ -171,7 +171,7 @@ CDManualFluidClassDefinitionParser >> validateSuperclass: aString [
 	
 ]
 
-{ #category : #visiting }
+{ #category : #error }
 CDManualFluidClassDefinitionParser >> wrongClassMessageError [
 
 	CDFluidClassParserError new 
@@ -181,7 +181,7 @@ CDManualFluidClassDefinitionParser >> wrongClassMessageError [
 										signal
 ]
 
-{ #category : #visiting }
+{ #category : #error }
 CDManualFluidClassDefinitionParser >> wrongInstanceMessageError [
 
 	CDFluidClassParserError new 
