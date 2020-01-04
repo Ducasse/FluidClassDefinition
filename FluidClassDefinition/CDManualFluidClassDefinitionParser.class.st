@@ -72,8 +72,8 @@ CDManualFluidClassDefinitionParser >> isInstanceDefinition [
 CDManualFluidClassDefinitionParser >> parse: aString [
 	array := self tokensOf: aString.
 	self validateMinimalDefinition.
-	self validateSuperclass.
 	self validateInstanceOrClassSide.
+	self validateSuperclass.
 	self isInstanceDefinition
 		ifTrue: [ self validateSuperclass: array first.
 				self validateClassName: array third.
