@@ -1,5 +1,5 @@
 Class {
 	#name : #CDFluidClassParserError,
 	#superclass : #Error,
-	#category : #FluidClassDefinition
+	#category : #'FluidClassDefinition-Core'
 }

@@ -1,7 +1,7 @@
 Class {
 	#name : #CDNewPointClassParserTest,
 	#superclass : #CDClassDefinitionParserTest,
-	#category : #FluidClassDefinition
+	#category : #'FluidClassDefinition-MessageBasedVersion'
 }
 
 { #category : #running }

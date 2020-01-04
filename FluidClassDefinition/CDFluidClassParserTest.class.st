@@ -9,7 +9,7 @@ Class {
 	#instVars : [
 		'classDefinition'
 	],
-	#category : #FluidClassDefinition
+	#category : #'FluidClassDefinition-MessageBasedVersion'
 }
 
 { #category : #running }

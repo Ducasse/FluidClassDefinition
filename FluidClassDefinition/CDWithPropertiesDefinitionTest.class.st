@@ -1,7 +1,7 @@
 Class {
 	#name : #CDWithPropertiesDefinitionTest,
 	#superclass : #CDFluidClassParserTest,
-	#category : #FluidClassDefinition
+	#category : #'FluidClassDefinition-MessageBasedVersion'
 }
 
 { #category : #helpers }

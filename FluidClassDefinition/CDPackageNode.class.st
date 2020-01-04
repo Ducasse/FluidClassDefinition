@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'packageName'
 	],
-	#category : #FluidClassDefinition
+	#category : #'FluidClassDefinition-Core'
 }
 
 { #category : #accessing }
@@ -20,6 +20,7 @@ CDPackageNode >> packageName: anObject [
 { #category : #accessing }
 CDPackageNode >> value [ 
 	"to be compatible with the default CDClassDefinitionNode definition.
-	there a package is just an RBLiteralNode and it should be a PackageNode too."
+	There a package is just an RBLiteralNode and it may be a PackageNode too."
+	
 	^ packageName
 ]

@@ -1,7 +1,7 @@
 Class {
 	#name : #CDBogusMinimalClassDefinitionTest,
 	#superclass : #CDFluidClassParserTest,
-	#category : #FluidClassDefinition
+	#category : #'FluidClassDefinition-MessageBasedVersion'
 }
 
 { #category : #running }

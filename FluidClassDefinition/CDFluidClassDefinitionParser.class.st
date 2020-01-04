@@ -21,7 +21,7 @@ In addition having a binary message makes () unneccessary.
 Class {
 	#name : #CDFluidClassDefinitionParser,
 	#superclass : #CDAbstractClassDefinitionParser,
-	#category : #FluidClassDefinition
+	#category : #'FluidClassDefinition-MessageBasedVersion'
 }
 
 { #category : #query }
