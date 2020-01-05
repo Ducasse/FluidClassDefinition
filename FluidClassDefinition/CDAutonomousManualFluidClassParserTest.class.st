@@ -46,6 +46,20 @@ CDAutonomousManualFluidClassParserTest >> testClassSideDefinitionIsClassSide [
 	self assert: def isClassSideDefinition 
 ]
 
+{ #category : #'test traits' }
+CDAutonomousManualFluidClassParserTest >> testEmptyTraits [
+
+	| parser defString def |
+	parser := self classDefinitionParserClass new.
+	
+	defString := 'Object < #MyObject
+		uses: {};
+		package: #MyPackage'.
+		
+	def := parser parse: defString.
+	self assert: def traitDefinition class equals: CDTraitCompositionSequenceNode
+]
+
 { #category : #'test simple definition validation' }
 CDAutonomousManualFluidClassParserTest >> testGoodClassNameShouldNotRaiseError [
 	| string |
@@ -143,6 +157,41 @@ CDAutonomousManualFluidClassParserTest >> testSimpleDefinitionSuperclassName [
 			
 	self assert: def superclassName equals: 'Object'
 	
+]
+
+{ #category : #'test traits' }
+CDAutonomousManualFluidClassParserTest >> testSimpleTraits [
+
+	| parser defString def |
+	parser := self classDefinitionParserClass new.
+	
+	defString := 'Object < #MyObject
+		uses: MyTrait;
+		package: #MyPackage'.
+		
+	def := parser parse: defString.
+	self assert: def traitDefinition name equals: #MyTrait.
+]
+
+{ #category : #'test traits' }
+CDAutonomousManualFluidClassParserTest >> testSimpleTraitsAlias [
+
+	| parser defString def |
+	parser := self classDefinitionParserClass new.
+	
+	defString := 'Object < #MyObject
+		uses: MyTrait @ {#foo -> #bar};
+		package: #MyPackage'.
+	
+	"my impression is that the classParser is not good enough here.
+	it is losing the trait name."
+	
+	def := parser parse: defString.
+	self assert: def traitDefinition class equals: CDTraitAliasNode. 
+	self assert: (def traitDefinition aliases values collect: #name) equals: #(bar).
+	self assert: (def traitDefinition aliases keys collect: #name) equals: #(foo).
+	self assert: def traitDefinition subject name equals: #MyTrait. 	
+
 ]
 
 { #category : #'test low-level' }

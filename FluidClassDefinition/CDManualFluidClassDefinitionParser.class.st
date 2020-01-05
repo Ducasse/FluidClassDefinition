@@ -55,7 +55,7 @@ CDManualFluidClassDefinitionParser >> basicError [
 
 ]
 
-{ #category : #public }
+{ #category : #private }
 CDManualFluidClassDefinitionParser >> chopLinesFrom: start [ 
 	
 	lines := OrderedCollection new. 
@@ -66,12 +66,24 @@ CDManualFluidClassDefinitionParser >> chopLinesFrom: start [
 
 ]
 
+{ #category : #public }
+CDManualFluidClassDefinitionParser >> expressionStringFrom: aLine [
+	"this is a bit silly to recreate source to parse it for real this time,
+	but I do not want to build the build by hand. And I want to reuse most of the logic of the CDCLassDefinitionParser. So first make work and we will see."
+	
+	^ String streamContents: [ :s |
+		s << 'self '.   
+		aLine 
+			do: [ :each | s << each  ]
+			separatedBy: [ s space ]]
+]
+
 { #category : #accessing }
 CDManualFluidClassDefinitionParser >> fluidLines [
 	^ lines
 ]
 
-{ #category : #public }
+{ #category : #private }
 CDManualFluidClassDefinitionParser >> hasFluidPart [
 	
 	^ array size > 5
@@ -112,9 +124,20 @@ CDManualFluidClassDefinitionParser >> parse: aString [
 		ifTrue: [ self validateSuperclass.
 				self validateClassName: array third.
 				self validatePackage: array last.
-				self hasFluidPart ifTrue: [ self chopLinesFrom: 3].
+				self hasFluidPart 
+					ifTrue: 
+						[ self chopLinesFrom: 3.
+						self treatLines ].
 				].
 	^ classDefinition
+]
+
+{ #category : #'from ClassDefinitionParser' }
+CDManualFluidClassDefinitionParser >> parseTraitDefinitionFromNode: aNode [
+	
+	| traitComposition |
+	traitComposition := CDTraitCompositionBuilder new buildFrom: aNode.	
+	classDefinition traitDefinition: traitComposition.
 ]
 
 { #category : #'private properties' }
@@ -140,6 +163,16 @@ CDManualFluidClassDefinitionParser >> setSuperclassName: aString [
 CDManualFluidClassDefinitionParser >> tokensOf: aString [
 
 	^ RBParser parseLiterals: aString
+]
+
+{ #category : #public }
+CDManualFluidClassDefinitionParser >> treatLines [
+
+	| expressionTree |
+	expressionTree := RBParser parseExpression: (self expressionStringFrom: lines first).
+	expressionTree doSemanticAnalysis.
+	
+	self parseTraitDefinitionFromNode: expressionTree arguments first 
 ]
 
 { #category : #testing }
