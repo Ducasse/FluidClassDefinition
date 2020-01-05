@@ -35,10 +35,16 @@ Class {
 	#name : #CDManualFluidClassDefinitionParser,
 	#superclass : #CDAbstractClassDefinitionParser,
 	#instVars : [
-		'array'
+		'array',
+		'lines'
 	],
 	#category : #'FluidClassDefinition-NewApproach'
 }
+
+{ #category : #private }
+CDManualFluidClassDefinitionParser >> array: aCollection [ 
+	array := aCollection
+]
 
 { #category : #error }
 CDManualFluidClassDefinitionParser >> basicError [
@@ -47,6 +53,28 @@ CDManualFluidClassDefinitionParser >> basicError [
 			messageText: 'Wrong class definition it should be either Object < #Point or Object class < #Point ';	
 			signal
 
+]
+
+{ #category : #public }
+CDManualFluidClassDefinitionParser >> chopLinesFrom: start [ 
+	
+	lines := OrderedCollection new. 
+	lines := array allButFirst: start.
+	lines := lines splitOn: #(#';').
+	lines := lines allButLast.
+	
+
+]
+
+{ #category : #accessing }
+CDManualFluidClassDefinitionParser >> fluidLines [
+	^ lines
+]
+
+{ #category : #public }
+CDManualFluidClassDefinitionParser >> hasFluidPart [
+	
+	^ array size > 5
 ]
 
 { #category : #testing }
@@ -68,6 +96,12 @@ CDManualFluidClassDefinitionParser >> isInstanceDefinition [
 	^ classDefinition isInstanceSideDefinition
 ]
 
+{ #category : #testing }
+CDManualFluidClassDefinitionParser >> isInstanceSideDefinition: aRBMessageNode [
+	"Based on the Point or Point class structure, returns whether the definition is a class or instance side definition."
+	^ self halt.
+]
+
 { #category : #public }
 CDManualFluidClassDefinitionParser >> parse: aString [
 	array := self tokensOf: aString.
@@ -77,14 +111,17 @@ CDManualFluidClassDefinitionParser >> parse: aString [
 	self isInstanceDefinition
 		ifTrue: [ self validateSuperclass.
 				self validateClassName: array third.
-				self validatePackage: array last ].
+				self validatePackage: array last.
+				self hasFluidPart ifTrue: [ self chopLinesFrom: 3].
+				].
 	^ classDefinition
 ]
 
 { #category : #'private properties' }
 CDManualFluidClassDefinitionParser >> setClassName: aString [
 	"no validation made, use validateClassName: to get one."
-	classDefinition className: aString
+
+	classDefinition className: aString astNode: (self classNameNodeClass new className: aString)
 		
 ]
 

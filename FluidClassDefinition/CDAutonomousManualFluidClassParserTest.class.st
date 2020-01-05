@@ -16,7 +16,27 @@ CDAutonomousManualFluidClassParserTest >> classDefinitionParserClass [
 	^ CDManualFluidClassDefinitionParser
 ]
 
-{ #category : #'test  <' }
+{ #category : #'test low-level' }
+CDAutonomousManualFluidClassParserTest >> testChopMiddleLines [
+
+	| parser defString def |
+	parser := self classDefinitionParserClass new.
+	
+	defString := 'Object < #MyObject
+		uses: #MyTrait;
+		slots: { #a. #b };
+		classVariables: { #A . #B };
+  		tags: #(Core Others) ;
+		package: #MyPackage'.
+		
+	def := parser parse: defString.
+	self assert: parser fluidLines first equals: #(#uses: #MyTrait).
+	self assert: parser fluidLines second equals: #(#slots: #'{' #a #'.' #b #'}').
+	self assert: parser fluidLines third equals: #(#classVariables: #'{' #A #'.' #B #'}').
+	
+]
+
+{ #category : #'test  simple definition creation' }
 CDAutonomousManualFluidClassParserTest >> testClassSideDefinitionIsClassSide [
 
 	| def |
@@ -26,7 +46,7 @@ CDAutonomousManualFluidClassParserTest >> testClassSideDefinitionIsClassSide [
 	self assert: def isClassSideDefinition 
 ]
 
-{ #category : #'test - < validation' }
+{ #category : #'test simple definition validation' }
 CDAutonomousManualFluidClassParserTest >> testGoodClassNameShouldNotRaiseError [
 	| string |
 	string := 'Object < Foo2
@@ -37,7 +57,7 @@ CDAutonomousManualFluidClassParserTest >> testGoodClassNameShouldNotRaiseError [
 	
 ]
 
-{ #category : #'test - < validation' }
+{ #category : #'test simple definition validation' }
 CDAutonomousManualFluidClassParserTest >> testGoodClassNameShouldNotRaiseError2 [
 	| string |
 	string := 'Object < Foo2Bar44
@@ -48,7 +68,18 @@ CDAutonomousManualFluidClassParserTest >> testGoodClassNameShouldNotRaiseError2 
 	
 ]
 
-{ #category : #'test  <' }
+{ #category : #'test low-level' }
+CDAutonomousManualFluidClassParserTest >> testHasFluidPart [
+
+	| parser |
+	parser := self classDefinitionParserClass new.
+	parser array: (RBParser parseLiterals: 'Object < #CDAbstractClassDefinitionParser
+		slots: { #classDefinition. #subclass => BooleanSlot };
+		package: ''FluidClassDefinition''').
+	self assert: parser hasFluidPart.
+]
+
+{ #category : #'test  simple definition creation' }
 CDAutonomousManualFluidClassParserTest >> testInstanceDefinitionIsInstanceSide [
 
 	| def |
@@ -58,7 +89,7 @@ CDAutonomousManualFluidClassParserTest >> testInstanceDefinitionIsInstanceSide [
 	self assert: def isInstanceSideDefinition 
 ]
 
-{ #category : #'test  <' }
+{ #category : #'test  simple definition creation' }
 CDAutonomousManualFluidClassParserTest >> testSimpleDefinitionClassName [
 
 	| def |
@@ -66,6 +97,31 @@ CDAutonomousManualFluidClassParserTest >> testSimpleDefinitionClassName [
 			package: ''Kernel-BasicObjects'''.
 			
 	self assert: def className equals: #Point.
+
+]
+
+{ #category : #'test  simple definition creation' }
+CDAutonomousManualFluidClassParserTest >> testSimpleDefinitionClassNode [
+
+	| def |
+	def := self classDefinitionParserClass parse: 'Object < #Point
+			package: ''Kernel-BasicObjects'''.
+
+	self assert: def classNameNode className equals: #Point.
+	
+	"The following cannot work 
+	
+	self assert: def classNameNode binding value equals: Point. 
+	
+	because binding is defined as 
+	
+	existingBindingIfAbsent: aBlock
+
+		| binding |
+		binding := originalNode methodNode compilationContext environment bindingOf: className.
+		^ binding ifNil: aBlock
+	
+	"
 
 ]
 
@@ -78,7 +134,7 @@ CDAutonomousManualFluidClassParserTest >> testSimpleDefinitionPackageIsCorrect [
 	self assert: def packageName equals: 'Kernel-BasicObjects'
 ]
 
-{ #category : #'test  <' }
+{ #category : #'test  simple definition creation' }
 CDAutonomousManualFluidClassParserTest >> testSimpleDefinitionSuperclassName [
 
 	| def |
@@ -114,7 +170,7 @@ CDAutonomousManualFluidClassParserTest >> testValidClassName [
 		do: [ :each | self deny: (parser validClassName: each) ].
 ]
 
-{ #category : #'test - < validation' }
+{ #category : #'test simple definition validation' }
 CDAutonomousManualFluidClassParserTest >> testWrongClassNameShouldRaiseError [
 	| string |
 	string := 'Object < #point
@@ -125,7 +181,7 @@ CDAutonomousManualFluidClassParserTest >> testWrongClassNameShouldRaiseError [
 	[ self classDefinitionParserClass parse: string ] on: CDFluidClassParserError do: [ :ex | self assert: ex parseContext actualTokens equals: { #point } ]
 ]
 
-{ #category : #'test - < validation' }
+{ #category : #'test simple definition validation' }
 CDAutonomousManualFluidClassParserTest >> testWrongClassNameShouldRaiseError2 [
 	| string |
 	string := 'Object < point
@@ -138,7 +194,7 @@ CDAutonomousManualFluidClassParserTest >> testWrongClassNameShouldRaiseError2 [
 		do: [ :ex | self assert: ex parseContext actualTokens equals: { 'point' } ]
 ]
 
-{ #category : #'test - < validation' }
+{ #category : #'test simple definition validation' }
 CDAutonomousManualFluidClassParserTest >> testWrongClassNameShouldRaiseError3 [
 	| string |
 	string := 'Object < 3Foo
@@ -153,7 +209,7 @@ CDAutonomousManualFluidClassParserTest >> testWrongClassNameShouldRaiseError3 [
 		self assert: ex parseContext fullTokens equals: #(#Object #< 3 #Foo #package: 'Kernel-BasicObjects')		 ]
 ]
 
-{ #category : #'test - < validation' }
+{ #category : #'test simple definition validation' }
 CDAutonomousManualFluidClassParserTest >> testWrongClassNameShouldRaiseError4 [
 	| string |
 	string := 'Object < true
@@ -166,7 +222,7 @@ CDAutonomousManualFluidClassParserTest >> testWrongClassNameShouldRaiseError4 [
 		do: [ :ex | self assert: ex parseContext actualTokens equals: { true } ]
 ]
 
-{ #category : #'test - < validation' }
+{ #category : #'test simple definition validation' }
 CDAutonomousManualFluidClassParserTest >> testWrongMessageShouldRaiseError [
 	
 	| defString |
@@ -183,7 +239,7 @@ CDAutonomousManualFluidClassParserTest >> testWrongMessageShouldRaiseError [
 
 ]
 
-{ #category : #'test - < validation' }
+{ #category : #'test simple definition validation' }
 CDAutonomousManualFluidClassParserTest >> testWrongMessageShouldRaiseError2 [
 	
 	| defString |
@@ -200,7 +256,7 @@ CDAutonomousManualFluidClassParserTest >> testWrongMessageShouldRaiseError2 [
 
 ]
 
-{ #category : #'test - < validation' }
+{ #category : #'test simple definition validation' }
 CDAutonomousManualFluidClassParserTest >> testWrongSuperclassShouldRaiseError [
 
 	| defString |
@@ -216,7 +272,7 @@ CDAutonomousManualFluidClassParserTest >> testWrongSuperclassShouldRaiseError [
 				self assert: ex parseContext fullTokens equals: #(33 #< #Point #package: 'Kernel-BasicObjects') ]
 ]
 
-{ #category : #'test - < validation' }
+{ #category : #'test simple definition validation' }
 CDAutonomousManualFluidClassParserTest >> testWrongSuperclassShouldRaiseError2 [
 
 	| defString |
