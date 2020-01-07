@@ -31,8 +31,8 @@ CDAutonomousManualFluidClassParserTest >> testChopMiddleLines [
 		
 	def := parser parse: defString.
 	self assert: parser fluidLines first equals: #(#uses: #MyTrait).
-	self assert: parser fluidLines second equals: #(#slots: #'{' #a #'.' #b #'}').
-	self assert: parser fluidLines third equals: #(#classVariables: #'{' #A #'.' #B #'}').
+	self assert: parser fluidLines second equals: #(#slots: ${ #a $. #b $}).
+	self assert: parser fluidLines third equals: #(#classVariables: ${ #A $. #B $}).
 	
 ]
 
@@ -46,18 +46,21 @@ CDAutonomousManualFluidClassParserTest >> testClassSideDefinitionIsClassSide [
 	self assert: def isClassSideDefinition 
 ]
 
-{ #category : #'test traits' }
-CDAutonomousManualFluidClassParserTest >> testEmptyTraits [
+{ #category : #'test low-level' }
+CDAutonomousManualFluidClassParserTest >> testExpressionStringFrom [
 
-	| parser defString def |
-	parser := self classDefinitionParserClass new.
-	
-	defString := 'Object < #MyObject
-		uses: {};
-		package: #MyPackage'.
-		
-	def := parser parse: defString.
-	self assert: def traitDefinition class equals: CDTraitCompositionSequenceNode
+	self 
+		assert: (self classDefinitionParserClass new expressionStringFrom: #(#uses: #MyTrait))
+		equals: 'self uses: MyTrait'
+]
+
+{ #category : #'test low-level' }
+CDAutonomousManualFluidClassParserTest >> testExpressionStringFromWithParentheses [
+
+	self 
+		assert: (self classDefinitionParserClass new expressionStringFrom: #('Object' #< #MyObject 'uses:' 'MyTrait' #+ $( 'AnotherTrait' #- ${ #selector $} #@ ${ #selector1 #'->' #selector $} $) $; 'package:' #MyPackage))
+		equals:
+ 'self Object < MyObject uses: MyTrait + ( AnotherTrait - { selector } @ { selector1 -> selector } ) ; package: MyPackage'
 ]
 
 { #category : #'test simple definition validation' }
@@ -159,8 +162,64 @@ CDAutonomousManualFluidClassParserTest >> testSimpleDefinitionSuperclassName [
 	
 ]
 
+{ #category : #'test low-level' }
+CDAutonomousManualFluidClassParserTest >> testSplittingTokens [
+
+	self 
+		assert: (RBParser parseLiterals: 
+	'Object < #CDAbstractClassDefinitionParser
+		slots: { #classDefinition. #subclass => BooleanSlot };
+		classVariables: {  };
+		package: ''FluidClassDefinition''') 
+		equals: #(#Object #< #CDAbstractClassDefinitionParser #slots: #'{' #classDefinition #'.' #subclass #'=>' #BooleanSlot #'}' #';' #classVariables: #'{' #'}' #';' #package: 'FluidClassDefinition')
+]
+
+{ #category : #'test low-level' }
+CDAutonomousManualFluidClassParserTest >> testTokensOf [
+
+	self 
+		assert: (self classDefinitionParserClass new tokensOf: 
+	'Object < #MyObject
+		uses: MyTrait + (AnotherTrait - {#selector} @ {#selector1 -> #selector});
+		package: #MyPackage')
+		equals: 
+ #('Object' #< #MyObject 'uses:' 'MyTrait' #+ $( 'AnotherTrait' #- ${ #selector $} #@ ${ #selector1 #'->' #selector $} $) $; 'package:' #MyPackage)		
+]
+
 { #category : #'test traits' }
-CDAutonomousManualFluidClassParserTest >> testSimpleTraits [
+CDAutonomousManualFluidClassParserTest >> testTraitAlias [
+
+	| parser defString def |
+	parser := self classDefinitionParserClass new.
+	
+	defString := 'Object < #MyObject
+		uses: MyTrait @ {#foo -> #bar};
+		package: #MyPackage'.
+	
+	def := parser parse: defString.
+	self assert: def traitDefinition class equals: CDTraitAliasNode. 
+	self assert: (def traitDefinition aliases values collect: #name) equals: #(bar).
+	self assert: (def traitDefinition aliases keys collect: #name) equals: #(foo).
+	self assert: def traitDefinition subject name equals: #MyTrait. 	
+
+]
+
+{ #category : #'test traits' }
+CDAutonomousManualFluidClassParserTest >> testTraitEmpty [
+
+	| parser defString def |
+	parser := self classDefinitionParserClass new.
+	
+	defString := 'Object < #MyObject
+		uses: {};
+		package: #MyPackage'.
+		
+	def := parser parse: defString.
+	self assert: def traitDefinition class equals: CDTraitCompositionSequenceNode
+]
+
+{ #category : #'test traits' }
+CDAutonomousManualFluidClassParserTest >> testTraitPlainSimple [
 
 	| parser defString def |
 	parser := self classDefinitionParserClass new.
@@ -174,36 +233,22 @@ CDAutonomousManualFluidClassParserTest >> testSimpleTraits [
 ]
 
 { #category : #'test traits' }
-CDAutonomousManualFluidClassParserTest >> testSimpleTraitsAlias [
+CDAutonomousManualFluidClassParserTest >> testTraitSequence [
 
 	| parser defString def |
 	parser := self classDefinitionParserClass new.
 	
 	defString := 'Object < #MyObject
-		uses: MyTrait @ {#foo -> #bar};
+		uses: MyTrait + (AnotherTrait - {#selector} @ {#selector1 -> #selector});
 		package: #MyPackage'.
-	
-	"my impression is that the classParser is not good enough here.
-	it is losing the trait name."
-	
+
+	self halt.
 	def := parser parse: defString.
 	self assert: def traitDefinition class equals: CDTraitAliasNode. 
 	self assert: (def traitDefinition aliases values collect: #name) equals: #(bar).
 	self assert: (def traitDefinition aliases keys collect: #name) equals: #(foo).
 	self assert: def traitDefinition subject name equals: #MyTrait. 	
 
-]
-
-{ #category : #'test low-level' }
-CDAutonomousManualFluidClassParserTest >> testSplittingTokens [
-
-	self 
-		assert: (RBParser parseLiterals: 
-	'Object < #CDAbstractClassDefinitionParser
-		slots: { #classDefinition. #subclass => BooleanSlot };
-		classVariables: {  };
-		package: ''FluidClassDefinition''') 
-		equals: #(#Object #< #CDAbstractClassDefinitionParser #slots: #'{' #classDefinition #'.' #subclass #'=>' #BooleanSlot #'}' #';' #classVariables: #'{' #'}' #';' #package: 'FluidClassDefinition')
 ]
 
 { #category : #'test low-level' }

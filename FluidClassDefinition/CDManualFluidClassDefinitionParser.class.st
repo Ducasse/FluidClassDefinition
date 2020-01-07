@@ -60,17 +60,18 @@ CDManualFluidClassDefinitionParser >> chopLinesFrom: start [
 	
 	lines := OrderedCollection new. 
 	lines := array allButFirst: start.
-	lines := lines splitOn: #(#';').
+	lines := lines splitOn: $;.
 	lines := lines allButLast.
+
 	
 
 ]
 
-{ #category : #public }
+{ #category : #private }
 CDManualFluidClassDefinitionParser >> expressionStringFrom: aLine [
 	"this is a bit silly to recreate source to parse it for real this time,
 	but I do not want to build the build by hand. And I want to reuse most of the logic of the CDCLassDefinitionParser. So first make work and we will see."
-	
+
 	^ String streamContents: [ :s |
 		s << 'self '.   
 		aLine 
@@ -161,8 +162,8 @@ CDManualFluidClassDefinitionParser >> setSuperclassName: aString [
 
 { #category : #parsing }
 CDManualFluidClassDefinitionParser >> tokensOf: aString [
-
-	^ RBParser parseLiterals: aString
+	^ RBScanner scanTokens: aString
+	"^ RBParser parseLiterals: aString"
 ]
 
 { #category : #public }
