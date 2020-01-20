@@ -6,7 +6,7 @@ Class {
 
 { #category : #running }
 CDNewPointClassParserTest >> classDefinitionParserClass [
-	^ CDFluidClassDefinitionParser
+	^ CDTreeBasedFluidClassDefinitionParser
 ]
 
 { #category : #helpers }
@@ -57,7 +57,7 @@ CDNewPointClassParserTest >> secondInstanceVariableName [
 CDNewPointClassParserTest >> setUp [
 
 	super setUp.
-	classDefinition := CDFluidClassDefinitionParser parse: self classDefinitionString.
+	classDefinition := CDTreeBasedFluidClassDefinitionParser parse: self classDefinitionString.
 ]
 
 { #category : #tests }

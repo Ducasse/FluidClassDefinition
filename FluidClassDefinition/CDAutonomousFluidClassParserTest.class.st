@@ -10,7 +10,7 @@ Class {
 { #category : #running }
 CDAutonomousFluidClassParserTest >> classDefinitionParserClass [
 
-	^ CDFluidClassDefinitionParser
+	^ CDTreeBasedFluidClassDefinitionParser
 ]
 
 { #category : #'test <' }
