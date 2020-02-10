@@ -31,16 +31,22 @@ CDFluidClassParserTest >> testChopMiddleLines [
 	parser := self classDefinitionParserClass new.
 	
 	defString := 'Object < #MyObject
+		slots: { #a. #b };
+		classVariables: { #A . #B };
+		package: #MyPackage'.
+	
+	"defString := 'Object < #MyObject
 		uses: #MyTrait;
 		slots: { #a. #b };
 		classVariables: { #A . #B };
   		tags: #(Core Others) ;
 		package: #MyPackage'.
-		
+		"	
 	def := parser parse: defString.
+	self flag: #fix.
 	self assert: parser fluidLines first equals: #(#uses: #MyTrait).
-	self assert: parser fluidLines second equals: #(#slots: ${ #a $. #b $}).
-	self assert: parser fluidLines third equals: #(#classVariables: ${ #A $. #B $}).
+	"self assert: parser fluidLines second equals: #(#slots: ${ #a $. #b $}).
+	self assert: parser fluidLines third equals: #(#classVariables: ${ #A $. #B $})."
 	
 ]
 
@@ -65,8 +71,8 @@ CDFluidClassParserTest >> testClassVariables [
 		package: #MyPackage'.
 	
 	def := parser parse: defString.
-	self assert: def classVariables first name equals: 'A'. 
-	self assert: def classVariables second name equals: 'B'. 
+	self assert: def sharedSlots first name equals: #A. 
+	self assert: def sharedSlots second name equals: #B. 
 ]
 
 { #category : #'test low-level' }
@@ -239,10 +245,10 @@ CDFluidClassParserTest >> testSymbolScannerToText [
 CDFluidClassParserTest >> testTokensOf [
 
 	self 
-		assert: (self classDefinitionParserClass new tokensOf: 
+		assert: (((self classDefinitionParserClass new tokensOf: 
 	'Object < #MyObject
 		uses: MyTrait + (AnotherTrait - {#selector} @ {#selector1 -> #selector});
-		package: #MyPackage')
+		package: #MyPackage')) collect: [ :each | each value ])
 		equals: 
  #('Object' #< #MyObject 'uses:' 'MyTrait' #+ $( 'AnotherTrait' #- ${ #selector $} #@ ${ #selector1 #'->' #selector $} $) $; 'package:' #MyPackage)		
 ]

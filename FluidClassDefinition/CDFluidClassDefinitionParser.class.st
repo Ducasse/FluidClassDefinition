@@ -36,7 +36,8 @@ Class {
 	#superclass : #CDAbstractClassDefinitionParser,
 	#instVars : [
 		'array',
-		'lines'
+		'lines',
+		'arrayTokens'
 	],
 	#category : #'FluidClassDefinition-NewApproach'
 }
@@ -57,7 +58,8 @@ CDFluidClassDefinitionParser >> basicError [
 
 { #category : #private }
 CDFluidClassDefinitionParser >> chopLinesFrom: start [ 
-	
+		
+	self flag: #fix. "we should not have two keywords."
 	lines := OrderedCollection new. 
 	lines := array allButFirst: start.
 	lines := lines splitOn: $;.
@@ -94,7 +96,7 @@ CDFluidClassDefinitionParser >> fluidLines [
 
 { #category : #visiting }
 CDFluidClassDefinitionParser >> fluidTree: aRBMessageNode [
-	self halt.
+
 	aRBMessageNode selectorParts
 		with: aRBMessageNode arguments
 		do: [ :selectorPart :argument |
@@ -134,7 +136,8 @@ CDFluidClassDefinitionParser >> isInstanceSideDefinition: aRBMessageNode [
 
 { #category : #public }
 CDFluidClassDefinitionParser >> parse: aString [
-	array := self tokensOf: aString.
+	arrayTokens := self tokensOf: aString.
+	array := arrayTokens collect: [ :each | each value ].
 	self validateMinimalDefinition.
 	self validateInstanceOrClassSide.
 	
@@ -153,18 +156,15 @@ CDFluidClassDefinitionParser >> parse: aString [
 { #category : #visiting }
 CDFluidClassDefinitionParser >> parseClassVariableNames: aNode [ 
 	"copied from CDClassDefinitionParser"
-	| slots slotNodes classVariablesString |
-	classVariablesString := aNode value.
-	slots := classVariablesString substrings.
-	slotNodes := slots
-		collect: [ :slotName | | start |
-			start := aNode start + (classVariablesString findString: slotName).
+	| slotNodes classVariablesString |
+	slotNodes := aNode statements
+		collect: [ :slot |
 			CDSharedVariableNode
 				node: aNode
-				name: slotName
+				name: slot value
 				slotClassName: 'ClassVariableSlot'
-				start: start
-				stop: start + slotName size ].
+				start: slot start
+				stop: slot stop ].
 	classDefinition sharedSlots: slotNodes
 ]
 
@@ -252,10 +252,10 @@ CDFluidClassDefinitionParser >> validateClassName: aString [
 
 { #category : #validating }
 CDFluidClassDefinitionParser >> validateInstanceOrClassSide [
-	array second = '<'
+	array second value = '<'
 		ifTrue: [ self beClassDefinition ]
-		ifFalse: [ array second = 'class'
-				ifTrue: [ array third = '<'
+		ifFalse: [ array second value = 'class'
+				ifTrue: [ array third value = '<'
 						ifTrue: [ self beMetaclassDefinition ]
 						ifFalse: [ self wrongClassMessageError ] ]
 				ifFalse: [ self wrongInstanceMessageError ] ]
@@ -273,6 +273,7 @@ CDFluidClassDefinitionParser >> validatePackage: aString [
  
 	| packageNode |
 	"we should validate that aString is not 333 or 3C or point"
+	self flag: #tofix.
 	packageNode := CDPackageNode new packageName: aString.
 	classDefinition
 		packageNameNode: packageNode astNode: packageNode
@@ -282,7 +283,7 @@ CDFluidClassDefinitionParser >> validatePackage: aString [
 { #category : #validating }
 CDFluidClassDefinitionParser >> validateSuperclass [
 
-	self validateSuperclass: array first
+	self validateSuperclass: array first value
 ]
 
 { #category : #validating }
