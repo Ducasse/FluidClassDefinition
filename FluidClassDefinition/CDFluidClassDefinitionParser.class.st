@@ -140,10 +140,11 @@ CDFluidClassDefinitionParser >> parse: aString [
 	array := arrayTokens collect: [ :each | each value ].
 	self validateMinimalDefinition.
 	self validateInstanceOrClassSide.
+	classDefinition tokens: arrayTokens.
 	
 	self isInstanceDefinition
 		ifTrue: [ self validateSuperclass.
-				self validateClassName: array third.
+				self setClassName: array third.
 				self validatePackage: array last.
 				self hasFluidPart 
 					ifTrue: 
@@ -244,7 +245,7 @@ CDFluidClassDefinitionParser >> validateClassName: aString [
 	(aString isSymbol and: [ self validClassName: aString ])
 		ifFalse: [  CDFluidClassParserError new 
 							messageText: 'A class name should start with an uppercase, followed by letter or digits';
-							parseContext: (CDParseErrorContext new actualTokens: {aString}; fullTokens: array);
+							parseContext: (CDValidationReport new actualTokens: {aString}; fullTokens: array);
 							signal ].
 	self setClassName: aString
 	
@@ -293,7 +294,7 @@ CDFluidClassDefinitionParser >> validateSuperclass: aString [
 	(aString isString and: [ self validClassName: aString ])
 		ifFalse: [  CDFluidClassParserError new 
 							messageText: 'A class name should start with an uppercase, followed by letter or digits';
-							parseContext: (CDParseErrorContext new actualTokens: {aString}; fullTokens: array);
+							parseContext: (CDValidationReport new actualTokens: {aString}; fullTokens: array);
 							signal ].
 	self setSuperclassName: aString
 	
@@ -304,7 +305,7 @@ CDFluidClassDefinitionParser >> wrongClassMessageError [
 
 	CDFluidClassParserError new 
 			messageText: 'A class is defined using the message < as in Object < #Point or Object class < #Point';
-			parseContext: (CDParseErrorContext new 
+			parseContext: (CDValidationReport new 
 										actualTokens: {array third}; fullTokens: array);
 										signal
 ]
@@ -314,7 +315,7 @@ CDFluidClassDefinitionParser >> wrongInstanceMessageError [
 
 	CDFluidClassParserError new 
 			messageText: 'A class is defined using the message < as in Object < #Point';
-			parseContext: (CDParseErrorContext new 
+			parseContext: (CDValidationReport new 
 										actualTokens: {array second}; fullTokens: array);
 										signal
 ]

@@ -103,28 +103,6 @@ CDFluidClassParserTest >> testExpressionStringFromWithParentheses [
  'self Object < #MyObject uses: MyTrait + ( AnotherTrait - { #selector } @ { #selector1 -> #selector } ) ; package: #MyPackage'
 ]
 
-{ #category : #'test simple definition validation' }
-CDFluidClassParserTest >> testGoodClassNameShouldNotRaiseError [
-	| string |
-	string := 'Object < #Foo2
-			package: ''Kernel-BasicObjects'''. 
-			
-	self shouldnt: [ self classDefinitionParserClass parse: string ] raise: CDFluidClassParserError.
-
-	
-]
-
-{ #category : #'test simple definition validation' }
-CDFluidClassParserTest >> testGoodClassNameShouldNotRaiseError2 [
-	| string |
-	string := 'Object < #Foo2Bar44
-			package: ''Kernel-BasicObjects'''. 
-			
-	self shouldnt: [ self classDefinitionParserClass parse: string ] raise: CDFluidClassParserError.
-
-	
-]
-
 { #category : #'test low-level' }
 CDFluidClassParserTest >> testHasFluidPart [
 
@@ -150,17 +128,6 @@ CDFluidClassParserTest >> testInstanceDefinitionIsInstanceSide [
 CDFluidClassParserTest >> testIntegerScannerToText [
 
 	self assert: 1 scannerToText equals: '1'
-]
-
-{ #category : #'test simple definition validation' }
-CDFluidClassParserTest >> testNotSymbolClassNameShouldRaiseError [
-	| string |
-	string := 'Object < Foo2
-			package: ''Kernel-BasicObjects'''. 
-			
-	self should: [ self classDefinitionParserClass parse: string ] raise: CDFluidClassParserError.
-
-	
 ]
 
 { #category : #'test  simple definition creation' }
@@ -335,122 +302,4 @@ CDFluidClassParserTest >> testValidClassName [
 		
 	#( '2Foo' 'foo' )
 		do: [ :each | self deny: (parser validClassName: each) ].
-]
-
-{ #category : #'test simple definition validation' }
-CDFluidClassParserTest >> testWrongClassNameShouldRaiseError [
-	| string |
-	string := 'Object < #point
-			package: ''Kernel-BasicObjects'''. 
-			
-	self should: [ self classDefinitionParserClass parse: string ] raise: CDFluidClassParserError.
-
-	[ self classDefinitionParserClass parse: string ] on: CDFluidClassParserError do: [ :ex | self assert: ex parseContext actualTokens equals: { #point } ]
-]
-
-{ #category : #'test simple definition validation' }
-CDFluidClassParserTest >> testWrongClassNameShouldRaiseError2 [
-	| string |
-	string := 'Object < point
-			package: ''Kernel-BasicObjects'''. 
-			
-	self should: [ self classDefinitionParserClass parse: string ] raise: CDFluidClassParserError.
-
-	[ self classDefinitionParserClass parse: string ] 
-		on: CDFluidClassParserError 
-		do: [ :ex | self assert: ex parseContext actualTokens equals: { 'point' } ]
-]
-
-{ #category : #'test simple definition validation' }
-CDFluidClassParserTest >> testWrongClassNameShouldRaiseError3 [
-	| string |
-	string := 'Object < 3Foo
-			package: ''Kernel-BasicObjects'''. 
-			
-	self should: [ self classDefinitionParserClass parse: string ] raise: CDFluidClassParserError.
-
-	[ self classDefinitionParserClass parse: string ] 
-		on: CDFluidClassParserError 
-		do: [ :ex | 
-		self assert: ex parseContext actualTokens equals: { 3 }.
-		self assert: ex parseContext fullTokens equals: #(#Object #< 3 #Foo #package: 'Kernel-BasicObjects')		 ]
-]
-
-{ #category : #'test simple definition validation' }
-CDFluidClassParserTest >> testWrongClassNameShouldRaiseError4 [
-	| string |
-	string := 'Object < true
-			package: ''Kernel-BasicObjects'''. 
-			
-	self should: [ self classDefinitionParserClass parse: string ] raise: CDFluidClassParserError.
-
-	[ self classDefinitionParserClass parse: string ] 
-		on: CDFluidClassParserError 
-		do: [ :ex | self assert: ex parseContext actualTokens equals: { true } ]
-]
-
-{ #category : #'test simple definition validation' }
-CDFluidClassParserTest >> testWrongMessageShouldRaiseError [
-	
-	| defString |
-	defString := 'Object --- #Point
-			package: ''Kernel-BasicObjects'''.
-			
-	self should: [ self classDefinitionParserClass parse: defString ] raise: CDFluidClassParserError.
-		
-	[ self classDefinitionParserClass parse: defString ] 
-			on: CDFluidClassParserError 
-			do: [ :ex | 
-					self assert: ex parseContext actualTokens equals: { '---' }.
-					self assert: ex parseContext fullTokens equals: #(#Object #'---' #Point #package: 'Kernel-BasicObjects')	]
-
-]
-
-{ #category : #'test simple definition validation' }
-CDFluidClassParserTest >> testWrongMessageShouldRaiseError2 [
-	
-	| defString |
-	defString := 'Object bla: #Point
-			package: ''Kernel-BasicObjects'''.
-			
-	self should: [ self classDefinitionParserClass parse: defString ] raise: CDFluidClassParserError.
-		
-	[ self classDefinitionParserClass parse: defString ] 
-			on: CDFluidClassParserError 
-			do: [ :ex | 
-					self assert: ex parseContext actualTokens equals: { 'bla:' }.
-					self assert: ex parseContext fullTokens equals: #(#Object #'bla:' #Point #package: 'Kernel-BasicObjects')	]
-
-]
-
-{ #category : #'test simple definition validation' }
-CDFluidClassParserTest >> testWrongSuperclassShouldRaiseError [
-
-	| defString |
-	defString := '33 < #Point
-			package: ''Kernel-BasicObjects'''.
-			
-	self should: [ self classDefinitionParserClass parse: defString ] raise: CDFluidClassParserError.
-
-	[ self classDefinitionParserClass parse: defString ] 
-		on: CDFluidClassParserError 
-		do: [ :ex | 
-				self assert: ex parseContext actualTokens equals: { 33 }.
-				self assert: ex parseContext fullTokens equals: #(33 #< #Point #package: 'Kernel-BasicObjects') ]
-]
-
-{ #category : #'test simple definition validation' }
-CDFluidClassParserTest >> testWrongSuperclassShouldRaiseError2 [
-
-	| defString |
-	defString := 'point < #Point
-			package: ''Kernel-BasicObjects'''.
-			
-	self should: [ self classDefinitionParserClass parse: defString ] raise: CDFluidClassParserError.
-
-	[ self classDefinitionParserClass parse: defString ] 
-		on: CDFluidClassParserError 
-		do: [ :ex | 
-				self assert: ex parseContext actualTokens equals: { 'point' }.
-				self assert: ex parseContext fullTokens equals: #(point #< #Point #package: 'Kernel-BasicObjects') ]
 ]

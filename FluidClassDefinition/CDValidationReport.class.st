@@ -1,48 +1,57 @@
 Class {
-	#name : #CDParseErrorContext,
+	#name : #CDValidationReport,
 	#superclass : #Object,
 	#instVars : [
 		'fullTokens',
 		'expectedTokens',
-		'actualTokens'
+		'actualTokens',
+		'message'
 	],
-	#category : #'FluidClassDefinition-Core'
+	#category : #'FluidClassDefinition-NewApproach'
 }
 
 { #category : #accessing }
-CDParseErrorContext >> actualTokens [
+CDValidationReport >> actualTokens [
 	^ actualTokens
 ]
 
 { #category : #accessing }
-CDParseErrorContext >> actualTokens: anObject [
+CDValidationReport >> actualTokens: anObject [
 	actualTokens := anObject
 ]
 
 { #category : #accessing }
-CDParseErrorContext >> expectedTokens [
+CDValidationReport >> expectedTokens [
 	^ expectedTokens
 ]
 
 { #category : #accessing }
-CDParseErrorContext >> expectedTokens: anObject [
+CDValidationReport >> expectedTokens: anObject [
 	expectedTokens := anObject
 ]
 
 { #category : #accessing }
-CDParseErrorContext >> fullTokens [
+CDValidationReport >> fullTokens [
 	^ fullTokens
 ]
 
 { #category : #accessing }
-CDParseErrorContext >> fullTokens: anObject [
+CDValidationReport >> fullTokens: anObject [
 	fullTokens := anObject
 ]
 
 { #category : #accessing }
-CDParseErrorContext >> printOn: aStream [
+CDValidationReport >> message: aString [
+
+	message := aString
+]
+
+{ #category : #accessing }
+CDValidationReport >> printOn: aStream [
 
 	aStream 
+		<< message
+		<< '. '
 		<< 'We got ' 
 		<< actualTokens asString 
 		<< ' instead of ' 
