@@ -25,18 +25,13 @@ CDFluidClassDefinitionValidator >> initialize [
 	errors := OrderedCollection new. 
 ]
 
-{ #category : #testing }
+{ #category : #utils }
 CDFluidClassDefinitionValidator >> isValidClassName: aString [ 
 
 	^ aString first isLetter and: [ aString first isUppercase and: [ aString isAllAlphaNumerics ]]
 ]
 
-{ #category : #testing }
-CDFluidClassDefinitionValidator >> treeIsValid: aCDClassDefinitionNode [ 
-	self shouldBeImplemented.
-]
-
-{ #category : #testing }
+{ #category : #utils }
 CDFluidClassDefinitionValidator >> validClassName: aString [ 
 
 	^ aString first isLetter and: [ aString first isUppercase and: [ aString isAllAlphaNumerics ]]
@@ -47,12 +42,14 @@ CDFluidClassDefinitionValidator >> validate: aCDClassDefinitionNode [
 	self validateClassName: aCDClassDefinitionNode.
 ]
 
-{ #category : #testing }
+{ #category : #operations }
 CDFluidClassDefinitionValidator >> validateClassName: aCDClassDefinitionNode [ 
+
 	| aString |
 	aString := aCDClassDefinitionNode className.
 	(aString isSymbol and: [ self validClassName: aString ])	
-		ifFalse: [ self addError: (CDValidationReport new 
+		ifFalse: [ self addError: 
+						(CDValidationReport new 
 							message: 'A class name should start with an uppercase, followed by letter or digits';
 							actualTokens: {aString})
 							].

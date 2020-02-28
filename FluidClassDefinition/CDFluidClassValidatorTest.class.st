@@ -44,7 +44,7 @@ CDFluidClassValidatorTest >> testNotSymbolClassNameShouldRaiseError [
 	classDef := self classDefinitionParserClass parse: string.
 	validator := self validator.
 	validator validate: classDef.
-	self assert: self validator errors isNotEmpty
+	self assert: validator errors isNotEmpty
 ]
 
 { #category : #'test simple definition validation' }
