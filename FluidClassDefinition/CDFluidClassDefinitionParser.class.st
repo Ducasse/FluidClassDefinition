@@ -69,6 +69,11 @@ CDFluidClassDefinitionParser >> chopLinesFrom: start [
 
 ]
 
+{ #category : #validating }
+CDFluidClassDefinitionParser >> classCreationSelectorString [
+	^ '<'
+]
+
 { #category : #private }
 CDFluidClassDefinitionParser >> expressionStringFrom: aLine [
 	"this is a bit silly to recreate source to parse it for real this time,
@@ -253,10 +258,10 @@ CDFluidClassDefinitionParser >> validateClassName: aString [
 
 { #category : #validating }
 CDFluidClassDefinitionParser >> validateInstanceOrClassSide [
-	array second value = '<'
+	array second value = self classCreationSelectorString
 		ifTrue: [ self beClassDefinition ]
 		ifFalse: [ array second value = 'class'
-				ifTrue: [ array third value = '<'
+				ifTrue: [ array third value = self classCreationSelectorString
 						ifTrue: [ self beMetaclassDefinition ]
 						ifFalse: [ self wrongClassMessageError ] ]
 				ifFalse: [ self wrongInstanceMessageError ] ]
@@ -302,7 +307,7 @@ CDFluidClassDefinitionParser >> validateSuperclass: aString [
 
 { #category : #error }
 CDFluidClassDefinitionParser >> wrongClassMessageError [
-
+	"I do not know how to not raise an error here!"
 	CDFluidClassParserError new 
 			messageText: 'A class is defined using the message < as in Object < #Point or Object class < #Point';
 			parseContext: (CDValidationReport new 
