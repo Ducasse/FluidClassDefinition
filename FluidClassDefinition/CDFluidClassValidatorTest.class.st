@@ -37,14 +37,27 @@ CDFluidClassValidatorTest >> testGoodClassNameShouldNotRaiseError2 [
 ]
 
 { #category : #'test simple definition validation' }
-CDFluidClassValidatorTest >> testNotSymbolClassNameShouldRaiseError [
+CDFluidClassValidatorTest >> testNotSymbolClassNameShouldRenameError [
 	| string classDef validator |
 	string := 'Object < Foo2
 			package: ''Kernel-BasicObjects'''. 
 	classDef := self classDefinitionParserClass parse: string.
 	validator := self validator.
 	validator validate: classDef.
-	self assert: validator errors isNotEmpty
+	self assert: validator errors isNotEmpty.
+	self assert: validator errors first actualTokens equals: #('Foo2')
+]
+
+{ #category : #'test simple definition validation' }
+CDFluidClassValidatorTest >> testNotUppercaseClassNameShouldReportError [
+	| string classDef validator |
+	string := 'Object < #point
+			package: ''Kernel-BasicObjects'''. 
+	classDef := self classDefinitionParserClass parse: string.
+	validator := self validator.
+	validator validate: classDef.
+	self assert: validator errors isNotEmpty.
+	self assert: validator errors first actualTokens equals: #(#point)
 ]
 
 { #category : #'test simple definition validation' }
