@@ -39,7 +39,9 @@ CDFluidClassDefinitionValidator >> validClassName: aString [
 
 { #category : #operations }
 CDFluidClassDefinitionValidator >> validate: aCDClassDefinitionNode [ 
+	self validateSuperclass: aCDClassDefinitionNode.
 	self validateClassName: aCDClassDefinitionNode.
+	self validateCreationMessage: aCDClassDefinitionNode.
 ]
 
 { #category : #operations }
@@ -54,4 +56,20 @@ CDFluidClassDefinitionValidator >> validateClassName: aCDClassDefinitionNode [
 							actualTokens: {aString})
 							].
 
+]
+
+{ #category : #operations }
+CDFluidClassDefinitionValidator >> validateCreationMessage: aCDClassDefinitionNode [
+
+	
+]
+
+{ #category : #operations }
+CDFluidClassDefinitionValidator >> validateSuperclass: aCDClassDefinitionNode [
+	"We do not check that the class exist because a class definition can be about classes elsewhere than in the image."
+	
+	| aString |
+	aString := aCDClassDefinitionNode superclassName.
+	(aString isString and: [ self validClassName: aString ])
+		ifFalse: [ self addError: (CDSuperclassReport new actualTokens: { aString }; fullTokens: aCDClassDefinitionNode tokens) ].
 ]

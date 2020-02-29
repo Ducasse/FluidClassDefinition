@@ -143,6 +143,7 @@ CDFluidClassDefinitionParser >> isInstanceSideDefinition: aRBMessageNode [
 CDFluidClassDefinitionParser >> parse: aString [
 	arrayTokens := self tokensOf: aString.
 	array := arrayTokens collect: [ :each | each value ].
+	
 	self validateMinimalDefinition.
 	self validateInstanceOrClassSide.
 	classDefinition tokens: arrayTokens.
@@ -295,12 +296,6 @@ CDFluidClassDefinitionParser >> validateSuperclass [
 { #category : #validating }
 CDFluidClassDefinitionParser >> validateSuperclass: aString [ 
 
-	"We do not check that the class exist because a class definition can be about classes elsewhere than in the image."
-	(aString isString and: [ self validClassName: aString ])
-		ifFalse: [  CDFluidClassParserError new 
-							messageText: 'A class name should start with an uppercase, followed by letter or digits';
-							parseContext: (CDValidationReport new actualTokens: {aString}; fullTokens: array);
-							signal ].
 	self setSuperclassName: aString
 	
 ]

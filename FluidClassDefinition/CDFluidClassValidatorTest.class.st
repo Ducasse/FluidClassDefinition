@@ -150,40 +150,21 @@ CDFluidClassValidatorTest >> testWrongSuperclass [
 	validator := self validator.
 	validator validate: classDef.
 	self assert: validator errors isNotEmpty.
-	self assert: validator errors first actualTokens equals: #(3).
+	self assert: validator errors first actualTokens equals: #(33).
 	self assert: classDef tokens equals: #(33 #< #Point #package: 'Kernel-BasicObjects')
 ]
 
 { #category : #'test simple definition validation' }
-CDFluidClassValidatorTest >> testWrongSuperclassShouldRaiseError [
-
-	| defString |
-	defString := '33 < #Point
-			package: ''Kernel-BasicObjects'''.
-			
-	self should: [ self classDefinitionParserClass parse: defString ] raise: CDFluidClassParserError.
-
-	[ self classDefinitionParserClass parse: defString ] 
-		on: CDFluidClassParserError 
-		do: [ :ex | 
-				self assert: ex parseContext actualTokens equals: { 33 }.
-				self assert: ex parseContext fullTokens equals: #(33 #< #Point #package: 'Kernel-BasicObjects') ]
-]
-
-{ #category : #'test simple definition validation' }
-CDFluidClassValidatorTest >> testWrongSuperclassShouldRaiseError2 [
-
-	| defString |
-	defString := 'point < #Point
-			package: ''Kernel-BasicObjects'''.
-			
-	self should: [ self classDefinitionParserClass parse: defString ] raise: CDFluidClassParserError.
-
-	[ self classDefinitionParserClass parse: defString ] 
-		on: CDFluidClassParserError 
-		do: [ :ex | 
-				self assert: ex parseContext actualTokens equals: { 'point' }.
-				self assert: ex parseContext fullTokens equals: #(point #< #Point #package: 'Kernel-BasicObjects') ]
+CDFluidClassValidatorTest >> testWrongSuperclass2 [
+	| string classDef validator |
+	string := 'object < #Point
+			package: ''Kernel-BasicObjects'''. 
+	classDef := self classDefinitionParserClass parse: string.
+	validator := self validator.
+	validator validate: classDef.
+	self assert: validator errors isNotEmpty.
+	self assert: validator errors first actualTokens equals: #(object).
+	self assert: classDef tokens equals: #('object' #< #Point #package: 'Kernel-BasicObjects')
 ]
 
 { #category : #utils }
