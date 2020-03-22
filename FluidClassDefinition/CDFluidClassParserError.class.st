@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'parseContext'
 	],
-	#category : #'FluidClassDefinition-NewApproach'
+	#category : #'FluidClassDefinition-Parser'
 }
 
 { #category : #accessing }

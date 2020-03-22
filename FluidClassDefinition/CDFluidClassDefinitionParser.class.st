@@ -39,7 +39,7 @@ Class {
 		'lines',
 		'arrayTokens'
 	],
-	#category : #'FluidClassDefinition-NewApproach'
+	#category : #'FluidClassDefinition-Parser'
 }
 
 { #category : #private }
@@ -69,7 +69,7 @@ CDFluidClassDefinitionParser >> chopLinesFrom: start [
 
 ]
 
-{ #category : #validating }
+{ #category : #'private properties' }
 CDFluidClassDefinitionParser >> classCreationSelectorString [
 	^ '<'
 ]
@@ -145,11 +145,11 @@ CDFluidClassDefinitionParser >> parse: aString [
 	array := arrayTokens collect: [ :each | each value ].
 	
 	self validateMinimalDefinition.
-	self validateInstanceOrClassSide.
+	self setInstanceOrClassSide.
 	classDefinition tokens: arrayTokens.
-	
 	self isInstanceDefinition
-		ifTrue: [ self setSuperclass.
+		ifTrue: [ 
+				self setSuperclass.
 				self setClassName: array third.
 				self setPackage: array last.
 				self hasFluidPart 
@@ -210,7 +210,26 @@ CDFluidClassDefinitionParser >> setClassName: aString [
 		
 ]
 
-{ #category : #error }
+{ #category : #building }
+CDFluidClassDefinitionParser >> setInstanceOrClassSide [
+	"array second value = self classCreationSelectorString
+		ifTrue: [ self beClassDefinition ]
+		ifFalse: [ array second value = 'class'
+				ifTrue: [ array third value = self classCreationSelectorString
+						ifTrue: [ self beMetaclassDefinition ]
+						ifFalse: [ self wrongClassMessageError ] ]
+				ifFalse: [ self wrongInstanceMessageError ] ]."
+			
+	"in case of error decide that we get an instance definition"
+	self beClassDefinition. 
+	array second value = self classCreationSelectorString
+		ifFalse: [ array second value = 'class'
+				ifTrue: [ array third value = self classCreationSelectorString
+						ifTrue: [ self beMetaclassDefinition ]]].
+	self flag: #shouldDiscusss
+]
+
+{ #category : #building }
 CDFluidClassDefinitionParser >> setPackage: aString [
  
 	| packageNode |
@@ -220,7 +239,7 @@ CDFluidClassDefinitionParser >> setPackage: aString [
 
 ]
 
-{ #category : #validating }
+{ #category : #building }
 CDFluidClassDefinitionParser >> setSuperclass [
 	self setSuperclassName: array first value
 
@@ -253,43 +272,6 @@ CDFluidClassDefinitionParser >> treatLines [
 	self fluidTree: expressionTree.	
 	]
 	"self parseTraitDefinitionFromNode: expressionTree arguments first "
-]
-
-{ #category : #testing }
-CDFluidClassDefinitionParser >> validClassName: aString [ 
-
-	^ aString first isLetter and: [ aString first isUppercase and: [ aString isAllAlphaNumerics ]]
-]
-
-{ #category : #validating }
-CDFluidClassDefinitionParser >> validateClassName: aString [ 
-	
-	(aString isSymbol and: [ self validClassName: aString ])
-		ifFalse: [  CDFluidClassParserError new 
-							messageText: 'A class name should start with an uppercase, followed by letter or digits';
-							parseContext: (CDValidationReport new actualTokens: {aString}; fullTokens: array);
-							signal ].
-	self setClassName: aString
-	
-]
-
-{ #category : #validating }
-CDFluidClassDefinitionParser >> validateInstanceOrClassSide [
-	"array second value = self classCreationSelectorString
-		ifTrue: [ self beClassDefinition ]
-		ifFalse: [ array second value = 'class'
-				ifTrue: [ array third value = self classCreationSelectorString
-						ifTrue: [ self beMetaclassDefinition ]
-						ifFalse: [ self wrongClassMessageError ] ]
-				ifFalse: [ self wrongInstanceMessageError ] ]."
-			
-	"in case of error decide that we get an instance definition"
-	self beClassDefinition. 
-	array second value = self classCreationSelectorString
-		ifFalse: [ array second value = 'class'
-				ifTrue: [ array third value = self classCreationSelectorString
-						ifTrue: [ self beMetaclassDefinition ]]].
-	self flag: #shouldDiscusss
 ]
 
 { #category : #error }

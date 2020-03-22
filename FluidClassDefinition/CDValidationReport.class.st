@@ -7,7 +7,7 @@ Class {
 		'actualTokens',
 		'message'
 	],
-	#category : #'FluidClassDefinition-NewApproach'
+	#category : #'FluidClassDefinition-Validator'
 }
 
 { #category : #accessing }

@@ -1,7 +1,7 @@
 Class {
 	#name : #CDFluidClassValidatorTest,
 	#superclass : #TestCase,
-	#category : #'FluidClassDefinition-NewApproach'
+	#category : #'FluidClassDefinition-Validator'
 }
 
 { #category : #'test simple definition validation' }
@@ -98,6 +98,19 @@ CDFluidClassValidatorTest >> testTrueAsClassNameShouldReportError [
 	validator validate: classDef.
 	self assert: validator errors isNotEmpty.
 	self assert: validator errors first actualTokens equals: #(true)
+]
+
+{ #category : #'test simple definition validation' }
+CDFluidClassValidatorTest >> testValidClassName [
+
+	| validator |
+	validator := self classDefinitionValidatorClass new.
+	
+	#( Foo Foo2 Foo3 FooBar2 Foo2Bar)
+		do: [ :each | self assert: (validator validClassName: each) ].
+		
+	#( '2Foo' 'foo' )
+		do: [ :each |  self deny: (validator validClassName: each) ].
 ]
 
 { #category : #'test simple definition validation' }

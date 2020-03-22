@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'errors'
 	],
-	#category : #'FluidClassDefinition-NewApproach'
+	#category : #'FluidClassDefinition-Validator'
 }
 
 { #category : #initialization }

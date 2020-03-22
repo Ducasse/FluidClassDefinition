@@ -9,7 +9,7 @@ Class {
 	#instVars : [
 		'classDefinition'
 	],
-	#category : #'FluidClassDefinition-NewApproach'
+	#category : #'FluidClassDefinition-Parser'
 }
 
 { #category : #running }
@@ -152,15 +152,15 @@ CDFluidClassParserTest >> testSimpleDefinitionClassNode [
 	
 	"The following cannot work 
 	
-	self assert: def classNameNode binding value equals: Point. 
+		self assert: def classNameNode binding value equals: Point. 
 	
 	because binding is defined as 
 	
-	existingBindingIfAbsent: aBlock
+		existingBindingIfAbsent: aBlock
 
-		| binding |
-		binding := originalNode methodNode compilationContext environment bindingOf: className.
-		^ binding ifNil: aBlock
+			| binding |
+			binding := originalNode methodNode compilationContext environment bindingOf: className.
+			^ binding ifNil: aBlock
 	
 	"
 
@@ -289,17 +289,4 @@ CDFluidClassParserTest >> testTraitSequence [
 	self assert: (def traitDefinition aliases keys collect: #name) equals: #(foo).
 	self assert: def traitDefinition subject name equals: #MyTrait. 	
 
-]
-
-{ #category : #'test low-level' }
-CDFluidClassParserTest >> testValidClassName [
-
-	| parser |
-	parser := self classDefinitionParserClass new.
-	
-	#( Foo Foo2 Foo3 FooBar2 Foo2Bar)
-		do: [ :each | self assert: (parser validClassName: each) ].
-		
-	#( '2Foo' 'foo' )
-		do: [ :each | self deny: (parser validClassName: each) ].
 ]
