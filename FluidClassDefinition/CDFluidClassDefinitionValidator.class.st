@@ -61,7 +61,10 @@ CDFluidClassDefinitionValidator >> validateClassName: aCDClassDefinitionNode [
 { #category : #operations }
 CDFluidClassDefinitionValidator >> validateCreationMessage: aCDClassDefinitionNode [
 
-	
+	| aSelector |
+	aSelector := aCDClassDefinitionNode selector.
+	( aSelector = #< )
+		ifFalse: [ self addError: (CDMainMessageReport new actualTokens: { aSelector }; fullTokens: aCDClassDefinitionNode tokens) ].
 ]
 
 { #category : #operations }

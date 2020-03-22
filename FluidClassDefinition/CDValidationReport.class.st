@@ -45,17 +45,3 @@ CDValidationReport >> message: aString [
 
 	message := aString
 ]
-
-{ #category : #accessing }
-CDValidationReport >> printOn: aStream [
-
-	aStream 
-		<< message
-		<< '. '
-		<< 'We got ' 
-		<< actualTokens asString 
-		<< ' instead of ' 
-		<< expectedTokens asString 
-		<< ' in '
-		<< fullTokens asString
-]

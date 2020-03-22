@@ -102,26 +102,28 @@ CDFluidClassValidatorTest >> testTrueAsClassNameShouldReportError [
 
 { #category : #'test simple definition validation' }
 CDFluidClassValidatorTest >> testWrongClassDefinitionMessage [
-	| string classDef validator |
+	| string classDef validator msgReport |
 	string := 'Object --- true
 			package: ''Kernel-BasicObjects'''. 
 	classDef := self classDefinitionParserClass parse: string.
 	validator := self validator.
 	validator validate: classDef.
 	self assert: validator errors isNotEmpty.
-	self assert: validator errors first actualTokens equals: #('---')
+	msgReport := (validator errors detect: [:each | each class = CDMainMessageReport ]).
+	self assert: msgReport actualTokens equals: #('---')
 ]
 
 { #category : #'test simple definition validation' }
 CDFluidClassValidatorTest >> testWrongClassDefinitionMessage2 [
-	| string classDef validator |
+	| string classDef validator msgReport |
 	string := 'Object bla: true
 			package: ''Kernel-BasicObjects'''. 
 	classDef := self classDefinitionParserClass parse: string.
 	validator := self validator.
 	validator validate: classDef.
 	self assert: validator errors isNotEmpty.
-	self assert: validator errors first actualTokens equals: #('bla:')
+	msgReport := (validator errors detect: [:each | each class = CDMainMessageReport ]).
+	self assert: msgReport actualTokens equals: #('bla:')
 ]
 
 { #category : #'test simple definition validation' }

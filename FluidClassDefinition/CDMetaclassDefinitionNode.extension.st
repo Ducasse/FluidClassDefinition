@@ -17,3 +17,9 @@ CDMetaclassDefinitionNode >> isInstanceSideDefinition [
 	
 	^ false
 ]
+
+{ #category : #'*FluidClassDefinition' }
+CDMetaclassDefinitionNode >> selector [ 
+
+	^ tokens at: 3
+]
