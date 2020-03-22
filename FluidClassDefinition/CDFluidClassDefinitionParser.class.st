@@ -149,9 +149,9 @@ CDFluidClassDefinitionParser >> parse: aString [
 	classDefinition tokens: arrayTokens.
 	
 	self isInstanceDefinition
-		ifTrue: [ self validateSuperclass.
+		ifTrue: [ self setSuperclass.
 				self setClassName: array third.
-				self validatePackage: array last.
+				self setPackage: array last.
 				self hasFluidPart 
 					ifTrue: 
 						[ self chopLinesFrom: 3.
@@ -208,6 +208,22 @@ CDFluidClassDefinitionParser >> setClassName: aString [
 
 	classDefinition className: aString astNode: (self classNameNodeClass new className: aString)
 		
+]
+
+{ #category : #error }
+CDFluidClassDefinitionParser >> setPackage: aString [
+ 
+	| packageNode |
+	packageNode := CDPackageNode new packageName: aString.
+	classDefinition
+		packageNameNode: packageNode astNode: packageNode
+
+]
+
+{ #category : #validating }
+CDFluidClassDefinitionParser >> setSuperclass [
+	self setSuperclassName: array first value
+
 ]
 
 { #category : #'private properties' }
@@ -281,22 +297,6 @@ CDFluidClassDefinitionParser >> validateMinimalDefinition [
 
 	array size < 3
 		ifTrue: [ self signal ]
-]
-
-{ #category : #error }
-CDFluidClassDefinitionParser >> validatePackage: aString [
- 
-	| packageNode |
-	packageNode := CDPackageNode new packageName: aString.
-	classDefinition
-		packageNameNode: packageNode astNode: packageNode
-
-]
-
-{ #category : #validating }
-CDFluidClassDefinitionParser >> validateSuperclass [
-	self setSuperclassName: array first value
-
 ]
 
 { #category : #error }
