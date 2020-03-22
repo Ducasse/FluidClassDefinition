@@ -45,6 +45,7 @@ CDFluidClassParserTest >> testChopMiddleLines [
 		package: #MyPackage'.
 		"	
 	def := parser parse: defString.
+	self halt.
 	self flag: #fix.
 	self assert: parser fluidLines first equals: #(#uses: #MyTrait).
 	"self assert: parser fluidLines second equals: #(#slots: ${ #a $. #b $}).

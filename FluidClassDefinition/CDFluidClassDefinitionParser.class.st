@@ -258,7 +258,7 @@ CDFluidClassDefinitionParser >> setSuperclassName: aString [
 
 { #category : #parsing }
 CDFluidClassDefinitionParser >> tokensOf: aString [
-	^ RBScanner scanTokens: aString
+	^ RBScanner scanTokenObjects: aString
 	"^ RBParser parseLiterals: aString"
 ]
 
