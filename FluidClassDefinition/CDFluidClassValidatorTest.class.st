@@ -175,7 +175,7 @@ CDFluidClassValidatorTest >> testWrongSuperclass2 [
 	validator validate: classDef.
 	self assert: validator errors isNotEmpty.
 	self assert: validator errors first actualTokens equals: #(object).
-	self assert: classDef tokens equals: #('object' #< #Point #package: 'Kernel-BasicObjects')
+	self assert: (classDef tokens collect: #value) equals: #('object' #< #Point #package: 'Kernel-BasicObjects')
 ]
 
 { #category : #utils }

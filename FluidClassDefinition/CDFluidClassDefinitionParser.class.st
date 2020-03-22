@@ -30,6 +30,13 @@ What is the advantage over
 CDManualFluidClassDefinitionParser class
 	instanceVariableNames: ''
 
+Implementation
+===============
+
+arrayTokens contains the RBTokens and array contains just the symbols.
+This way I do not have to change everything all the times.
+
+
 "
 Class {
 	#name : #CDFluidClassDefinitionParser,
@@ -94,7 +101,7 @@ CDFluidClassDefinitionParser >> expressionStringFrom: aLine [
 			separatedBy: [ s space ]]
 ]
 
-{ #category : #accessing }
+{ #category : #private }
 CDFluidClassDefinitionParser >> fluidLines [
 	^ lines
 ]
@@ -163,7 +170,7 @@ CDFluidClassDefinitionParser >> parse: aString [
 { #category : #visiting }
 CDFluidClassDefinitionParser >> parseClassVariableNames: aNode [ 
 	"copied from CDClassDefinitionParser"
-	| slotNodes classVariablesString |
+	| slotNodes |
 	slotNodes := aNode statements
 		collect: [ :slot |
 			CDSharedVariableNode
@@ -256,7 +263,7 @@ CDFluidClassDefinitionParser >> setSuperclassName: aString [
 		astNode: superclassNode
 ]
 
-{ #category : #parsing }
+{ #category : #private }
 CDFluidClassDefinitionParser >> tokensOf: aString [
 	^ RBScanner scanTokenObjects: aString
 	"^ RBParser parseLiterals: aString"

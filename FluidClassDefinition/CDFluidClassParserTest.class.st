@@ -1,8 +1,3 @@
-"
-This class contains tests but it is not linked to the other test superclass as it was done in CD (class Definition package).
-This class may be split later in different classes.
-
-"
 Class {
 	#name : #CDFluidClassParserTest,
 	#superclass : #TestCase,
