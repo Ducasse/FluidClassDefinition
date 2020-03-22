@@ -17,13 +17,3 @@ CDClassDefinitionNode >> isInstanceSideDefinition [
 	
 	^ true
 ]
-
-{ #category : #'*FluidClassDefinition' }
-CDClassDefinitionNode >> tokens [
-	^ tokens
-]
-
-{ #category : #'*FluidClassDefinition' }
-CDClassDefinitionNode >> tokens: aCollection [ 
-	tokens := aCollection
-]

@@ -259,13 +259,21 @@ CDFluidClassDefinitionParser >> validateClassName: aString [
 
 { #category : #validating }
 CDFluidClassDefinitionParser >> validateInstanceOrClassSide [
-	array second value = self classCreationSelectorString
+	"array second value = self classCreationSelectorString
 		ifTrue: [ self beClassDefinition ]
 		ifFalse: [ array second value = 'class'
 				ifTrue: [ array third value = self classCreationSelectorString
 						ifTrue: [ self beMetaclassDefinition ]
 						ifFalse: [ self wrongClassMessageError ] ]
-				ifFalse: [ self wrongInstanceMessageError ] ]
+				ifFalse: [ self wrongInstanceMessageError ] ]."
+			
+	"in case of error decide that we get an instance definition"
+	self beClassDefinition. 
+	array second value = self classCreationSelectorString
+		ifFalse: [ array second value = 'class'
+				ifTrue: [ array third value = self classCreationSelectorString
+						ifTrue: [ self beMetaclassDefinition ]]].
+	self flag: #shouldDiscusss
 ]
 
 { #category : #error }
