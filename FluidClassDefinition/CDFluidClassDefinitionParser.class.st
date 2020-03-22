@@ -287,8 +287,6 @@ CDFluidClassDefinitionParser >> validateMinimalDefinition [
 CDFluidClassDefinitionParser >> validatePackage: aString [
  
 	| packageNode |
-	"we should validate that aString is not 333 or 3C or point"
-	self flag: #tofix.
 	packageNode := CDPackageNode new packageName: aString.
 	classDefinition
 		packageNameNode: packageNode astNode: packageNode
@@ -297,15 +295,8 @@ CDFluidClassDefinitionParser >> validatePackage: aString [
 
 { #category : #validating }
 CDFluidClassDefinitionParser >> validateSuperclass [
+	self setSuperclassName: array first value
 
-	self validateSuperclass: array first value
-]
-
-{ #category : #validating }
-CDFluidClassDefinitionParser >> validateSuperclass: aString [ 
-
-	self setSuperclassName: aString
-	
 ]
 
 { #category : #error }

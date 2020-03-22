@@ -127,20 +127,16 @@ CDFluidClassValidatorTest >> testWrongClassDefinitionMessage2 [
 ]
 
 { #category : #'test simple definition validation' }
-CDFluidClassValidatorTest >> testWrongMessageShouldRaiseError2 [
-	
-	| defString |
-	defString := 'Object bla: #Point
-			package: ''Kernel-BasicObjects'''.
-			
-	self should: [ self classDefinitionParserClass parse: defString ] raise: CDFluidClassParserError.
-		
-	[ self classDefinitionParserClass parse: defString ] 
-			on: CDFluidClassParserError 
-			do: [ :ex | 
-					self assert: ex parseContext actualTokens equals: { 'bla:' }.
-					self assert: ex parseContext fullTokens equals: #(#Object #'bla:' #Point #package: 'Kernel-BasicObjects')	]
-
+CDFluidClassValidatorTest >> testWrongClassDefinitionMessage3 [
+	| string classDef validator msgReport |
+	string := 'Object bla: #Point
+			package: ''Kernel-BasicObjects'''. 
+	classDef := self classDefinitionParserClass parse: string.
+	validator := self validator.
+	validator validate: classDef.
+	self assert: validator errors isNotEmpty.
+	msgReport := (validator errors detect: [:each | each class = CDMainMessageReport ]).
+	self assert: msgReport actualTokens equals: #('bla:')
 ]
 
 { #category : #'test simple definition validation' }
