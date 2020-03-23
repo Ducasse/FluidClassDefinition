@@ -20,30 +20,40 @@ Class {
 { #category : #tests }
 CDRBParserTest >> testExample1 [
 
-	| tokens |
-	tokens := RBScanner scanTokenObjects: 'MyTrait + (AnotherTrait - {#selector} @ {#selector1 -> #selector})'.
-	RBParser new 
-	
+	| tokens parser node |
+	tokens := RBScanner scanTokenObjects: '1 + 2'.
+	tokens := tokens asOrderedCollection. 
+	tokens addLast: RBToken new.
+	parser := CDRBParser new initializeWithTokenStream: (ReadStream on: tokens).
+	node := parser parseExpressionFromTokens.	
+	self assert: node class = RBSequenceNode
 ]
 
 { #category : #tests }
 CDRBParserTest >> testExample2 [
 
-	| tokens parser |
+	| tokens parser node |
 	tokens := RBScanner scanTokenObjects: 'MyTrait + (AnotherTrait - {#selector} @ {#selector1 -> #selector})'.
+	tokens := tokens asOrderedCollection. 
+	tokens addLast: RBToken new.
 	parser := CDRBParser new 
 		initializeWithTokenStream: (ReadStream on: tokens).
-	parser parseExpressionFromTokens	
+	node := parser parseExpressionFromTokens.
+	self assert: node class equals: RBSequenceNode.
+
 	
 ]
 
 { #category : #tests }
 CDRBParserTest >> testExample3 [
 
-	| tokens parser |
+	| tokens parser node |
 	tokens := RBScanner scanTokenObjects: 'MyTrait + AnotherTrait'.
+	tokens := tokens asOrderedCollection. 
+	tokens addLast: RBToken new.
 	parser := CDRBParser new 
 		initializeWithTokenStream: (ReadStream on: tokens).
-	parser parseExpressionFromTokens	
+	node := parser parseExpressionFromTokens.
+	self assert: node class equals: RBSequenceNode.
 	
 ]
