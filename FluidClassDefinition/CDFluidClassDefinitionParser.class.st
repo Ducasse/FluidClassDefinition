@@ -4,8 +4,9 @@ The new syntax for class definition (just for the class and not for the methods)
 Superclass < #MyObject
 		uses: #MyTrait;
 		slots: { #a. #b };
-		classVariables: { #A. #B };
+		sharedVariables: { #A. #B };
   		tags: #(Core) ;
+		
 		package: #MyPackage
 
 The minimal class definition is the following one: 
@@ -35,6 +36,18 @@ Implementation
 
 arrayTokens contains the RBTokens and array contains just the symbols.
 This way I do not have to change everything all the times.
+
+
+To support 
+==========
+
+SharedPool subclass: #TextConstants
+	slots: {  }
+	sharedVariables: { #Ctrls. #Ctrlh. #CtrlR. #CtrlG. #DefaultMarginTabsArray. #Ctrlx. #Ctrlm. #Ctrlb. #BS. #CtrlL. #CtrlA. #CtrlW. #DefaultRule. #DefaultFontFamilySize. #Ctrlr. #Ctrlg. #CtrlQ. #EndOfRun. #CtrlF. #Italic. #Basal. #Ctrlw. #Ctrll. #Ctrla. #CtrlV. #CtrlK. #Bold. #Justified. #Ctrlf. #Ctrlq. #CtrlP. #CtrlE. #LeftM }
+	package: 'Text-Core-Base'
+
+
+
 
 
 "
@@ -105,15 +118,6 @@ CDFluidClassDefinitionParser >> fluidLines [
 	^ lines
 ]
 
-{ #category : #visiting }
-CDFluidClassDefinitionParser >> handleFluidTree: aRBMessageNode [
-
-	aRBMessageNode selectorParts
-		with: aRBMessageNode arguments
-		do: [ :selectorPart :argument |
-			self parseSelectorPart: selectorPart withArgument: argument ]
-]
-
 { #category : #private }
 CDFluidClassDefinitionParser >> hasFluidPart [
 	
@@ -161,7 +165,7 @@ CDFluidClassDefinitionParser >> parse: aString [
 	^ classDefinition
 ]
 
-{ #category : #visiting }
+{ #category : #'to be moved in superclass' }
 CDFluidClassDefinitionParser >> parseClassVariableNames: aNode [ 
 	"copied from CDClassDefinitionParser"
 	| slotNodes |
@@ -179,14 +183,16 @@ CDFluidClassDefinitionParser >> parseClassVariableNames: aNode [
 { #category : #visiting }
 CDFluidClassDefinitionParser >> parseSelectorPart: aString withArgument: aNode [ 
 	"copied and adapted from CDClassDefinitionParser"
-	aString =	 #instanceVariableNames:
-		ifTrue: [ ^ self parseInstanceVariablesFromNode: aNode ].
+	
+	
 	aString =	 #slots:
 		ifTrue: [ ^ self parseSlotsNodesFromArrayNode: aNode ].
-	aString =	 #classVariables:
+	aString =	 #sharedVariables:
 		ifTrue: [ ^ self parseClassVariableNames: aNode ].	
 	aString =	 #uses:
 		ifTrue: [ ^ self parseTraitDefinitionFromNode: aNode ].
+	aString = #tags:
+		ifTrue: [ ^ self parseTagsFromNode: aNode ].
 	aString =	 #poolDictionaries:
 		ifTrue: [ ^ self parsePoolDictionariesFromNode: aNode ].
 	CDUnrecognizedClassPart new
@@ -195,7 +201,71 @@ CDFluidClassDefinitionParser >> parseSelectorPart: aString withArgument: aNode [
 		signal
 ]
 
-{ #category : #visiting }
+{ #category : #'to be moved in superclass' }
+CDFluidClassDefinitionParser >> parseSlotNode: aRBMessageNode [
+	"what ugly method! Pay attention start and stop should be tested and probably adjusted!"
+
+	"when a slot is just 'inst'"
+	aRBMessageNode isLiteralNode
+		ifTrue: [ | slot |
+			slot := self slotNodeClass
+				node: aRBMessageNode
+				name: aRBMessageNode value
+				slotClassName: #InstanceVariableSlot
+				initializationMessage: self slotInitializationNodeClass new
+				start: aRBMessageNode start
+				stop: aRBMessageNode stop.
+			classDefinition addSlot: slot.
+			^ self ].
+	
+	aRBMessageNode selector = '=>' 
+		ifTrue: [  
+			aRBMessageNode arguments first isMessage
+		
+		ifFalse: [  
+			"when a slot is just 'inst' => InstanceVariableSlot."
+			aRBMessageNode arguments first isGlobal
+				ifTrue: [ | slot |
+					slot := self slotNodeClass
+						node: aRBMessageNode
+						name: aRBMessageNode receiver value
+						slotClassName: aRBMessageNode arguments first name
+						initializationMessage: self slotInitializationNodeClass new
+						start: aRBMessageNode start
+						stop: aRBMessageNode stop.
+						classDefinition addSlot: slot.
+				^ self ].
+				"we will have to do something for example if we have 
+				#x => 2"
+				]
+			ifTrue: [  
+				
+				"when a slot is 'inst' => (InstanceVariableSlot default: 5)."
+				| slot slotDefNode |
+				slotDefNode := aRBMessageNode.
+				slot := self slotNodeClass
+					node: aRBMessageNode
+					name: slotDefNode receiver value
+					slotClassName: slotDefNode arguments first receiver name
+					initializationMessage:
+						(self slotInitializationNodeClass
+							selectorParts: aRBMessageNode arguments first selectorParts
+							argumentParts: aRBMessageNode arguments first arguments)
+					start: aRBMessageNode start
+					stop: aRBMessageNode stop.
+				classDefinition addSlot: slot.
+				^ self ]
+		]
+]
+
+{ #category : #'to be moved in superclass' }
+CDFluidClassDefinitionParser >> parseSlotsNodesFromArrayNode: aRBArrayNode [
+	
+	aRBArrayNode statements do: [ :slotStatement |
+		self parseSlotNode: slotStatement ]
+]
+
+{ #category : #'to be moved in superclass' }
 CDFluidClassDefinitionParser >> parseTraitDefinitionFromNode: aNode [
 	"copied from CDClassDefinitionParser"
 	| traitComposition |
@@ -269,19 +339,19 @@ CDFluidClassDefinitionParser >> tokensOf: aString [
 	"^ RBParser parseLiterals: aString"
 ]
 
-{ #category : #public }
+{ #category : #private }
 CDFluidClassDefinitionParser >> treatLines [
 
+	| msg |
 	lines do: [ :each | 
 			| expressionTree tokens parser |
-			"hack for now"
-			tokens := RBScanner scanTokenObjects: each.
-			tokens := tokens asOrderedCollection. 
+			tokens := each asOrderedCollection.
 			tokens addLast: RBToken new.
+			msg := tokens first.
+			tokens := tokens allButFirst.
 			parser := CDRBParser new  initializeWithTokenStream: (ReadStream on: tokens).
 			expressionTree := parser parseExpressionFromTokens.
-			
-			self handleFluidTree: expressionTree.	
+			self parseSelectorPart: msg value withArgument:  expressionTree statements first.	
 	]
 	
 ]

@@ -60,10 +60,37 @@ CDFluidClassParserTest >> testClassVariables [
 	defString := 'Object < #MyObject
 		classVariables: { #A. #B };
 		package: #MyPackage'.
-	
 	def := parser parse: defString.
 	self assert: def sharedSlots first name equals: #A. 
 	self assert: def sharedSlots second name equals: #B. 
+]
+
+{ #category : #'test slots' }
+CDFluidClassParserTest >> testComplexSlots [
+
+	| parser defString def |
+	parser := self classDefinitionParserClass new.
+	
+	defString := 'Object < #MyObject
+		slots: { #inst => (InstanceVariableSlot default: 5) };
+		package: #MyPackage'.
+	def := parser parse: defString.
+	self assert: def slots first name equals: #inst. 
+	
+]
+
+{ #category : #'test slots' }
+CDFluidClassParserTest >> testEmptySlots [
+
+	| parser defString def |
+	parser := self classDefinitionParserClass new.
+	
+	defString := 'Object < #MyObject
+		slots: {};
+		package: #MyPackage'.
+	def := parser parse: defString.
+	self assert: def slots isEmpty
+
 ]
 
 { #category : #'test low-level to remove' }
@@ -175,6 +202,20 @@ CDFluidClassParserTest >> testSimpleDefinitionSuperclassName [
 	
 ]
 
+{ #category : #'test slots' }
+CDFluidClassParserTest >> testSimpleSlots [
+
+	| parser defString def |
+	parser := self classDefinitionParserClass new.
+	
+	defString := 'Object < #MyObject
+		slots: { #a. #b };
+		package: #MyPackage'.
+	def := parser parse: defString.
+	self assert: def slots first name equals: #a. 
+	self assert: def slots second name equals: #b. 
+]
+
 { #category : #'test low-level' }
 CDFluidClassParserTest >> testSplittingTokens [
 
@@ -215,8 +256,6 @@ CDFluidClassParserTest >> testTokensOf [
 CDFluidClassParserTest >> testTraitAlias [
 
 	| parser defString def |
-	self skip.
-	"I do not know why because I just use what is available."
 	parser := self classDefinitionParserClass new.
 	
 	defString := 'Object < #MyObject
@@ -225,8 +264,8 @@ CDFluidClassParserTest >> testTraitAlias [
 	
 	def := parser parse: defString.
 	self assert: def traitDefinition class equals: CDTraitAliasNode. 
-	self assert: (def traitDefinition aliases values collect: #name) equals: #(bar).
-	self assert: (def traitDefinition aliases keys collect: #name) equals: #(foo).
+	self assert: (def traitDefinition aliases values) equals: #(bar).
+	self assert: (def traitDefinition aliases keys) equals: #(foo).
 	self assert: def traitDefinition subject name equals: #MyTrait. 	
 
 ]
@@ -278,4 +317,18 @@ CDFluidClassParserTest >> testTraitSequence [
 	self assert: (def traitDefinition aliases keys collect: #name) equals: #(foo).
 	self assert: def traitDefinition subject name equals: #MyTrait. 	
 
+]
+
+{ #category : #'test slots' }
+CDFluidClassParserTest >> testTypedSlots [
+
+	| parser defString def |
+	parser := self classDefinitionParserClass new.
+	
+	defString := 'Object < #MyObject
+		slots: { #inst => InstanceVariableSlot };
+		package: #MyPackage'.
+	def := parser parse: defString.
+	self assert: def slots first name equals: #inst. 
+	
 ]
