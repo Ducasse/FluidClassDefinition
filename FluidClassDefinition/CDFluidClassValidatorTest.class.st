@@ -123,7 +123,7 @@ CDFluidClassValidatorTest >> testWrongClassDefinitionMessage [
 	validator validate: classDef.
 	self assert: validator errors isNotEmpty.
 	msgReport := (validator errors detect: [:each | each class = CDMainMessageReport ]).
-	self assert: msgReport actualTokens equals: #('---')
+	self assert: (msgReport actualTokens collect: [ :each | each value ]) equals: #('---')
 ]
 
 { #category : #'test simple definition validation' }
@@ -136,7 +136,7 @@ CDFluidClassValidatorTest >> testWrongClassDefinitionMessage2 [
 	validator validate: classDef.
 	self assert: validator errors isNotEmpty.
 	msgReport := (validator errors detect: [:each | each class = CDMainMessageReport ]).
-	self assert: msgReport actualTokens equals: #('bla:')
+	self assert: (msgReport actualTokens collect: [ :each | each value ]) equals: #('bla:')
 ]
 
 { #category : #'test simple definition validation' }
@@ -149,7 +149,7 @@ CDFluidClassValidatorTest >> testWrongClassDefinitionMessage3 [
 	validator validate: classDef.
 	self assert: validator errors isNotEmpty.
 	msgReport := (validator errors detect: [:each | each class = CDMainMessageReport ]).
-	self assert: msgReport actualTokens equals: #('bla:')
+	self assert: (msgReport actualTokens collect: [ :each | each value ]) equals: #('bla:')
 ]
 
 { #category : #'test simple definition validation' }
@@ -162,7 +162,7 @@ CDFluidClassValidatorTest >> testWrongSuperclass [
 	validator validate: classDef.
 	self assert: validator errors isNotEmpty.
 	self assert: validator errors first actualTokens equals: #(33).
-	self assert: classDef tokens equals: #(33 #< #Point #package: 'Kernel-BasicObjects')
+	self assert: (classDef tokens collect: [:each | each value]) equals: #(33 #< #Point #package: 'Kernel-BasicObjects')
 ]
 
 { #category : #'test simple definition validation' }
