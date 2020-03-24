@@ -172,9 +172,16 @@ CDFluidClassDefinitionParser >> parseClassVariableNames: aNode [
 ]
 
 { #category : #visiting }
+CDFluidClassDefinitionParser >> parseKindFrom: aString [ 
+
+	classDefinition classKind: aString
+]
+
+{ #category : #visiting }
 CDFluidClassDefinitionParser >> parseSelectorPart: aString withArgument: aNode [ 
 	"copied and adapted from CDClassDefinitionParser"
-	
+	(#(#variable #ephemeron #weak #variableByte normal) includes: aString)
+		ifTrue: [ ^ self parseKindFrom: aString ].
 	aString =	 #slots:
 		ifTrue: [ ^ self parseSlotsNodesFromArrayNode: aNode ].
 	aString =	 #sharedVariables:
