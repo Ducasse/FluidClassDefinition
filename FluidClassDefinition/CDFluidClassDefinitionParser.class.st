@@ -94,26 +94,6 @@ CDFluidClassDefinitionParser >> classCreationSelectorString [
 ]
 
 { #category : #private }
-CDFluidClassDefinitionParser >> expressionStringFrom: aLine [
-	"this is a bit silly to recreate source to parse it for real this time,
-	but I do not want to build the build by hand. And I want to reuse most of the logic of the CDCLassDefinitionParser. So first make work and we will see."
-	
-	"self new 
-		expressionStringFrom: 
-		((RBScanner on: 'classVariables: { #A . #B }' readStream)
-		contents collect: #value)
- #('self' 'classVariables:' ${ #A $. #B $})		
-		
-		
-	"
-	^ String streamContents: [ :s |
-		s << 'self '.   
-		aLine 
-			do: [ :each | s nextPutAll: (each scannerToText) ]
-			separatedBy: [ s space ]]
-]
-
-{ #category : #private }
 CDFluidClassDefinitionParser >> fluidLines [
 	^ lines
 ]

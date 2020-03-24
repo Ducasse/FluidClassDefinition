@@ -13,12 +13,6 @@ CDFluidClassParserTest >> classDefinitionParserClass [
 	^ CDFluidClassDefinitionParser
 ]
 
-{ #category : #'scanner to text tests' }
-CDFluidClassParserTest >> testCharacterScannerToText [
-
-	self assert: ${ scannerToText equals: '{'
-]
-
 { #category : #'test low-level' }
 CDFluidClassParserTest >> testChopMiddleLines [
 
@@ -58,7 +52,7 @@ CDFluidClassParserTest >> testClassVariables [
 	parser := self classDefinitionParserClass new.
 	
 	defString := 'Object < #MyObject
-		classVariables: { #A. #B };
+		sharedVariables: { #A. #B };
 		package: #MyPackage'.
 	def := parser parse: defString.
 	self assert: def sharedSlots first name equals: #A. 
@@ -95,32 +89,6 @@ CDFluidClassParserTest >> testEmptySlots [
 
 ]
 
-{ #category : #'test low-level to remove' }
-CDFluidClassParserTest >> testExpressionStringFrom [
-
-	self 
-		assert: (self classDefinitionParserClass new expressionStringFrom: #('uses:' 'MyTrait'))
-		equals: 'self uses: MyTrait'
-]
-
-{ #category : #'test low-level to remove' }
-CDFluidClassParserTest >> testExpressionStringFromClassVariables [
-
-	self 
-		assert: (self classDefinitionParserClass new expressionStringFrom: #('Object' #< #MyObject 'classVariables:' ${ #AnotherTrait $. #ClassVar $} $; 'package:' #MyPackage))
-		equals:
- 'self Object < #MyObject classVariables: { #AnotherTrait . #ClassVar } ; package: #MyPackage'
-]
-
-{ #category : #'test low-level to remove' }
-CDFluidClassParserTest >> testExpressionStringFromWithParentheses [
-
-	self 
-		assert: (self classDefinitionParserClass new expressionStringFrom: #('Object' #< #MyObject 'uses:' 'MyTrait' #+ $( 'AnotherTrait' #- ${ #selector $} #@ ${ #selector1 #'->' #selector $} $) $; 'package:' #MyPackage))
-		equals:
- 'self Object < #MyObject uses: MyTrait + ( AnotherTrait - { #selector } @ { #selector1 -> #selector } ) ; package: #MyPackage'
-]
-
 { #category : #'test low-level' }
 CDFluidClassParserTest >> testHasFluidPart [
 
@@ -140,12 +108,6 @@ CDFluidClassParserTest >> testInstanceDefinitionIsInstanceSide [
 			package: ''Kernel-BasicObjects'''.
 
 	self assert: def isInstanceSideDefinition 
-]
-
-{ #category : #'scanner to text tests' }
-CDFluidClassParserTest >> testIntegerScannerToText [
-
-	self assert: 1 scannerToText equals: '1'
 ]
 
 { #category : #'test  simple definition creation' }
@@ -228,18 +190,6 @@ CDFluidClassParserTest >> testSplittingTokens [
 		classVariables: {  };
 		package: ''FluidClassDefinition''') 
 		equals: #(#Object #< #CDAbstractClassDefinitionParser #slots: #'{' #classDefinition #'.' #subclass #'=>' #BooleanSlot #'}' #';' #classVariables: #'{' #'}' #';' #package: 'FluidClassDefinition')
-]
-
-{ #category : #'scanner to text tests' }
-CDFluidClassParserTest >> testStringScannerToText [
-
-	self assert: 'classVariables:' scannerToText equals: 'classVariables:'
-]
-
-{ #category : #'scanner to text tests' }
-CDFluidClassParserTest >> testSymbolScannerToText [
-
-	self assert: #A scannerToText equals: '#A'
 ]
 
 { #category : #'test low-level' }
