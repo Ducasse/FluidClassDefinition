@@ -224,7 +224,7 @@ CDFluidClassDefinitionParser >> parseSlotNode: aRBMessageNode [
 		
 		ifFalse: [  
 			"when a slot is just 'inst' => InstanceVariableSlot."
-			aRBMessageNode arguments first isGlobal
+			aRBMessageNode arguments first isVariable
 				ifTrue: [ | slot |
 					slot := self slotNodeClass
 						node: aRBMessageNode

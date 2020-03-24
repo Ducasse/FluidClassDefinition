@@ -68,15 +68,17 @@ CDFluidClassParserTest >> testClassVariables [
 { #category : #'test slots' }
 CDFluidClassParserTest >> testComplexSlots [
 
-	| parser defString def |
+	| parser defString def slot |
 	parser := self classDefinitionParserClass new.
 	
 	defString := 'Object < #MyObject
 		slots: { #inst => (InstanceVariableSlot default: 5) };
 		package: #MyPackage'.
 	def := parser parse: defString.
-	self assert: def slots first name equals: #inst. 
-	
+	slot := def slots first.
+	self assert: slot name equals: #inst. 
+	self assert: slot initializationMessage selectorParts equals: #(#default:).
+	self assert: (slot initializationMessage argumentParts collect: [:each | each value]) equals: #(5) asOrderedCollection
 ]
 
 { #category : #'test slots' }
