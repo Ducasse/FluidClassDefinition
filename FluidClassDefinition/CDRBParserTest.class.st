@@ -57,3 +57,40 @@ CDRBParserTest >> testExample3 [
 	self assert: node class equals: RBSequenceNode.
 
 ]
+
+{ #category : #tests }
+CDRBParserTest >> testExampleTageProblem [
+
+	| tokens parser node |
+	tokens := RBScanner scanTokenObjects: ' #(Core)'.
+	tokens := tokens asOrderedCollection. 
+	tokens addLast: RBToken new.
+	parser := CDRBParser new initializeWithTokenStream: (ReadStream on: tokens).
+	node := parser parseExpressionFromTokens.	
+	self assert: node class = RBSequenceNode.
+	self assert: node statements first value equals: #(#Core)
+]
+
+{ #category : #tests }
+CDRBParserTest >> testExampleTageProblem2 [
+
+	| tokens parser node |
+	tokens := RBScanner scanTokenObjects: ' #(''Core'')'.
+	tokens := tokens asOrderedCollection. 
+	tokens addLast: RBToken new.
+	parser := CDRBParser new initializeWithTokenStream: (ReadStream on: tokens).
+	node := parser parseExpressionFromTokens.	
+	self assert: node class = RBSequenceNode
+]
+
+{ #category : #tests }
+CDRBParserTest >> testExampleTageProblem3 [
+
+	| tokens parser node |
+	tokens := RBScanner scanTokenObjects: ' #(#Core)'.
+	tokens := tokens asOrderedCollection. 
+	tokens addLast: RBToken new.
+	parser := CDRBParser new initializeWithTokenStream: (ReadStream on: tokens).
+	node := parser parseExpressionFromTokens.	
+	self assert: node class = RBSequenceNode
+]

@@ -192,6 +192,18 @@ CDFluidClassParserTest >> testSplittingTokens [
 		equals: #(#Object #< #CDAbstractClassDefinitionParser #slots: #'{' #classDefinition #'.' #subclass #'=>' #BooleanSlot #'}' #';' #classVariables: #'{' #'}' #';' #package: 'FluidClassDefinition')
 ]
 
+{ #category : #'test class variables' }
+CDFluidClassParserTest >> testTag [
+
+	| parser defString def |
+	parser := self classDefinitionParserClass new.
+	defString := 'Object < #MyObject
+		tags: { ''tag1'' . ''tag2'' };
+		package: #MyPackage'.
+	def := parser parse: defString.
+	self assert: (def tags statements collect: [:each | each value]) equals: #('tag1' 'tag2') asOrderedCollection
+]
+
 { #category : #'test low-level' }
 CDFluidClassParserTest >> testTokensOf [
 

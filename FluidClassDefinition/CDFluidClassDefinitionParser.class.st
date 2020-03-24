@@ -5,9 +5,10 @@ Superclass < #MyObject
 		uses: #MyTrait;
 		slots: { #a. #b };
 		sharedVariables: { #A. #B };
-  		tags: #(Core) ;
-		
-		package: #MyPackage
+  		tags: {'tag2' . 'Core'} ;
+		variable; 
+		sharedPools: { #TextConstants } ;
+ 		package: #MyPackage
 
 The minimal class definition is the following one: 
 
@@ -31,24 +32,34 @@ What is the advantage over
 CDManualFluidClassDefinitionParser class
 	instanceVariableNames: ''
 
+
+
 Implementation
 ===============
 
 arrayTokens contains the RBTokens and array contains just the symbols.
 This way I do not have to change everything all the times.
+Should remove array
+
+Open question/todo: 
+===================
 
 
-To support 
-==========
+	- how to handle errors 
 
-SharedPool subclass: #TextConstants
-	slots: {  }
-	sharedVariables: { #Ctrls. #Ctrlh. #CtrlR. #CtrlG. #DefaultMarginTabsArray. #Ctrlx. #Ctrlm. #Ctrlb. #BS. #CtrlL. #CtrlA. #CtrlW. #DefaultRule. #DefaultFontFamilySize. #Ctrlr. #Ctrlg. #CtrlQ. #EndOfRun. #CtrlF. #Italic. #Basal. #Ctrlw. #Ctrll. #Ctrla. #CtrlV. #CtrlK. #Bold. #Justified. #Ctrlf. #Ctrlq. #CtrlP. #CtrlE. #LeftM }
-	package: 'Text-Core-Base'
-
-
-
-
+	- how do handle variableSubclass:, weakSubclass:, ephemeronSubclass: 
+			I would favor
+			
+			 	Superclass < #MyObject
+					slots: { #a. #b };
+					variable; 
+					
+			This way we do not have to manage possibly wrong arguments. 
+	- should make sure that the node of the tree can be used with findBestNode that....
+	
+			
+	- make sure that the corresponding messages do exist in the respective class 
+	so that we can have both a declarative and execution version. 
 
 "
 Class {
@@ -145,7 +156,7 @@ CDFluidClassDefinitionParser >> parse: aString [
 	^ classDefinition
 ]
 
-{ #category : #'to be moved in superclass' }
+{ #category : #operations }
 CDFluidClassDefinitionParser >> parseClassVariableNames: aNode [ 
 	"copied from CDClassDefinitionParser"
 	| slotNodes |
@@ -164,7 +175,6 @@ CDFluidClassDefinitionParser >> parseClassVariableNames: aNode [
 CDFluidClassDefinitionParser >> parseSelectorPart: aString withArgument: aNode [ 
 	"copied and adapted from CDClassDefinitionParser"
 	
-	
 	aString =	 #slots:
 		ifTrue: [ ^ self parseSlotsNodesFromArrayNode: aNode ].
 	aString =	 #sharedVariables:
@@ -173,15 +183,25 @@ CDFluidClassDefinitionParser >> parseSelectorPart: aString withArgument: aNode [
 		ifTrue: [ ^ self parseTraitDefinitionFromNode: aNode ].
 	aString = #tags:
 		ifTrue: [ ^ self parseTagsFromNode: aNode ].
-	aString =	 #poolDictionaries:
-		ifTrue: [ ^ self parsePoolDictionariesFromNode: aNode ].
+	aString =	 #sharedPools:
+		ifTrue: [ ^ self parseSharedPoolsFromNode: aNode ].
 	CDUnrecognizedClassPart new
 		classDefinition: self; 
 		unrecognizedPart: aString;
 		signal
 ]
 
-{ #category : #'to be moved in superclass' }
+{ #category : #operations }
+CDFluidClassDefinitionParser >> parseSharedPoolsFromNode: aNode [ 
+
+	'Superclass < #MyObject		
+		...
+		sharedPools: { #TextConstants } ;
+ 		...	
+		package: #MyPackage'
+]
+
+{ #category : #operations }
 CDFluidClassDefinitionParser >> parseSlotNode: aRBMessageNode [
 	"what ugly method! Pay attention start and stop should be tested and probably adjusted!"
 
@@ -238,14 +258,20 @@ CDFluidClassDefinitionParser >> parseSlotNode: aRBMessageNode [
 		]
 ]
 
-{ #category : #'to be moved in superclass' }
+{ #category : #operations }
 CDFluidClassDefinitionParser >> parseSlotsNodesFromArrayNode: aRBArrayNode [
 	
 	aRBArrayNode statements do: [ :slotStatement |
 		self parseSlotNode: slotStatement ]
 ]
 
-{ #category : #'to be moved in superclass' }
+{ #category : #operations }
+CDFluidClassDefinitionParser >> parseTagsFromNode: aRBArrayNode [ 
+	
+	classDefinition tags: aRBArrayNode
+]
+
+{ #category : #operations }
 CDFluidClassDefinitionParser >> parseTraitDefinitionFromNode: aNode [
 	"copied from CDClassDefinitionParser"
 	| traitComposition |
