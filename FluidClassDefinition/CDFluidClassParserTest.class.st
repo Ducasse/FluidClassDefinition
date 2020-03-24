@@ -283,7 +283,7 @@ CDFluidClassParserTest >> testTraitEmpty [
 		package: #MyPackage'.
 		
 	def := parser parse: defString.
-	self assert: def traitDefinition class equals: CDTraitCompositionSequenceNode
+	self assert: def traitDefinition equals: nil
 ]
 
 { #category : #'test traits' }
@@ -305,19 +305,16 @@ CDFluidClassParserTest >> testTraitSequence [
 
 	| parser defString def |
 	parser := self classDefinitionParserClass new.
-	self skip.
-	self flag: #here. 
-	"do not get why not working while invoking the same and in the ClassDefinitionParser"
 	defString := 'Object < #MyObject
 		uses: MyTrait + (AnotherTrait - {#selector} @ {#selector1 -> #selector});
 		package: #MyPackage'.
 
-	self halt.
 	def := parser parse: defString.
-	self assert: def traitDefinition class equals: CDTraitAliasNode. 
-	self assert: (def traitDefinition aliases values collect: #name) equals: #(bar).
-	self assert: (def traitDefinition aliases keys collect: #name) equals: #(foo).
-	self assert: def traitDefinition subject name equals: #MyTrait. 	
+	self assert: def traitDefinition class equals: CDTraitCompositionSequenceNode. 
+	self assert: def traitDefinition sequence size equals: 2.
+	self assert: (def traitDefinition sequence second aliases values) equals: #(selector).
+	self assert: (def traitDefinition sequence second aliases keys) equals: #(selector1).
+	self assert: def traitDefinition sequence first name equals: #MyTrait. 	
 
 ]
 

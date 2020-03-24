@@ -269,6 +269,7 @@ CDFluidClassDefinitionParser >> parseSlotsNodesFromArrayNode: aRBArrayNode [
 CDFluidClassDefinitionParser >> parseTraitDefinitionFromNode: aNode [
 	"copied from CDClassDefinitionParser"
 	| traitComposition |
+	(aNode isKindOf: RBArrayNode) and: [aNode isEmpty ifTrue: [ ^self ]].
 	traitComposition := CDTraitCompositionBuilder new buildFrom: aNode.	
 	classDefinition traitDefinition: traitComposition.
 ]
