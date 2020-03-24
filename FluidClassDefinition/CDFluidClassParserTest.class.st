@@ -22,30 +22,23 @@ CDFluidClassParserTest >> testCharacterScannerToText [
 { #category : #'test low-level' }
 CDFluidClassParserTest >> testChopMiddleLines [
 
-	| parser defString def |
-	self skip.
-	"to restart working from here."
+	| parser defString |
 	parser := self classDefinitionParserClass new.
-	
 	defString := 'Object < #MyObject
-		slots: { #a. #b };
-		classVariables: { #A . #B };
-		package: #MyPackage'.
-	
-	"defString := 'Object < #MyObject
 		uses: #MyTrait;
 		slots: { #a. #b };
 		classVariables: { #A . #B };
   		tags: #(Core Others) ;
 		package: #MyPackage'.
-		"	
-	def := parser parse: defString.
-	self halt.
-	self flag: #fix.
-	self assert: parser fluidLines first equals: #(#uses: #MyTrait).
-	"self assert: parser fluidLines second equals: #(#slots: ${ #a $. #b $}).
-	self assert: parser fluidLines third equals: #(#classVariables: ${ #A $. #B $})."
 	
+	parser setString: defString.
+	parser chopLinesFrom: 3.
+	
+	self assert: (parser fluidLines first collect: [ :each | each value ]) equals: #(#uses: #MyTrait).
+	self assert: (parser fluidLines second collect: [ :each | each value ]) equals: #(#slots: ${ a $. b $}).
+	self assert: (parser fluidLines third collect: [ :each | each value ]) equals: #(#classVariables: ${ A $. B $}).
+	self assert: (parser fluidLines fourth collect: [ :each | each value ]) equals: #(#tags: '#(' #Core #Others $)).
+
 ]
 
 { #category : #'test  simple definition creation' }
@@ -73,7 +66,7 @@ CDFluidClassParserTest >> testClassVariables [
 	self assert: def sharedSlots second name equals: #B. 
 ]
 
-{ #category : #'test low-level' }
+{ #category : #'test low-level to remove' }
 CDFluidClassParserTest >> testExpressionStringFrom [
 
 	self 
@@ -81,7 +74,7 @@ CDFluidClassParserTest >> testExpressionStringFrom [
 		equals: 'self uses: MyTrait'
 ]
 
-{ #category : #'test low-level' }
+{ #category : #'test low-level to remove' }
 CDFluidClassParserTest >> testExpressionStringFromClassVariables [
 
 	self 
@@ -90,7 +83,7 @@ CDFluidClassParserTest >> testExpressionStringFromClassVariables [
  'self Object < #MyObject classVariables: { #AnotherTrait . #ClassVar } ; package: #MyPackage'
 ]
 
-{ #category : #'test low-level' }
+{ #category : #'test low-level to remove' }
 CDFluidClassParserTest >> testExpressionStringFromWithParentheses [
 
 	self 

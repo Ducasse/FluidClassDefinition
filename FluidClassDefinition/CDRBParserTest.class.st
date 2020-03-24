@@ -55,5 +55,5 @@ CDRBParserTest >> testExample3 [
 		initializeWithTokenStream: (ReadStream on: tokens).
 	node := parser parseExpressionFromTokens.
 	self assert: node class equals: RBSequenceNode.
-	
+
 ]

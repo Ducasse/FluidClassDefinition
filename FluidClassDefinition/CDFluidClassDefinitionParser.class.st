@@ -65,11 +65,10 @@ CDFluidClassDefinitionParser >> basicError [
 
 { #category : #private }
 CDFluidClassDefinitionParser >> chopLinesFrom: start [ 
-		
-	self flag: #fix. "we should not have two keywords."
+	
 	lines := OrderedCollection new. 
-	lines := array allButFirst: start.
-	lines := lines splitOn: $;.
+	lines := arrayTokens allButFirst: start.
+	lines := lines splitOn: [ :each | each value = $;].
 	lines := lines allButLast.
 
 	
@@ -107,7 +106,7 @@ CDFluidClassDefinitionParser >> fluidLines [
 ]
 
 { #category : #visiting }
-CDFluidClassDefinitionParser >> fluidTree: aRBMessageNode [
+CDFluidClassDefinitionParser >> handleFluidTree: aRBMessageNode [
 
 	aRBMessageNode selectorParts
 		with: aRBMessageNode arguments
@@ -148,22 +147,17 @@ CDFluidClassDefinitionParser >> isInstanceSideDefinition: aRBMessageNode [
 
 { #category : #public }
 CDFluidClassDefinitionParser >> parse: aString [
-	arrayTokens := self tokensOf: aString.
-	array := arrayTokens collect: [ :each | each value ].
-	
+	self setString: aString.
 	self validateMinimalDefinition.
 	self setInstanceOrClassSide.
 	classDefinition tokens: arrayTokens.
 	self isInstanceDefinition
-		ifTrue: [ 
-				self setSuperclass.
-				self setClassName: array third.
-				self setPackage: array last.
-				self hasFluidPart 
-					ifTrue: 
-						[ self chopLinesFrom: 3.
-						self treatLines ].
-				].
+		ifTrue: [ self setSuperclass.
+			self setClassName: array third.
+			self setPackage: array last.
+			self hasFluidPart
+				ifTrue: [ self chopLinesFrom: 3.
+					self treatLines ] ].
 	^ classDefinition
 ]
 
@@ -246,6 +240,12 @@ CDFluidClassDefinitionParser >> setPackage: aString [
 
 ]
 
+{ #category : #private }
+CDFluidClassDefinitionParser >> setString: aString [
+	arrayTokens := self tokensOf: aString.
+	array := arrayTokens collect: [ :each | each value ]
+]
+
 { #category : #building }
 CDFluidClassDefinitionParser >> setSuperclass [
 	self setSuperclassName: array first value
@@ -273,12 +273,17 @@ CDFluidClassDefinitionParser >> tokensOf: aString [
 CDFluidClassDefinitionParser >> treatLines [
 
 	lines do: [ :each | 
-			| expressionTree |
-			expressionTree := RBParser parseExpression: (self expressionStringFrom: each).
-			expressionTree doSemanticAnalysis.
-	self fluidTree: expressionTree.	
+			| expressionTree tokens parser |
+			"hack for now"
+			tokens := RBScanner scanTokenObjects: each.
+			tokens := tokens asOrderedCollection. 
+			tokens addLast: RBToken new.
+			parser := CDRBParser new  initializeWithTokenStream: (ReadStream on: tokens).
+			expressionTree := parser parseExpressionFromTokens.
+			
+			self handleFluidTree: expressionTree.	
 	]
-	"self parseTraitDefinitionFromNode: expressionTree arguments first "
+	
 ]
 
 { #category : #error }
