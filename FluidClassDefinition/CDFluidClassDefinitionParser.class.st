@@ -171,16 +171,17 @@ CDFluidClassDefinitionParser >> parseClassVariableNames: aNode [
 	classDefinition sharedSlots: slotNodes
 ]
 
-{ #category : #visiting }
+{ #category : #operations }
 CDFluidClassDefinitionParser >> parseKindFrom: aString [ 
 
 	classDefinition classKind: aString
 ]
 
-{ #category : #visiting }
+{ #category : #operations }
 CDFluidClassDefinitionParser >> parseSelectorPart: aString withArgument: aNode [ 
 	"copied and adapted from CDClassDefinitionParser"
-	(#(#variable #ephemeron #weak #variableByte normal) includes: aString)
+	
+	(#(#variable #ephemeron #weak #variableByte #normal #variableWord) includes: aString)
 		ifTrue: [ ^ self parseKindFrom: aString ].
 	aString =	 #slots:
 		ifTrue: [ ^ self parseSlotsNodesFromArrayNode: aNode ].
@@ -359,13 +360,19 @@ CDFluidClassDefinitionParser >> treatLines [
 	| msg |
 	lines do: [ :each | 
 			| expressionTree tokens parser |
-			tokens := each asOrderedCollection.
-			tokens addLast: RBToken new.
-			msg := tokens first.
-			tokens := tokens allButFirst.
-			parser := CDRBParser new  initializeWithTokenStream: (ReadStream on: tokens).
-			expressionTree := parser parseExpressionFromTokens.
-			self parseSelectorPart: msg value withArgument:  expressionTree statements first.	
+			each size = 1 
+				ifTrue: [ 
+					"we have a unary message"
+					self parseSelectorPart: each first value withArgument: #()]
+				ifFalse: [  
+					tokens := each asOrderedCollection.
+					tokens addLast: RBToken new.
+					msg := tokens first.
+					tokens := tokens allButFirst.
+					parser := CDRBParser new  initializeWithTokenStream: (ReadStream on: tokens).
+					expressionTree := parser parseExpressionFromTokens.
+					self parseSelectorPart: msg value withArgument:  expressionTree statements first.	
+		]
 	]
 	
 ]

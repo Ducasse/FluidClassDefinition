@@ -1,6 +1,12 @@
 Extension { #name : #CDBehaviorDefinitionNode }
 
 { #category : #'*FluidClassDefinition' }
+CDBehaviorDefinitionNode >> classKind [
+
+	^ classKind
+]
+
+{ #category : #'*FluidClassDefinition' }
 CDBehaviorDefinitionNode >> tokens [
 	^ tokens
 ]

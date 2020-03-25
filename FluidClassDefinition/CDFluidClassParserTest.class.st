@@ -89,6 +89,19 @@ CDFluidClassParserTest >> testEmptySlots [
 
 ]
 
+{ #category : #'test kinds' }
+CDFluidClassParserTest >> testEphemeronSubclass [
+
+	| parser defString def |
+	parser := self classDefinitionParserClass new.
+	
+	defString := 'Object < #MyObject
+		ephemeron;
+		package: #MyPackage'.
+	def := parser parse: defString.
+	self assert: def classKind equals: #ephemeron
+]
+
 { #category : #'test low-level' }
 CDFluidClassParserTest >> testHasFluidPart [
 
@@ -108,6 +121,19 @@ CDFluidClassParserTest >> testInstanceDefinitionIsInstanceSide [
 			package: ''Kernel-BasicObjects'''.
 
 	self assert: def isInstanceSideDefinition 
+]
+
+{ #category : #'test kinds' }
+CDFluidClassParserTest >> testNormalSubclass [
+
+	| parser defString def |
+	parser := self classDefinitionParserClass new.
+	
+	defString := 'Object < #MyObject
+		normal;
+		package: #MyPackage'.
+	def := parser parse: defString.
+	self assert: def classKind equals: #normal
 ]
 
 { #category : #'test  simple definition creation' }
@@ -292,4 +318,56 @@ CDFluidClassParserTest >> testTypedSlots [
 	def := parser parse: defString.
 	self assert: def slots first name equals: #inst. 
 	
+]
+
+{ #category : #'test kinds' }
+CDFluidClassParserTest >> testVariableByteSubclass [
+
+	| parser defString def |
+	parser := self classDefinitionParserClass new.
+	
+	defString := 'Object < #MyObject
+		variableByte;
+		package: #MyPackage'.
+	def := parser parse: defString.
+	self assert: def classKind equals: #variableByte
+]
+
+{ #category : #'test kinds' }
+CDFluidClassParserTest >> testVariableSubclass [
+
+	| parser defString def |
+	parser := self classDefinitionParserClass new.
+	
+	defString := 'Object < #MyObject
+		variable;
+		package: #MyPackage'.
+	def := parser parse: defString.
+	self assert: def classKind equals: #variable
+]
+
+{ #category : #'test kinds' }
+CDFluidClassParserTest >> testVariableWordSubclass [
+
+	| parser defString def |
+	parser := self classDefinitionParserClass new.
+	
+	defString := 'Object < #MyObject
+		variableWord;
+		package: #MyPackage'.
+	def := parser parse: defString.
+	self assert: def classKind equals: #variableWord
+]
+
+{ #category : #'test kinds' }
+CDFluidClassParserTest >> testWeakSubclass [
+
+	| parser defString def |
+	parser := self classDefinitionParserClass new.
+	
+	defString := 'Object < #MyObject
+		weak;
+		package: #MyPackage'.
+	def := parser parse: defString.
+	self assert: def classKind equals: #weak
 ]
