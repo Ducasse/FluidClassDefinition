@@ -202,6 +202,7 @@ CDFluidClassParserTest >> testSimpleSlots [
 		slots: { #a. #b };
 		package: #MyPackage'.
 	def := parser parse: defString.
+	self assert: def slots size equals: 2.
 	self assert: def slots first name equals: #a. 
 	self assert: def slots second name equals: #b. 
 ]
@@ -316,6 +317,7 @@ CDFluidClassParserTest >> testTypedSlots [
 		slots: { #inst => InstanceVariableSlot };
 		package: #MyPackage'.
 	def := parser parse: defString.
+	self assert: def slots size equals: 1.
 	self assert: def slots first name equals: #inst. 
 	
 ]
