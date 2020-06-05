@@ -9,3 +9,21 @@ Class {
 	],
 	#category : #'FluidClassDefinition-Parser'
 }
+
+{ #category : #tests }
+CDFluidClassRecreatorTest >> testPoint [
+	self skip.
+	self assert: Point asFluidDefinitionString equals: 'Object < #Point
+	slots: {#x. #y};
+	package: ''Kernel'''
+	
+]
+
+{ #category : #tests }
+CDFluidClassRecreatorTest >> testPointMissingTag [
+	self skip.
+	self assert: Point asFluidDefinitionString equals: 'Object < #Point
+slots: { #x. #y};
+package: ''Kernel-BasicObjects'''
+	
+]
