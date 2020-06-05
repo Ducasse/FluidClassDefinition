@@ -21,7 +21,7 @@ CDAbstractClassDefinitionParser class >> parse: aString [
 { #category : #internal }
 CDAbstractClassDefinitionParser >> beClassDefinition [
 		
-	classDefinition := CDClassDefinitionNode new
+	classDefinition := CDExtendedClassDefinitionNode new
 ]
 
 { #category : #internal }
