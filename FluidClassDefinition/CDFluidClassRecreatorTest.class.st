@@ -22,11 +22,11 @@ CDFluidClassRecreatorTest >> testArray [
 { #category : #tests }
 CDFluidClassRecreatorTest >> testByteString [
 	self skip. 
-	self assert: ByteString asFluidDefinitionString equals: 'String subclass: #ByteString
-	layout: ByteLayout
-	slots: {  }
-	classVariables: { #NonAsciiMap }
-	package: ''Collections-Strings-Base'''
+	self assert: ByteString asFluidDefinitionString equals: 'String < #ByteString
+	layout: ByteLayout;
+	sharedVariables: { #NonAsciiMap };
+	tag: ''Base'';
+	package: ''Collections-Strings'''  
 ]
 
 { #category : #tests }

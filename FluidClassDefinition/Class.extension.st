@@ -28,15 +28,22 @@ Class >> asFluidDefinitionString [
 				nextPutAll: 'uses: ';
 				nextPutAll: self traitCompositionString ].
 		
-		self slots isNotEmpty
-			ifTrue: [ 
+		self slots ifNotEmpty: 
+			[ 
 					s tab.
 					s nextPutAll: 'slots: {'. 
 					self slots do: [ :each | s nextPutAll: each definitionString ]
 						separatedBy: [  s nextPutAll: ' . '].
 					s nextPutAll: '};'.
 					s cr].
-				
+		self classVariables ifNotEmpty: [  
+				s 
+					tab;
+					nextPutAll: 'sharedVariables: ';
+					nextPutAll: self classVariableDefinitionString;
+					nextPutAll: ';';
+					cr
+				].
 				
 		tag := (self package classTagForClass: self) name.
 		tag = self package name
