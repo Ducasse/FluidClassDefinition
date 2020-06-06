@@ -3,15 +3,35 @@ Extension { #name : #Class }
 { #category : #'*FluidClassDefinition' }
 Class >> asFluidDefinitionString [
 	^ String streamContents: [ :s |
-		| tag |
-		s nextPutAll: superclass name.
-		s nextPutAll: ' < #'.
-		s nextPutAll: name.
-		s cr.
+		| tag poolString |
+		poolString := self sharedPoolsString.
+		
+		superclass 
+			ifNotNil: [s nextPutAll: superclass name]
+			ifNil: [s nextPutAll: 'ProtoObject'].
+		s 
+			nextPutAll: ' < #';
+			nextPutAll: name;
+			cr.
+		
+		(self classLayout isKindOf: FixedLayout) ifFalse: [
+			s 
+				tab; 
+				nextPutAll: 'layout: ';
+				nextPutAll: self classLayout class name;
+				nextPutAll: ';';
+				cr ].
+		
+		self hasTraitComposition ifTrue: [
+			s 
+				tab; 
+				nextPutAll: 'uses: ';
+				nextPutAll: self traitCompositionString ].
+		
 		self slots isNotEmpty
 			ifTrue: [ 
 					s tab.
-					s nextPutAll: 'slots: { '. 
+					s nextPutAll: 'slots: {'. 
 					self slots do: [ :each | s nextPutAll: each definitionString ]
 						separatedBy: [  s nextPutAll: ' . '].
 					s nextPutAll: '};'.
@@ -21,11 +41,20 @@ Class >> asFluidDefinitionString [
 		tag := (self package classTagForClass: self) name.
 		tag = self package name
 			ifFalse:  [
-				s tab.  
-				s nextPutAll: 'tag: '; nextPut: $'; nextPutAll: tag asString, ''';'.
+				s 	tab;  
+				 	nextPutAll: 'tag: '; 
+					nextPut: $'; 
+					nextPutAll: tag asString ; 
+					nextPutAll: ''';'.
 				s cr
 				].
-		
+			
+		poolString = '' ifFalse: [
+			s 
+				tab; 
+				nextPutAll: 'poolDictionaries: ';
+				store: poolString ].	
+			
 		s 	
 			tab;
 			nextPutAll: 'package: '; 
