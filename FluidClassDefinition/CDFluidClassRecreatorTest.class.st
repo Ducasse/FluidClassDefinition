@@ -14,7 +14,7 @@ Class {
 CDFluidClassRecreatorTest >> testPoint [
 	self skip.
 	self assert: Point asFluidDefinitionString equals: 'Object < #Point
-	slots: {#x. #y};
+	slots: {#x . #y};
 	package: ''Kernel'''
 	
 ]
@@ -23,7 +23,8 @@ CDFluidClassRecreatorTest >> testPoint [
 CDFluidClassRecreatorTest >> testPointMissingTag [
 	self skip.
 	self assert: Point asFluidDefinitionString equals: 'Object < #Point
-slots: { #x. #y};
-package: ''Kernel-BasicObjects'''
+	slots: { #x . #y};
+	tag: ''BasicObjects'';
+	package: ''Kernel'''
 	
 ]

@@ -219,7 +219,7 @@ CDFluidClassParserTest >> testSplittingTokens [
 		equals: #(#Object #< #CDAbstractClassDefinitionParser #slots: #'{' #classDefinition #'.' #subclass #'=>' #BooleanSlot #'}' #';' #classVariables: #'{' #'}' #';' #package: 'FluidClassDefinition')
 ]
 
-{ #category : #'test class variables' }
+{ #category : #'test - tags' }
 CDFluidClassParserTest >> testTag [
 
 	| parser defString def |
