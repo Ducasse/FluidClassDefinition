@@ -14,7 +14,7 @@ Class >> asFluidDefinitionString [
 			nextPutAll: name;
 			cr.
 		
-		(self classLayout isKindOf: FixedLayout) ifFalse: [
+		self classLayout isFixedLayout ifFalse: [
 			s 
 				tab; 
 				nextPutAll: 'layout: ';
