@@ -30,6 +30,15 @@ CDFluidClassRecreatorTest >> testByteString [
 ]
 
 { #category : #tests }
+CDFluidClassRecreatorTest >> testChronologyConstants [
+	
+	self assert: ChronologyConstants asFluidDefinitionString equals: 'SharedPool < #ChronologyConstants
+	sharedVariables: { #NanosInSecond. #MonthNames. #SecondsInHour. #SecondsInDay. #SqueakEpoch. #NanosInMillisecond. #DayNames. #DaysInMonth. #SecondsInMinute. #MicrosecondsInDay };
+	tag: ''Chronology'';
+	package: ''Kernel''' 
+]
+
+{ #category : #tests }
 CDFluidClassRecreatorTest >> testMetaclass [
 	
 	self assert: Metaclass asFluidDefinitionString equals: 'ClassDescription < #Metaclass
@@ -41,9 +50,9 @@ CDFluidClassRecreatorTest >> testMetaclass [
 { #category : #tests }
 CDFluidClassRecreatorTest >> testMetaclassClass [
 	
-	self assert: RubScrolledTextModel class asFluidDefinitionString equals:  'Object class < #RubScrolledTextModel
-	uses: TViewModel classTrait;
-	package: ''Rubric'''
+	self assert: Metaclass class asFluidDefinitionString equals: 
+ 'ClassDescription class < #Metaclass
+	package: ''Kernel'''	
 ]
 
 { #category : #tests }
@@ -65,4 +74,14 @@ CDFluidClassRecreatorTest >> testText [
 	tag: ''Base'';
 	poolDictionaries: ''TextConstants'';
 	package: ''Text-Core''' 
+]
+
+{ #category : #tests }
+CDFluidClassRecreatorTest >> testTraitAtMetaclass [
+	
+	self assert: RubScrolledTextModel asFluidDefinitionString equals: 'Object < #RubScrolledTextModel
+	uses: TViewModel;
+	slots: {#hasUnacceptedEdits . #announcer . #text . #primarySelectionInterval . #interactionModel};
+	tag: ''Editing-Widgets'';
+	package: ''Rubric''' 
 ]
