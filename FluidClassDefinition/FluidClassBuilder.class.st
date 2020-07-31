@@ -39,7 +39,10 @@ Class {
 		'classNameToBuild',
 		'slotsToBuild',
 		'tagToBuild',
-		'packageName'
+		'packageName',
+		'layout',
+		'sharedVariables',
+		'poolDictionaries'
 	],
 	#category : #'FluidClassDefinition-Builder'
 }
@@ -54,6 +57,16 @@ FluidClassBuilder >> classNameToBuild: aSymbol [
 	classNameToBuild := aSymbol
 ]
 
+{ #category : #'as yet unclassified' }
+FluidClassBuilder >> layout: aClass [ 
+	layout := aClass
+]
+
+{ #category : #'as yet unclassified' }
+FluidClassBuilder >> layoutToBuild [
+	^ layout 
+]
+
 { #category : #accessing }
 FluidClassBuilder >> package: aString [
 	packageName := aString
@@ -62,6 +75,26 @@ FluidClassBuilder >> package: aString [
 { #category : #accessing }
 FluidClassBuilder >> packageToBuild [
 	^ packageName
+]
+
+{ #category : #'as yet unclassified' }
+FluidClassBuilder >> poolDictionaries: aString [ 
+	poolDictionaries := aString
+]
+
+{ #category : #'as yet unclassified' }
+FluidClassBuilder >> poolDictionariesToBuild [
+	^ poolDictionaries 
+]
+
+{ #category : #'as yet unclassified' }
+FluidClassBuilder >> sharedVariables: aCollection [ 
+	sharedVariables := aCollection
+]
+
+{ #category : #'as yet unclassified' }
+FluidClassBuilder >> sharedVariablesToBuild [
+	^ sharedVariables 
 ]
 
 { #category : #accessing }

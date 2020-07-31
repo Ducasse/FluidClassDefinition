@@ -1,3 +1,6 @@
+"
+I'm a little extension of the RBParser. My code should be pushed into RB.
+"
 Class {
 	#name : #CDRBParser,
 	#superclass : #RBParser,
