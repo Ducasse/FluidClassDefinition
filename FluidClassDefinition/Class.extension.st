@@ -26,7 +26,9 @@ Class >> asFluidDefinitionString [
 			s 
 				tab; 
 				nextPutAll: 'uses: ';
-				nextPutAll: self traitCompositionString ].
+				nextPutAll: self traitCompositionString ;
+				nextPutAll: ';';
+				cr ].
 		
 		self slots ifNotEmpty: 
 			[ 
@@ -58,9 +60,11 @@ Class >> asFluidDefinitionString [
 			
 		poolString = '' ifFalse: [
 			s 
-				tab; 
-				nextPutAll: 'poolDictionaries: ';
-				store: poolString ].	
+				tab ; 
+				nextPutAll: 'poolDictionaries: ' ;
+				store: poolString ;
+				nextPutAll: ';' ;
+				cr ].	
 			
 		s 	
 			tab;

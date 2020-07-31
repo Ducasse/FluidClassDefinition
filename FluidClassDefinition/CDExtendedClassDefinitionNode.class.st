@@ -7,7 +7,7 @@ Class {
 	#instVars : [
 		'tags'
 	],
-	#category : #'FluidClassDefinition-Core'
+	#category : #'FluidClassDefinition-Extensions'
 }
 
 { #category : #accessing }

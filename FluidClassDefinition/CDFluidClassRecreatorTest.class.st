@@ -21,12 +21,29 @@ CDFluidClassRecreatorTest >> testArray [
 
 { #category : #tests }
 CDFluidClassRecreatorTest >> testByteString [
-	self skip. 
+
 	self assert: ByteString asFluidDefinitionString equals: 'String < #ByteString
 	layout: ByteLayout;
 	sharedVariables: { #NonAsciiMap };
 	tag: ''Base'';
 	package: ''Collections-Strings'''  
+]
+
+{ #category : #tests }
+CDFluidClassRecreatorTest >> testMetaclass [
+	
+	self assert: Metaclass asFluidDefinitionString equals: 'ClassDescription < #Metaclass
+	slots: {#thisClass};
+	tag: ''Classes'';
+	package: ''Kernel''' 
+]
+
+{ #category : #tests }
+CDFluidClassRecreatorTest >> testMetaclassClass [
+	
+	self assert: RubScrolledTextModel class asFluidDefinitionString equals:  'Object class < #RubScrolledTextModel
+	uses: TViewModel classTrait;
+	package: ''Rubric'''
 ]
 
 { #category : #tests }
@@ -37,4 +54,15 @@ CDFluidClassRecreatorTest >> testPoint [
 	tag: ''BasicObjects'';
 	package: ''Kernel'''
 	
+]
+
+{ #category : #tests }
+CDFluidClassRecreatorTest >> testText [
+
+	self assert: Text asFluidDefinitionString equals: 
+ 'ArrayedCollection < #Text
+	slots: {#string . #runs};
+	tag: ''Base'';
+	poolDictionaries: ''TextConstants'';
+	package: ''Text-Core''' 
 ]

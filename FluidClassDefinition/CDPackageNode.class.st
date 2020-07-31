@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'packageName'
 	],
-	#category : #'FluidClassDefinition-Core'
+	#category : #'FluidClassDefinition-Extensions'
 }
 
 { #category : #accessing }
