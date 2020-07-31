@@ -23,7 +23,7 @@ In addition having a binary message makes () unneccessary.
 Open Questions: what should be a class definition 
 
 Object class < #Point
-	package: ''Kernel-BasicObjects''
+	package: 'Kernel-BasicObjects'
 
 ?
 
@@ -70,8 +70,34 @@ Class {
 		'lines',
 		'arrayTokens'
 	],
+	#classVars : [
+		'On'
+	],
 	#category : #'FluidClassDefinition-Parser'
 }
+
+{ #category : #'temporary controls' }
+CDFluidClassDefinitionParser class >> initialize [
+	"self initialize"
+	On := true
+]
+
+{ #category : #'temporary controls' }
+CDFluidClassDefinitionParser class >> isOn [ 
+	^ On
+]
+
+{ #category : #'temporary controls' }
+CDFluidClassDefinitionParser class >> off [
+
+	On := false
+]
+
+{ #category : #'temporary controls' }
+CDFluidClassDefinitionParser class >> on [
+
+	On := true
+]
 
 { #category : #private }
 CDFluidClassDefinitionParser >> array: aCollection [ 

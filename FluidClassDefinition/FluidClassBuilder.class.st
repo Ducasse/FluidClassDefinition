@@ -1,16 +1,35 @@
 "
 I'm a builder to create class definition using a fluid interface. 
-I'm created by the message < as in 
+I'm created by the message `<` as in 
 
+```
 Object < #Point
+```
 
 My build process happens when I resolve the message #package: as in 
 
+```
 Object < #Point 
 	slots: { #x . #y };
 	tag: 'Basics';
 	package: 'Kernel'
-	
+```	
+
+### Todo
+
+Hi Stef, 
+   the classBuilder is made in a way that it always produces a valid class. For all its ""parameters"" it has default values. The only needed one is the className. It can be used direclty creating it by ShiftClassBuilder new, and it can already create and configure the class. It does not install it in the environment (that is done by the ClassInstaller). 
+The use of 
+ShiftClassInstaller make: [ :builder| ...] is just to get a builder that is configured for such installer. 
+Maybe this part of the api can be upgraded, so I can give a builder to the installer and say, install whatever this builder creates. 
+For the example:
+ShiftClassBuilder new
+    buildEnvironment: (ShSmalltalkGlobalsEnvironment new);
+    name: #CDAbstractClassDefinitionParser;
+    slots: { #classDefinition. #subclass };
+    category: 'FluidClassDefinition-Foo';
+    build
+The build message will create the class, until that point nothing is used. I am seeing some things I will like to change, for example I like the split of the package and the tag (and replace the old category).
 "
 Class {
 	#name : #FluidClassBuilder,
@@ -19,7 +38,8 @@ Class {
 		'superclassToBuild',
 		'classNameToBuild',
 		'slotsToBuild',
-		'tagToBuild'
+		'tagToBuild',
+		'packageName'
 	],
 	#category : #'FluidClassDefinition-Builder'
 }
@@ -32,6 +52,16 @@ FluidClassBuilder >> classNameToBuild [
 { #category : #accessing }
 FluidClassBuilder >> classNameToBuild: aSymbol [ 
 	classNameToBuild := aSymbol
+]
+
+{ #category : #accessing }
+FluidClassBuilder >> package: aString [
+	packageName := aString
+]
+
+{ #category : #accessing }
+FluidClassBuilder >> packageToBuild [
+	^ packageName
 ]
 
 { #category : #accessing }

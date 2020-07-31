@@ -5,6 +5,17 @@ Class {
 }
 
 { #category : #tests }
+FluidClassBuilderTest >> testBuilderWithPackage [
+
+	| builder |
+	builder := Object < #Point.
+	builder package: 'Kernel-BasicObjects'.
+	self assert: builder packageToBuild equals: 'Kernel-BasicObjects'
+
+	
+]
+
+{ #category : #tests }
 FluidClassBuilderTest >> testBuilderWithSlots [
 
 	| builder |
