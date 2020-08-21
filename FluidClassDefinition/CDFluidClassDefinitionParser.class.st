@@ -22,22 +22,30 @@ Note that sending a message to the superclass is close to subclass: and it lets 
 a class definition parser if the syntax should be extended. 
 In addition having a binary message makes () unneccessary.
 
-Open Questions: what should be a class definition 
+### Open Questions: what should be a class definition 
 
+We could have but usually we do not create metaclasses this way.
+
+```
 Object class < #Point
+	uses: TCairoLibrary classTrait;
+	slots: { #unique };
 	package: 'Kernel-BasicObjects'
+```
 
-?
+Slots currently do
 
-What is the advantage over 
+``` 
+	Point class
+		uses: TraitX;
+		slots: { foo };
+		package: ''Kernel-BasicObjects'''
+```	
+	With this one we do not pass via the builder but this can be ok because the builder can be configured to build 
+	metaclass.
 
-CDManualFluidClassDefinitionParser class
-	instanceVariableNames: ''
 
-
-
-Implementation
-===============
+### Implementation
 
 arrayTokens contains the RBTokens and array contains just the symbols.
 This way I do not have to change everything all the times.
@@ -45,7 +53,6 @@ Should remove array
 
 Open question/todo: 
 ===================
-
 
 	- how to handle errors 
 
