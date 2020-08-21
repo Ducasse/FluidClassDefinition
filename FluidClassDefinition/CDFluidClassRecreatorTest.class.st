@@ -72,7 +72,7 @@ CDFluidClassRecreatorTest >> testText [
  'ArrayedCollection < #Text
 	slots: {#string . #runs};
 	tag: ''Base'';
-	poolDictionaries: ''TextConstants'';
+	sharedPools: ''TextConstants'';
 	package: ''Text-Core''' 
 ]
 

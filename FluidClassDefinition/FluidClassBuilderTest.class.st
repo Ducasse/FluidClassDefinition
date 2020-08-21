@@ -46,7 +46,7 @@ FluidClassBuilderTest >> testBuildSimplePoint2 [
 	self assert: clas superclass equals: Object.
 	self assert: clas name equals: #Point2.
 	self assert: clas slots size equals: 2.
-	self falg: #askPablo.
+	self flag: #askPablo.
 	"self assert: clas package packageName equals: 'FakedCore'"
 	
 ]
