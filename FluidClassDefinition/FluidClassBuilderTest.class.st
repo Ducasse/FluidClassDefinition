@@ -1,19 +1,27 @@
 Class {
 	#name : #FluidClassBuilderTest,
 	#superclass : #TestCase,
+	#instVars : [
+		'builder'
+	],
 	#category : #'FluidClassDefinition-Builder'
 }
 
-{ #category : #tests }
+{ #category : #running }
 FluidClassBuilderTest >> builder [ 	
 
-	^  FluidClassBuilder new
+	^  builder
+]
+
+{ #category : #running }
+FluidClassBuilderTest >> setUp [
+
+	builder := FluidClassBuilder new
 ]
 
 { #category : #tests }
 FluidClassBuilderTest >> testBuildLayout [
-	| builder |
-	builder := self builder.
+
 	builder 
 		layout: VariableLayout;
 		package: 'Collections-Sequenceable'.
@@ -25,8 +33,6 @@ FluidClassBuilderTest >> testBuildLayout [
 { #category : #tests }
 FluidClassBuilderTest >> testBuilderPoolDictionaries [
 
-	| builder |
-	builder := self builder.
 	builder slots: {#string . #runs};
 		tag: 'Base';
 		poolDictionaries: 'TextConstants';
@@ -38,8 +44,6 @@ FluidClassBuilderTest >> testBuilderPoolDictionaries [
 { #category : #tests }
 FluidClassBuilderTest >> testBuilderSharedVariables [
 
-	| builder |
-	builder := self builder.
 	builder 
 		layout: ByteLayout;
 		sharedVariables: { #NonAsciiMap };
@@ -50,10 +54,16 @@ FluidClassBuilderTest >> testBuilderSharedVariables [
 ]
 
 { #category : #tests }
+FluidClassBuilderTest >> testBuilderTraits [
+	
+	builder uses: TViewModel.
+	builder package: 'Rubric'.
+	self assert: builder traitsToBuild equals: TViewModel 
+]
+
+{ #category : #tests }
 FluidClassBuilderTest >> testBuilderWithPackage [
 
-	| builder |
-	builder := self builder.
 	builder package: 'Kernel-BasicObjects'.
 	self assert: builder packageToBuild equals: 'Kernel-BasicObjects'
 
@@ -63,8 +73,6 @@ FluidClassBuilderTest >> testBuilderWithPackage [
 { #category : #tests }
 FluidClassBuilderTest >> testBuilderWithSlots [
 
-	| builder |
-	builder := self builder.
 	builder slots: { #x . #y }.
 	self assert: builder slotsToBuild equals: { #x . #y }.
 
@@ -74,8 +82,6 @@ FluidClassBuilderTest >> testBuilderWithSlots [
 { #category : #tests }
 FluidClassBuilderTest >> testBuilderWithTag [
 
-	| builder |
-	builder := self builder.
 	builder tag: 'Foo'.
 	self assert: builder tagToBuild equals: 'Foo'.
 
@@ -85,7 +91,6 @@ FluidClassBuilderTest >> testBuilderWithTag [
 { #category : #tests }
 FluidClassBuilderTest >> testCreateBuilder [
 
-	| builder |
 	builder := Object < #Point.
 	self assert: builder superclassToBuild equals: Object.
 	self assert: builder classNameToBuild equals: #Point.
@@ -95,7 +100,6 @@ FluidClassBuilderTest >> testCreateBuilder [
 { #category : #tests }
 FluidClassBuilderTest >> testCreateBuilderWithNil [
 
-	| builder |
 	builder := nil < #NewProtoObject.
 	self assert: builder superclassToBuild equals: nil.
 	self assert: builder classNameToBuild equals: #NewProtoObject.

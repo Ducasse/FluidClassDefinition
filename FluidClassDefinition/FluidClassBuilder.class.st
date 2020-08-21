@@ -42,7 +42,8 @@ Class {
 		'packageName',
 		'layout',
 		'sharedVariables',
-		'poolDictionaries'
+		'poolDictionaries',
+		'traitComposition'
 	],
 	#category : #'FluidClassDefinition-Builder'
 }
@@ -57,12 +58,12 @@ FluidClassBuilder >> classNameToBuild: aSymbol [
 	classNameToBuild := aSymbol
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 FluidClassBuilder >> layout: aClass [ 
 	layout := aClass
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 FluidClassBuilder >> layoutToBuild [
 	^ layout 
 ]
@@ -77,22 +78,22 @@ FluidClassBuilder >> packageToBuild [
 	^ packageName
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 FluidClassBuilder >> poolDictionaries: aString [ 
 	poolDictionaries := aString
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 FluidClassBuilder >> poolDictionariesToBuild [
 	^ poolDictionaries 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 FluidClassBuilder >> sharedVariables: aCollection [ 
 	sharedVariables := aCollection
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 FluidClassBuilder >> sharedVariablesToBuild [
 	^ sharedVariables 
 ]
@@ -126,4 +127,14 @@ FluidClassBuilder >> tag: aString [
 { #category : #accessing }
 FluidClassBuilder >> tagToBuild [
 	^ tagToBuild
+]
+
+{ #category : #accessing }
+FluidClassBuilder >> traitsToBuild [
+	^ traitComposition 
+]
+
+{ #category : #accessing }
+FluidClassBuilder >> uses: aTraitComposition [
+	traitComposition := aTraitComposition
 ]
