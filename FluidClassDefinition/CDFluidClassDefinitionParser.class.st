@@ -6,7 +6,7 @@ Superclass < #MyObject
 		slots: { #a. #b };
 		sharedVariables: { #A. #B };
   		tags: {'tag2' . 'Core'} ;
-		variable; 
+		layout: VariableLayout; 
 		sharedPools: { #TextConstants } ;
  		package: #MyPackage
 
@@ -14,6 +14,8 @@ The minimal class definition is the following one:
 
 Superclass < #MyObject
 		package: #MyPackage
+
+Pay attention all the messages should be keyword-based.
 
 
 Note that sending a message to the superclass is close to subclass: and it lets the class selects 
@@ -52,12 +54,11 @@ Open question/todo:
 			
 			 	Superclass < #MyObject
 					slots: { #a. #b };
-					variable; 
+					layout: VariableLayout; 
 					
 			This way we do not have to manage possibly wrong arguments. 
 	- should make sure that the node of the tree can be used with findBestNode that....
-	
-			
+				
 	- make sure that the corresponding messages do exist in the respective class 
 	so that we can have both a declarative and execution version. 
 

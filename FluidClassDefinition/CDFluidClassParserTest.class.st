@@ -373,3 +373,19 @@ CDFluidClassParserTest >> testWeakSubclass [
 	def := parser parse: defString.
 	self assert: def classKind equals: #weak
 ]
+
+{ #category : #'just trying an idea' }
+CDFluidClassParserTest >> trying [
+	"self new trying"
+	
+	| cascadedNode messageNode |
+	cascadedNode := RBParser parseExpression: 'RubTextEditor < #RubSmalltalkEditor
+	slots: {#notificationStrategy . #completionEngine};
+	sharedVariables: { #CompletionEngineClass };
+	tag: ''Editing-Code'';
+	package: ''Rubric'''.
+	
+	self halt.
+	messageNode := RBParser parseExpression: 'RubTextEditor < #RubSmalltalkEditor
+	package: ''Rubric'''.
+]
