@@ -99,6 +99,12 @@ CDFluidClassDefinitionParser class >> on [
 	On := true
 ]
 
+{ #category : #'temporary controls' }
+CDFluidClassDefinitionParser class >> setStatus: aBoolean [
+
+	On := aBoolean
+]
+
 { #category : #private }
 CDFluidClassDefinitionParser >> array: aCollection [ 
 	array := aCollection
@@ -179,6 +185,7 @@ CDFluidClassDefinitionParser >> parse: aString [
 			self hasFluidPart
 				ifTrue: [ self chopLinesFrom: 3.
 					self treatLines ] ].
+	self halt.
 	^ classDefinition
 ]
 

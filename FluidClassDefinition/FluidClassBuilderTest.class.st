@@ -35,7 +35,7 @@ FluidClassBuilderTest >> testBuildLayout [
 ]
 
 { #category : #'tests - build' }
-FluidClassBuilderTest >> testBuildPoint2 [
+FluidClassBuilderTest >> testBuildSimplePoint2 [
 
 	| clas |
 	builder := Object < #Point2.
@@ -45,7 +45,9 @@ FluidClassBuilderTest >> testBuildPoint2 [
 	
 	self assert: clas superclass equals: Object.
 	self assert: clas name equals: #Point2.
-	self assert: clas slots size equals: 2
+	self assert: clas slots size equals: 2.
+	self falg: #askPablo.
+	"self assert: clas package packageName equals: 'FakedCore'"
 	
 ]
 
