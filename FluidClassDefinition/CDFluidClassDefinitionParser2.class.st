@@ -1,5 +1,47 @@
 "
-Retrying to use the same logic as CDClassDefinitionParser
+I'm parser for the new class syntax. 
+
+
+### The new syntax for class definition (just for the class and not for the methods) is
+
+```
+Superclass < #MyObject
+		uses: #MyTrait;
+		slots: { #a. #b };
+		sharedVariables: { #A. #B };
+  		tags: {'tag2' . 'Core'} ;
+		layout: VariableLayout; 
+		sharedPools: { #TextConstants } ;
+ 		package: #MyPackage
+```
+Pay attention all the messages should be keyword-based.
+
+The minimal class definition is the following one: 
+
+```
+Superclass < #MyObject
+		package: #MyPackage
+```
+
+
+
+### Concerns 
+Note that sending a message to the superclass is close to subclass: and it lets the class selects 
+a class definition parser if the syntax should be extended. 
+In addition having a binary message makes () unneccessary.
+
+
+### Class side definition 
+In Pharo, a metaclass cannot be created in isolation (yes we can programmatically) so the class side definition is the following one. But we need more investigation on this point.
+
+``` 
+	Point class
+		uses: TraitX;
+		slots: { foo };
+		package: ''Kernel-BasicObjects'''
+```	
+
+
 
 "
 Class {
@@ -146,7 +188,7 @@ CDFluidClassDefinitionParser2 >> parseRootNode: expressionTree [
 	^ classDefinition
 ]
 
-{ #category : #parsing }
+{ #category : #'parsing main' }
 CDFluidClassDefinitionParser2 >> parseSelectorPart: aString withArgument: aNode [ 
 	"We could do this with reflection, or with a dictionary and closures.
 	I chose to use a series of if for readability only."
@@ -165,12 +207,29 @@ CDFluidClassDefinitionParser2 >> parseSelectorPart: aString withArgument: aNode 
 	aString =	 #uses:
 		ifTrue: [ ^ self parseTraitDefinitionFromNode: aNode ].
 	aString =	 #sharedPools:
-		ifTrue: [ ^ self parsePoolDictionariesFromNode: aNode ].
+		ifTrue: [ ^ self parseSharedPoolsFromNode: aNode ].
 	
 	CDUnrecognizedClassPart new
 		classDefinition: self; 
 		unrecognizedPart: aString;
 		signal
+]
+
+{ #category : #parsing }
+CDFluidClassDefinitionParser2 >> parseSharedPoolsFromNode: aNode [
+	| shareds sharedPoolNodes sharedPoolString |
+	sharedPoolString := aNode value.
+	shareds := sharedPoolString substrings.
+	sharedPoolNodes := shareds
+		collect: [ :slotName | 
+			| start |
+			start := aNode start + (sharedPoolString findString: slotName).
+			self sharedPoolNodeClass
+				node: aNode
+				name: slotName
+				start: start
+				stop: start + slotName size ].
+	classDefinition sharedPools: sharedPoolNodes
 ]
 
 { #category : #parsing }

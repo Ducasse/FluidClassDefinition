@@ -61,7 +61,7 @@ Class >> asFluidDefinitionString [
 		poolString = '' ifFalse: [
 			s 
 				tab ; 
-				nextPutAll: 'poolDictionaries: ' ;
+				nextPutAll: 'sharedPools: ' ;
 				store: poolString ;
 				nextPutAll: ';' ;
 				cr ].	

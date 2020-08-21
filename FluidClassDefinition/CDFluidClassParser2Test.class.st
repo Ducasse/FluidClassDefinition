@@ -67,7 +67,7 @@ CDFluidClassParser2Test >> testEmptySlots [
 
 ]
 
-{ #category : #'test kinds' }
+{ #category : #'tests - (r) kinds' }
 CDFluidClassParser2Test >> testEphemeronSubclass [
 
 	| parser defString def |
@@ -90,7 +90,7 @@ CDFluidClassParser2Test >> testInstanceDefinitionIsInstanceSide [
 	self assert: def isInstanceSideDefinition 
 ]
 
-{ #category : #'test kinds' }
+{ #category : #'tests - (r) kinds' }
 CDFluidClassParser2Test >> testNormalSubclass [
 
 	| parser defString def |
@@ -101,6 +101,20 @@ CDFluidClassParser2Test >> testNormalSubclass [
 		package: #MyPackage'.
 	def := parser parse: defString.
 	self assert: def classKind equals: #normal
+]
+
+{ #category : #'tests - (r) sharedPools' }
+CDFluidClassParser2Test >> testSharedPools [
+
+	| parser defString def |
+	parser := self classDefinitionParserClass new.
+	
+	defString := 'Object < #MyObject
+	   sharedPools: ''TextConstants''
+		package: #MyPackage'.
+	
+	def := parser parse: defString.
+	self assert: def sharedPools first name equals: 'TextConstants'
 ]
 
 { #category : #'tests - (r) simple class definition' }
@@ -266,7 +280,7 @@ CDFluidClassParser2Test >> testTypedSlots [
 	
 ]
 
-{ #category : #'test kinds' }
+{ #category : #'tests - (r) kinds' }
 CDFluidClassParser2Test >> testVariableByteSubclass [
 
 	| parser defString def |
@@ -279,7 +293,7 @@ CDFluidClassParser2Test >> testVariableByteSubclass [
 	self assert: def classKind equals: #variable
 ]
 
-{ #category : #'test kinds' }
+{ #category : #'tests - (r) kinds' }
 CDFluidClassParser2Test >> testVariableSubclass [
 
 	| parser defString def |
@@ -292,7 +306,7 @@ CDFluidClassParser2Test >> testVariableSubclass [
 	self assert: def classKind equals: #variable
 ]
 
-{ #category : #'test kinds' }
+{ #category : #'tests - (r) kinds' }
 CDFluidClassParser2Test >> testVariableWordSubclass [
 
 	| parser defString def |
@@ -305,7 +319,7 @@ CDFluidClassParser2Test >> testVariableWordSubclass [
 	self assert: def classKind equals: #variableWord
 ]
 
-{ #category : #'test kinds' }
+{ #category : #'tests - (r) kinds' }
 CDFluidClassParser2Test >> testWeakSubclass [
 
 	| parser defString def |
