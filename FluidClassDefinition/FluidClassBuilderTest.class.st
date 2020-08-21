@@ -16,10 +16,14 @@ FluidClassBuilderTest >> builder [
 { #category : #running }
 FluidClassBuilderTest >> setUp [
 
-	builder := FluidClassBuilder new
+	builder := FluidClassBuilder new 
+		superclassToBuild: Object;
+		classNameToBuild: #Point33;
+		package: 'FakedPackage'
+
 ]
 
-{ #category : #tests }
+{ #category : #'tests - gathering' }
 FluidClassBuilderTest >> testBuildLayout [
 
 	builder 
@@ -30,18 +34,33 @@ FluidClassBuilderTest >> testBuildLayout [
 	
 ]
 
-{ #category : #tests }
-FluidClassBuilderTest >> testBuilderPoolDictionaries [
+{ #category : #'tests - build' }
+FluidClassBuilderTest >> testBuildPoint2 [
 
-	builder slots: {#string . #runs};
-		tag: 'Base';
-		poolDictionaries: 'TextConstants';
-		package: 'Text-Core'.  
-	self assert: builder poolDictionariesToBuild equals: 'TextConstants'.
+	| clas |
+	builder := Object < #Point2.
+	builder slots: { #x . #y }.
+	builder package: 'FakedCore'.
+	clas := builder build.
+	
+	self assert: clas superclass equals: Object.
+	self assert: clas name equals: #Point2.
+	self assert: clas slots size equals: 2
 	
 ]
 
-{ #category : #tests }
+{ #category : #'tests - gathering' }
+FluidClassBuilderTest >> testBuilderSharedPools [
+
+	builder slots: {#string . #runs};
+		tag: 'Base';
+		sharedPools: 'TextConstants';
+		package: 'Text-Core'.  
+	self assert: builder sharedPoolsToBuild equals: 'TextConstants'.
+	
+]
+
+{ #category : #'tests - gathering' }
 FluidClassBuilderTest >> testBuilderSharedVariables [
 
 	builder 
@@ -53,15 +72,14 @@ FluidClassBuilderTest >> testBuilderSharedVariables [
 	
 ]
 
-{ #category : #tests }
+{ #category : #'tests - gathering' }
 FluidClassBuilderTest >> testBuilderTraits [
 	
 	builder uses: TViewModel.
-	builder package: 'Rubric'.
 	self assert: builder traitsToBuild equals: TViewModel 
 ]
 
-{ #category : #tests }
+{ #category : #'tests - mandatory' }
 FluidClassBuilderTest >> testBuilderWithPackage [
 
 	builder package: 'Kernel-BasicObjects'.
@@ -70,7 +88,7 @@ FluidClassBuilderTest >> testBuilderWithPackage [
 	
 ]
 
-{ #category : #tests }
+{ #category : #'tests - gathering' }
 FluidClassBuilderTest >> testBuilderWithSlots [
 
 	builder slots: { #x . #y }.
@@ -79,7 +97,7 @@ FluidClassBuilderTest >> testBuilderWithSlots [
 	
 ]
 
-{ #category : #tests }
+{ #category : #'tests - gathering' }
 FluidClassBuilderTest >> testBuilderWithTag [
 
 	builder tag: 'Foo'.
@@ -88,7 +106,7 @@ FluidClassBuilderTest >> testBuilderWithTag [
 	
 ]
 
-{ #category : #tests }
+{ #category : #'tests - mandatory' }
 FluidClassBuilderTest >> testCreateBuilder [
 
 	builder := Object < #Point.
@@ -97,7 +115,7 @@ FluidClassBuilderTest >> testCreateBuilder [
 	
 ]
 
-{ #category : #tests }
+{ #category : #'tests - mandatory' }
 FluidClassBuilderTest >> testCreateBuilderWithNil [
 
 	builder := nil < #NewProtoObject.
