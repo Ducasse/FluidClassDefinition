@@ -115,6 +115,12 @@ CDFluidClassDefinitionParser2 >> parseInstanceVariablesFromNode: aNode [
 ]
 
 { #category : #parsing }
+CDFluidClassDefinitionParser2 >> parseLayout: aNode [
+
+	classDefinition classKind: aNode binding value kind
+]
+
+{ #category : #parsing }
 CDFluidClassDefinitionParser2 >> parsePoolDictionariesFromNode: aNode [
 	| shareds sharedPoolNodes sharedPoolString |
 	sharedPoolString := aNode value.
@@ -145,14 +151,17 @@ CDFluidClassDefinitionParser2 >> parseSelectorPart: aString withArgument: aNode 
 	"We could do this with reflection, or with a dictionary and closures.
 	I chose to use a series of if for readability only."
 	
-	(#(variableWordSubclass: ephemeronSubclass: weakSubclass: variableByteSubclass: variableSubclass: immediateSubclass: #subclass:) includes: aString)
-		ifTrue: [ ^ self parseClassName: aNode withType: aString  ].
+
 	aString =	 #slots:
 		ifTrue: [ ^ self parseSlotsNodesFromArrayNode: aNode ].
 	aString =	 #sharedVariables: 
 		ifTrue: [ ^ self parseSharedVariableNames: aNode ].	
 	aString =	 #package:
 		ifTrue: [ ^ self package: aNode ].
+	aString = #layout:
+		ifTrue: [ ^ self parseLayout: aNode ].	
+	aString = #tags: 
+		ifTrue: [  ^self "do nothing since class definition do not store them." ].
 	aString =	 #uses:
 		ifTrue: [ ^ self parseTraitDefinitionFromNode: aNode ].
 	aString =	 #sharedPools:

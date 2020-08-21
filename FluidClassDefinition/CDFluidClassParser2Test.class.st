@@ -97,7 +97,7 @@ CDFluidClassParser2Test >> testNormalSubclass [
 	parser := self classDefinitionParserClass new.
 	
 	defString := 'Object < #MyObject
-		normal;
+		layout: FixedLayout;
 		package: #MyPackage'.
 	def := parser parse: defString.
 	self assert: def classKind equals: #normal
@@ -179,6 +179,7 @@ CDFluidClassParser2Test >> testTag [
 
 	| parser defString def |
 	parser := self classDefinitionParserClass new.
+	self skip.
 	defString := 'Object < #MyObject
 		tags: { ''tag1'' . ''tag2'' };
 		package: #MyPackage'.
@@ -272,10 +273,10 @@ CDFluidClassParser2Test >> testVariableByteSubclass [
 	parser := self classDefinitionParserClass new.
 	
 	defString := 'Object < #MyObject
-		variableByte;
+		layout: VariableLayout;
 		package: #MyPackage'.
 	def := parser parse: defString.
-	self assert: def classKind equals: #variableByte
+	self assert: def classKind equals: #variable
 ]
 
 { #category : #'test kinds' }
@@ -285,7 +286,7 @@ CDFluidClassParser2Test >> testVariableSubclass [
 	parser := self classDefinitionParserClass new.
 	
 	defString := 'Object < #MyObject
-		variable;
+		layout: VariableLayout;
 		package: #MyPackage'.
 	def := parser parse: defString.
 	self assert: def classKind equals: #variable
@@ -298,7 +299,7 @@ CDFluidClassParser2Test >> testVariableWordSubclass [
 	parser := self classDefinitionParserClass new.
 	
 	defString := 'Object < #MyObject
-		variableWord;
+		layout: WordLayout;
 		package: #MyPackage'.
 	def := parser parse: defString.
 	self assert: def classKind equals: #variableWord
@@ -311,24 +312,8 @@ CDFluidClassParser2Test >> testWeakSubclass [
 	parser := self classDefinitionParserClass new.
 	
 	defString := 'Object < #MyObject
-		weak;
+		layout: WeakLayout;
 		package: #MyPackage'.
 	def := parser parse: defString.
 	self assert: def classKind equals: #weak
-]
-
-{ #category : #'just trying an idea' }
-CDFluidClassParser2Test >> trying [
-	"self new trying"
-	
-	| cascadedNode messageNode |
-	cascadedNode := RBParser parseExpression: 'RubTextEditor < #RubSmalltalkEditor
-	slots: {#notificationStrategy . #completionEngine};
-	sharedVariables: { #CompletionEngineClass };
-	tag: ''Editing-Code'';
-	package: ''Rubric'''.
-	
-	self halt.
-	messageNode := RBParser parseExpression: 'RubTextEditor < #RubSmalltalkEditor
-	package: ''Rubric'''.
 ]
