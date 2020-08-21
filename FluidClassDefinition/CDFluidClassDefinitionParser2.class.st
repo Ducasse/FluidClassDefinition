@@ -41,29 +41,22 @@ CDFluidClassDefinitionParser2 >> classNameNodeClass [
 	^ CDClassNameNode
 ]
 
-{ #category : #accessing }
-CDFluidClassDefinitionParser2 >> classVariableNames: aNode [ 
+{ #category : #parsing }
+CDFluidClassDefinitionParser2 >> handleClassAndSuperclassOf: aNode [
 	
-	| slots slotNodes classVariablesString |
-	classVariablesString := aNode value.
-	slots := classVariablesString substrings.
-	slotNodes := slots
-		collect: [ :slotName | | start |
-			start := aNode start + (classVariablesString findString: slotName).
-			CDSharedVariableNode
-				node: aNode
-				name: slotName
-				slotClassName: 'ClassVariableSlot'
-				start: start
-				stop: start + slotName size ].
-	classDefinition sharedSlots: slotNodes
+	(self isInstanceSideDefinition: aNode receiver)
+		ifTrue: [ 
+			self parseSuperclassNode: aNode receiver receiver.
+			self parseClassName: aNode receiver arguments first  
+			]
+		ifFalse: [ self parseClassName: aNode receiver receiver ].
 ]
 
 { #category : #testing }
 CDFluidClassDefinitionParser2 >> isInstanceSideDefinition: aRBMessageNode [
 	"Based on the Point or Point class structure, returns whether the definition is a class or instance side definition."
 	"Depending on the chosen syntax for class side we could make sure that we are looking for <"
-	^ aRBMessageNode receiver receiver isMessage not
+	^ aRBMessageNode isMessage and: [ aRBMessageNode selector = #< ]
 	
 ]
 
@@ -140,9 +133,9 @@ CDFluidClassDefinitionParser2 >> parsePoolDictionariesFromNode: aNode [
 
 { #category : #parsing }
 CDFluidClassDefinitionParser2 >> parseRootNode: expressionTree [
-	self setAdequateClassDefinitionFrom: expressionTree.
+	expressionTree extractClassDefinitionFor: self. 
 	classDefinition originalNode: expressionTree.
-	self halt.
+	
 	expressionTree acceptVisitor: self.
 	^ classDefinition
 ]
@@ -156,19 +149,38 @@ CDFluidClassDefinitionParser2 >> parseSelectorPart: aString withArgument: aNode 
 		ifTrue: [ ^ self parseClassName: aNode withType: aString  ].
 	aString =	 #slots:
 		ifTrue: [ ^ self parseSlotsNodesFromArrayNode: aNode ].
-	aString =	 #classVariableNames:
-		ifTrue: [ ^ self classVariableNames: aNode ].	
+	aString =	 #sharedVariables: 
+		ifTrue: [ ^ self parseSharedVariableNames: aNode ].	
 	aString =	 #package:
 		ifTrue: [ ^ self package: aNode ].
 	aString =	 #uses:
 		ifTrue: [ ^ self parseTraitDefinitionFromNode: aNode ].
-	aString =	 #poolDictionaries:
+	aString =	 #sharedPools:
 		ifTrue: [ ^ self parsePoolDictionariesFromNode: aNode ].
 	
 	CDUnrecognizedClassPart new
 		classDefinition: self; 
 		unrecognizedPart: aString;
 		signal
+]
+
+{ #category : #parsing }
+CDFluidClassDefinitionParser2 >> parseSharedVariableNames: aNode [ 
+	
+	| slotNodes classVariablesString |
+	classVariablesString := aNode sourceCode.
+	slotNodes := aNode statements
+		collect: [ :literalNode | 		
+			| start literalName |
+			literalName := literalNode value.
+			start := aNode start + (classVariablesString findString: literalName).
+			CDSharedVariableNode
+				node: aNode
+				name: literalName
+				slotClassName: 'ClassVariableSlot'
+				start: start
+				stop: start + literalNode size ].
+	classDefinition sharedSlots: slotNodes
 ]
 
 { #category : #parsing }
@@ -283,7 +295,13 @@ CDFluidClassDefinitionParser2 >> slotNodeClass [
 
 { #category : #parsing }
 CDFluidClassDefinitionParser2 >> visitCascadeNode: aRBCascadeNode [ 
-	self shouldBeImplemented.
+	
+	self handleClassAndSuperclassOf: aRBCascadeNode.	
+	aRBCascadeNode messages do: 
+		[:msg | msg selectorParts
+					with: msg arguments
+					do: [ :selectorPart :argument |
+			self parseSelectorPart: selectorPart withArgument: argument ] ]
 ]
 
 { #category : #parsing }
@@ -308,13 +326,8 @@ CDFluidClassDefinitionParser2 >> visitMessageNode: aRBMessageNode [
 	With this one we do not pass via the builder.
 	
 		"		
-			
-	(self isInstanceSideDefinition: aRBMessageNode)
-		ifTrue: [ 
-			self parseSuperclassNode: aRBMessageNode receiver receiver.
-			self parseClassName: aRBMessageNode receiver arguments first  
-			]
-		ifFalse: [ self parseClassName: aRBMessageNode receiver receiver receiver ].
+	self handleClassAndSuperclassOf: aRBMessageNode.
+	
 	
 	aRBMessageNode selectorParts
 		with: aRBMessageNode arguments

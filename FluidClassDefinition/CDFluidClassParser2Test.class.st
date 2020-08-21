@@ -17,27 +17,27 @@ CDFluidClassParser2Test >> classDefinitionParserClass [
 CDFluidClassParser2Test >> testClassSideDefinitionIsClassSide [
 
 	| def |
-	def := self classDefinitionParserClass parse: 'Object class < #Point
+	def := self classDefinitionParserClass parse: 'Point class
 			package: ''Kernel-BasicObjects'''.
 
 	self assert: def isClassSideDefinition 
 ]
 
-{ #category : #'test class variables' }
+{ #category : #'tests - (r) class variables' }
 CDFluidClassParser2Test >> testClassVariables [
 
 	| parser defString def |
 	parser := self classDefinitionParserClass new.
 	
 	defString := 'Object < #MyObject
-		sharedVariables: { #A. #B };
+		sharedVariables: { #A . #B };
 		package: #MyPackage'.
 	def := parser parse: defString.
 	self assert: def sharedSlots first name equals: #A. 
 	self assert: def sharedSlots second name equals: #B. 
 ]
 
-{ #category : #'test slots' }
+{ #category : #'tests - (r) slots' }
 CDFluidClassParser2Test >> testComplexSlots [
 
 	| parser defString def slot |
@@ -53,7 +53,7 @@ CDFluidClassParser2Test >> testComplexSlots [
 	self assert: (slot initializationMessage argumentParts collect: [:each | each value]) equals: #(5) asOrderedCollection
 ]
 
-{ #category : #'test slots' }
+{ #category : #'tests - (r) slots' }
 CDFluidClassParser2Test >> testEmptySlots [
 
 	| parser defString def |
@@ -74,7 +74,7 @@ CDFluidClassParser2Test >> testEphemeronSubclass [
 	parser := self classDefinitionParserClass new.
 	
 	defString := 'Object < #MyObject
-		ephemeron;
+		layout: EphemeronLayout;
 		package: #MyPackage'.
 	def := parser parse: defString.
 	self assert: def classKind equals: #ephemeron
@@ -159,7 +159,7 @@ CDFluidClassParser2Test >> testSimpleDefinitionSuperclassName [
 	
 ]
 
-{ #category : #'test slots' }
+{ #category : #'tests - (r) slots' }
 CDFluidClassParser2Test >> testSimpleSlots [
 
 	| parser defString def |
@@ -186,7 +186,7 @@ CDFluidClassParser2Test >> testTag [
 	self assert: (def tags statements collect: [:each | each value]) equals: #('tag1' 'tag2') asOrderedCollection
 ]
 
-{ #category : #'test traits' }
+{ #category : #'tests - (r) traits' }
 CDFluidClassParser2Test >> testTraitAlias [
 
 	| parser defString def |
@@ -204,7 +204,7 @@ CDFluidClassParser2Test >> testTraitAlias [
 
 ]
 
-{ #category : #'test traits' }
+{ #category : #'tests - (r) traits' }
 CDFluidClassParser2Test >> testTraitEmpty [
 
 	| parser defString def |
@@ -215,10 +215,10 @@ CDFluidClassParser2Test >> testTraitEmpty [
 		package: #MyPackage'.
 		
 	def := parser parse: defString.
-	self assert: def traitDefinition equals: nil
+	self assert: def traitDefinition tokens equals: nil
 ]
 
-{ #category : #'test traits' }
+{ #category : #'tests - (r) traits' }
 CDFluidClassParser2Test >> testTraitPlainSimple [
 
 	| parser defString def |
@@ -232,7 +232,7 @@ CDFluidClassParser2Test >> testTraitPlainSimple [
 	self assert: def traitDefinition name equals: #MyTrait.
 ]
 
-{ #category : #'test traits' }
+{ #category : #'tests - (r) traits' }
 CDFluidClassParser2Test >> testTraitSequence [
 
 	| parser defString def |
@@ -250,7 +250,7 @@ CDFluidClassParser2Test >> testTraitSequence [
 
 ]
 
-{ #category : #'test slots' }
+{ #category : #'tests - (r) slots' }
 CDFluidClassParser2Test >> testTypedSlots [
 
 	| parser defString def |
