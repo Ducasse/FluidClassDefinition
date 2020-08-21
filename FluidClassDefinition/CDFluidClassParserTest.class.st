@@ -1,5 +1,5 @@
 Class {
-	#name : #CDFluidClassParser2Test,
+	#name : #CDFluidClassParserTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'classDefinition'
@@ -8,13 +8,13 @@ Class {
 }
 
 { #category : #running }
-CDFluidClassParser2Test >> classDefinitionParserClass [
+CDFluidClassParserTest >> classDefinitionParserClass [
 
-	^ CDFluidClassDefinitionParser2
+	^ CDFluidClassDefinitionParser
 ]
 
 { #category : #'tests - (r) simple class definition' }
-CDFluidClassParser2Test >> testClassSideDefinitionIsClassSide [
+CDFluidClassParserTest >> testClassSideDefinitionIsClassSide [
 
 	| def |
 	def := self classDefinitionParserClass parse: 'Point class
@@ -24,7 +24,7 @@ CDFluidClassParser2Test >> testClassSideDefinitionIsClassSide [
 ]
 
 { #category : #'tests - (r) class variables' }
-CDFluidClassParser2Test >> testClassVariables [
+CDFluidClassParserTest >> testClassVariables [
 
 	| parser defString def |
 	parser := self classDefinitionParserClass new.
@@ -38,7 +38,7 @@ CDFluidClassParser2Test >> testClassVariables [
 ]
 
 { #category : #'tests - (r) slots' }
-CDFluidClassParser2Test >> testComplexSlots [
+CDFluidClassParserTest >> testComplexSlots [
 
 	| parser defString def slot |
 	parser := self classDefinitionParserClass new.
@@ -54,7 +54,7 @@ CDFluidClassParser2Test >> testComplexSlots [
 ]
 
 { #category : #'tests - (r) slots' }
-CDFluidClassParser2Test >> testEmptySlots [
+CDFluidClassParserTest >> testEmptySlots [
 
 	| parser defString def |
 	parser := self classDefinitionParserClass new.
@@ -68,7 +68,7 @@ CDFluidClassParser2Test >> testEmptySlots [
 ]
 
 { #category : #'tests - (r) kinds' }
-CDFluidClassParser2Test >> testEphemeronSubclass [
+CDFluidClassParserTest >> testEphemeronSubclass [
 
 	| parser defString def |
 	parser := self classDefinitionParserClass new.
@@ -81,7 +81,7 @@ CDFluidClassParser2Test >> testEphemeronSubclass [
 ]
 
 { #category : #'tests - (r) simple class definition' }
-CDFluidClassParser2Test >> testInstanceDefinitionIsInstanceSide [
+CDFluidClassParserTest >> testInstanceDefinitionIsInstanceSide [
 
 	| def |
 	def := self classDefinitionParserClass parse: 'Object < #Point
@@ -91,7 +91,7 @@ CDFluidClassParser2Test >> testInstanceDefinitionIsInstanceSide [
 ]
 
 { #category : #'tests - (r) kinds' }
-CDFluidClassParser2Test >> testNormalSubclass [
+CDFluidClassParserTest >> testNormalSubclass [
 
 	| parser defString def |
 	parser := self classDefinitionParserClass new.
@@ -104,7 +104,7 @@ CDFluidClassParser2Test >> testNormalSubclass [
 ]
 
 { #category : #'tests - (r) sharedPools' }
-CDFluidClassParser2Test >> testSharedPools [
+CDFluidClassParserTest >> testSharedPools [
 
 	| parser defString def |
 	parser := self classDefinitionParserClass new.
@@ -118,7 +118,7 @@ CDFluidClassParser2Test >> testSharedPools [
 ]
 
 { #category : #'tests - (r) simple class definition' }
-CDFluidClassParser2Test >> testSimpleDefinitionClassName [
+CDFluidClassParserTest >> testSimpleDefinitionClassName [
 
 	| def |
 	def := self classDefinitionParserClass parse: 'Object < #Point
@@ -129,7 +129,7 @@ CDFluidClassParser2Test >> testSimpleDefinitionClassName [
 ]
 
 { #category : #'tests - (r) simple class definition' }
-CDFluidClassParser2Test >> testSimpleDefinitionClassNode [
+CDFluidClassParserTest >> testSimpleDefinitionClassNode [
 
 	| def |
 	def := self classDefinitionParserClass parse: 'Object < #Point
@@ -154,7 +154,7 @@ CDFluidClassParser2Test >> testSimpleDefinitionClassNode [
 ]
 
 { #category : #'tests - (r) simple class definition' }
-CDFluidClassParser2Test >> testSimpleDefinitionPackageIsCorrect [
+CDFluidClassParserTest >> testSimpleDefinitionPackageIsCorrect [
 	
 	| def |
 	def := self classDefinitionParserClass parse: 'Object < #Point
@@ -163,7 +163,7 @@ CDFluidClassParser2Test >> testSimpleDefinitionPackageIsCorrect [
 ]
 
 { #category : #'tests - (r) simple class definition' }
-CDFluidClassParser2Test >> testSimpleDefinitionSuperclassName [
+CDFluidClassParserTest >> testSimpleDefinitionSuperclassName [
 
 	| def |
 	def := self classDefinitionParserClass parse: 'Object < #Point
@@ -174,7 +174,7 @@ CDFluidClassParser2Test >> testSimpleDefinitionSuperclassName [
 ]
 
 { #category : #'tests - (r) slots' }
-CDFluidClassParser2Test >> testSimpleSlots [
+CDFluidClassParserTest >> testSimpleSlots [
 
 	| parser defString def |
 	parser := self classDefinitionParserClass new.
@@ -189,20 +189,20 @@ CDFluidClassParser2Test >> testSimpleSlots [
 ]
 
 { #category : #'test - tags' }
-CDFluidClassParser2Test >> testTag [
+CDFluidClassParserTest >> testTag [
 
 	| parser defString def |
 	parser := self classDefinitionParserClass new.
 	self skip.
 	defString := 'Object < #MyObject
-		tags: { ''tag1'' . ''tag2'' };
+		tag: ''tag1'';
 		package: #MyPackage'.
 	def := parser parse: defString.
-	self assert: (def tags statements collect: [:each | each value]) equals: #('tag1' 'tag2') asOrderedCollection
+	self assert: def tag equals: 'tag1'
 ]
 
 { #category : #'tests - (r) traits' }
-CDFluidClassParser2Test >> testTraitAlias [
+CDFluidClassParserTest >> testTraitAlias [
 
 	| parser defString def |
 	parser := self classDefinitionParserClass new.
@@ -220,7 +220,7 @@ CDFluidClassParser2Test >> testTraitAlias [
 ]
 
 { #category : #'tests - (r) traits' }
-CDFluidClassParser2Test >> testTraitEmpty [
+CDFluidClassParserTest >> testTraitEmpty [
 
 	| parser defString def |
 	parser := self classDefinitionParserClass new.
@@ -234,7 +234,7 @@ CDFluidClassParser2Test >> testTraitEmpty [
 ]
 
 { #category : #'tests - (r) traits' }
-CDFluidClassParser2Test >> testTraitPlainSimple [
+CDFluidClassParserTest >> testTraitPlainSimple [
 
 	| parser defString def |
 	parser := self classDefinitionParserClass new.
@@ -248,7 +248,7 @@ CDFluidClassParser2Test >> testTraitPlainSimple [
 ]
 
 { #category : #'tests - (r) traits' }
-CDFluidClassParser2Test >> testTraitSequence [
+CDFluidClassParserTest >> testTraitSequence [
 
 	| parser defString def |
 	parser := self classDefinitionParserClass new.
@@ -266,7 +266,7 @@ CDFluidClassParser2Test >> testTraitSequence [
 ]
 
 { #category : #'tests - (r) slots' }
-CDFluidClassParser2Test >> testTypedSlots [
+CDFluidClassParserTest >> testTypedSlots [
 
 	| parser defString def |
 	parser := self classDefinitionParserClass new.
@@ -281,7 +281,7 @@ CDFluidClassParser2Test >> testTypedSlots [
 ]
 
 { #category : #'tests - (r) kinds' }
-CDFluidClassParser2Test >> testVariableByteSubclass [
+CDFluidClassParserTest >> testVariableByteSubclass [
 
 	| parser defString def |
 	parser := self classDefinitionParserClass new.
@@ -294,7 +294,7 @@ CDFluidClassParser2Test >> testVariableByteSubclass [
 ]
 
 { #category : #'tests - (r) kinds' }
-CDFluidClassParser2Test >> testVariableSubclass [
+CDFluidClassParserTest >> testVariableSubclass [
 
 	| parser defString def |
 	parser := self classDefinitionParserClass new.
@@ -307,7 +307,7 @@ CDFluidClassParser2Test >> testVariableSubclass [
 ]
 
 { #category : #'tests - (r) kinds' }
-CDFluidClassParser2Test >> testVariableWordSubclass [
+CDFluidClassParserTest >> testVariableWordSubclass [
 
 	| parser defString def |
 	parser := self classDefinitionParserClass new.
@@ -320,7 +320,7 @@ CDFluidClassParser2Test >> testVariableWordSubclass [
 ]
 
 { #category : #'tests - (r) kinds' }
-CDFluidClassParser2Test >> testWeakSubclass [
+CDFluidClassParserTest >> testWeakSubclass [
 
 	| parser defString def |
 	parser := self classDefinitionParserClass new.

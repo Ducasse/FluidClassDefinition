@@ -11,6 +11,16 @@ Class {
 }
 
 { #category : #accessing }
+CDExtendedClassDefinitionNode >> tag [
+	^ tags
+]
+
+{ #category : #accessing }
+CDExtendedClassDefinitionNode >> tag: anObject [
+	tags := anObject
+]
+
+{ #category : #accessing }
 CDExtendedClassDefinitionNode >> tags [
 	^ tags
 ]

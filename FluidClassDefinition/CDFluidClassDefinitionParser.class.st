@@ -45,46 +45,65 @@ In Pharo, a metaclass cannot be created in isolation (yes we can programmaticall
 
 "
 Class {
-	#name : #CDFluidClassDefinitionParser2,
+	#name : #CDFluidClassDefinitionParser,
 	#superclass : #Object,
 	#instVars : [
 		'classDefinition',
 		'subclass'
 	],
+	#classVars : [
+		'On'
+	],
 	#category : #'FluidClassDefinition-Parser'
 }
 
 { #category : #parsing }
-CDFluidClassDefinitionParser2 class >> fromASTNode: aNode [ 
+CDFluidClassDefinitionParser class >> fromASTNode: aNode [ 
 	
 	^ self new parseRootNode: aNode
 ]
 
+{ #category : #testing }
+CDFluidClassDefinitionParser class >> initalize [
+
+	self setOn: false
+]
+
+{ #category : #testing }
+CDFluidClassDefinitionParser class >> isOn [ 
+	^ On
+]
+
 { #category : #parsing }
-CDFluidClassDefinitionParser2 class >> parse: aString [ 
+CDFluidClassDefinitionParser class >> parse: aString [ 
 	
 	^ self new parse: aString
 ]
 
+{ #category : #testing }
+CDFluidClassDefinitionParser class >> setOn: aBoolean [
+	On := aBoolean
+]
+
 { #category : #internal }
-CDFluidClassDefinitionParser2 >> beClassDefinition [
+CDFluidClassDefinitionParser >> beClassDefinition [
 		
 	classDefinition := CDClassDefinitionNode new
 ]
 
 { #category : #internal }
-CDFluidClassDefinitionParser2 >> beMetaclassDefinition [
+CDFluidClassDefinitionParser >> beMetaclassDefinition [
 		
 	classDefinition := CDMetaclassDefinitionNode new
 ]
 
 { #category : #'private class factory' }
-CDFluidClassDefinitionParser2 >> classNameNodeClass [
+CDFluidClassDefinitionParser >> classNameNodeClass [
 	^ CDClassNameNode
 ]
 
 { #category : #parsing }
-CDFluidClassDefinitionParser2 >> handleClassAndSuperclassOf: aNode [
+CDFluidClassDefinitionParser >> handleClassAndSuperclassOf: aNode [
 	
 	(self isInstanceSideDefinition: aNode receiver)
 		ifTrue: [ 
@@ -95,7 +114,7 @@ CDFluidClassDefinitionParser2 >> handleClassAndSuperclassOf: aNode [
 ]
 
 { #category : #testing }
-CDFluidClassDefinitionParser2 >> isInstanceSideDefinition: aRBMessageNode [
+CDFluidClassDefinitionParser >> isInstanceSideDefinition: aRBMessageNode [
 	"Based on the Point or Point class structure, returns whether the definition is a class or instance side definition."
 	"Depending on the chosen syntax for class side we could make sure that we are looking for <"
 	^ aRBMessageNode isMessage and: [ aRBMessageNode selector = #< ]
@@ -103,13 +122,13 @@ CDFluidClassDefinitionParser2 >> isInstanceSideDefinition: aRBMessageNode [
 ]
 
 { #category : #accessing }
-CDFluidClassDefinitionParser2 >> package: aNode [ 
+CDFluidClassDefinitionParser >> package: aNode [ 
 	
 	classDefinition packageNameNode: aNode astNode: aNode
 ]
 
 { #category : #'parsing main' }
-CDFluidClassDefinitionParser2 >> parse: aString [ 
+CDFluidClassDefinitionParser >> parse: aString [ 
 	
 	| expressionTree |
 	expressionTree := RBParser parseExpression: aString.
@@ -119,7 +138,7 @@ CDFluidClassDefinitionParser2 >> parse: aString [
 ]
 
 { #category : #parsing }
-CDFluidClassDefinitionParser2 >> parseClassName: aNode [
+CDFluidClassDefinitionParser >> parseClassName: aNode [
 	| className superclassNode |
 	className := (aNode isVariable
 		ifTrue: [ aNode name ]
@@ -131,14 +150,14 @@ CDFluidClassDefinitionParser2 >> parseClassName: aNode [
 ]
 
 { #category : #parsing }
-CDFluidClassDefinitionParser2 >> parseClassName: aNode withType: aSymbol [
+CDFluidClassDefinitionParser >> parseClassName: aNode withType: aSymbol [
 	
 	self parseClassName: aNode.
 	classDefinition classKind: aSymbol
 ]
 
 { #category : #parsing }
-CDFluidClassDefinitionParser2 >> parseInstanceVariablesFromNode: aNode [
+CDFluidClassDefinitionParser >> parseInstanceVariablesFromNode: aNode [
 	| slots slotNodes instanceVariablesString |
 	instanceVariablesString := aNode value.
 	slots := instanceVariablesString substrings.
@@ -157,13 +176,13 @@ CDFluidClassDefinitionParser2 >> parseInstanceVariablesFromNode: aNode [
 ]
 
 { #category : #parsing }
-CDFluidClassDefinitionParser2 >> parseLayout: aNode [
+CDFluidClassDefinitionParser >> parseLayout: aNode [
 
 	classDefinition classKind: aNode binding value kind
 ]
 
 { #category : #parsing }
-CDFluidClassDefinitionParser2 >> parsePoolDictionariesFromNode: aNode [
+CDFluidClassDefinitionParser >> parsePoolDictionariesFromNode: aNode [
 	| shareds sharedPoolNodes sharedPoolString |
 	sharedPoolString := aNode value.
 	shareds := sharedPoolString substrings.
@@ -180,7 +199,7 @@ CDFluidClassDefinitionParser2 >> parsePoolDictionariesFromNode: aNode [
 ]
 
 { #category : #parsing }
-CDFluidClassDefinitionParser2 >> parseRootNode: expressionTree [
+CDFluidClassDefinitionParser >> parseRootNode: expressionTree [
 	expressionTree extractClassDefinitionFor: self. 
 	classDefinition originalNode: expressionTree.
 	
@@ -189,7 +208,7 @@ CDFluidClassDefinitionParser2 >> parseRootNode: expressionTree [
 ]
 
 { #category : #'parsing main' }
-CDFluidClassDefinitionParser2 >> parseSelectorPart: aString withArgument: aNode [ 
+CDFluidClassDefinitionParser >> parseSelectorPart: aString withArgument: aNode [ 
 	"We could do this with reflection, or with a dictionary and closures.
 	I chose to use a series of if for readability only."
 	
@@ -216,7 +235,7 @@ CDFluidClassDefinitionParser2 >> parseSelectorPart: aString withArgument: aNode 
 ]
 
 { #category : #parsing }
-CDFluidClassDefinitionParser2 >> parseSharedPoolsFromNode: aNode [
+CDFluidClassDefinitionParser >> parseSharedPoolsFromNode: aNode [
 	| shareds sharedPoolNodes sharedPoolString |
 	sharedPoolString := aNode value.
 	shareds := sharedPoolString substrings.
@@ -233,7 +252,7 @@ CDFluidClassDefinitionParser2 >> parseSharedPoolsFromNode: aNode [
 ]
 
 { #category : #parsing }
-CDFluidClassDefinitionParser2 >> parseSharedVariableNames: aNode [ 
+CDFluidClassDefinitionParser >> parseSharedVariableNames: aNode [ 
 	
 	| slotNodes classVariablesString |
 	classVariablesString := aNode sourceCode.
@@ -252,7 +271,7 @@ CDFluidClassDefinitionParser2 >> parseSharedVariableNames: aNode [
 ]
 
 { #category : #parsing }
-CDFluidClassDefinitionParser2 >> parseSlotNode: aRBMessageNode [
+CDFluidClassDefinitionParser >> parseSlotNode: aRBMessageNode [
 	"what ugly method! Pay attention start and stop should be tested and probably adjusted!"
 
 	"when a slot is just 'inst'"
@@ -309,14 +328,14 @@ CDFluidClassDefinitionParser2 >> parseSlotNode: aRBMessageNode [
 ]
 
 { #category : #parsing }
-CDFluidClassDefinitionParser2 >> parseSlotsNodesFromArrayNode: aRBArrayNode [
+CDFluidClassDefinitionParser >> parseSlotsNodesFromArrayNode: aRBArrayNode [
 	
 	aRBArrayNode statements do: [ :slotStatement |
 		self parseSlotNode: slotStatement ]
 ]
 
 { #category : #parsing }
-CDFluidClassDefinitionParser2 >> parseSuperclassNode: aSuperclassNode [
+CDFluidClassDefinitionParser >> parseSuperclassNode: aSuperclassNode [
 	| aSuperclassName superclassNode |
 	aSuperclassName := aSuperclassNode isLiteralNode
 		ifTrue: [ nil ]
@@ -330,7 +349,7 @@ CDFluidClassDefinitionParser2 >> parseSuperclassNode: aSuperclassNode [
 ]
 
 { #category : #parsing }
-CDFluidClassDefinitionParser2 >> parseTraitDefinitionFromNode: aNode [
+CDFluidClassDefinitionParser >> parseTraitDefinitionFromNode: aNode [
 	
 	| traitComposition |
 	traitComposition := CDTraitCompositionBuilder new buildFrom: aNode.	
@@ -338,7 +357,7 @@ CDFluidClassDefinitionParser2 >> parseTraitDefinitionFromNode: aNode [
 ]
 
 { #category : #internal }
-CDFluidClassDefinitionParser2 >> setAdequateClassDefinitionFrom: expressionTree [
+CDFluidClassDefinitionParser >> setAdequateClassDefinitionFrom: expressionTree [
 	"set a class or metaclass class definition as class definition object."
 	(self isInstanceSideDefinition: expressionTree)
 		ifTrue: [ self beClassDefinition ]
@@ -346,23 +365,23 @@ CDFluidClassDefinitionParser2 >> setAdequateClassDefinitionFrom: expressionTree 
 ]
 
 { #category : #'private class factory' }
-CDFluidClassDefinitionParser2 >> sharedPoolNodeClass [
+CDFluidClassDefinitionParser >> sharedPoolNodeClass [
 	^ CDSharedPoolNode
 ]
 
 { #category : #'private class factory' }
-CDFluidClassDefinitionParser2 >> slotInitializationNodeClass [
+CDFluidClassDefinitionParser >> slotInitializationNodeClass [
 
 	^ RBSlotInitializationNode 
 ]
 
 { #category : #'private class factory' }
-CDFluidClassDefinitionParser2 >> slotNodeClass [
+CDFluidClassDefinitionParser >> slotNodeClass [
 	^ CDSlotNode
 ]
 
 { #category : #parsing }
-CDFluidClassDefinitionParser2 >> visitCascadeNode: aRBCascadeNode [ 
+CDFluidClassDefinitionParser >> visitCascadeNode: aRBCascadeNode [ 
 	
 	self handleClassAndSuperclassOf: aRBCascadeNode.	
 	aRBCascadeNode messages do: 
@@ -373,7 +392,7 @@ CDFluidClassDefinitionParser2 >> visitCascadeNode: aRBCascadeNode [
 ]
 
 { #category : #parsing }
-CDFluidClassDefinitionParser2 >> visitMessageNode: aRBMessageNode [
+CDFluidClassDefinitionParser >> visitMessageNode: aRBMessageNode [
 
 	"Object < #Point
 			package: ''Kernel-BasicObjects'''.
