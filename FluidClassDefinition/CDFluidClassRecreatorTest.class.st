@@ -65,6 +65,24 @@ CDFluidClassRecreatorTest >> testPoint [
 	
 ]
 
+{ #category : #'tests - unnecessary values' }
+CDFluidClassRecreatorTest >> testPointMinimalInformation [
+	"I would like to be able to test if I provide too many empty values that
+	the default empty values are just ignored."
+	| class |
+	self skip.
+	class := (Object < #Point2
+	slots: {#x . #y};
+	tag: 'BasicObjects';
+	package: 'Kernel') build.
+	self flag: #pablo. 
+	self assert: class asFluidDefinitionString equals: 'Object < #Point2
+	slots: {#x . #y};
+	tag: ''BasicObjects'';
+	package: ''Kernel'''
+	
+]
+
 { #category : #tests }
 CDFluidClassRecreatorTest >> testText [
 
