@@ -4,6 +4,10 @@
 - fix class side recreator
 - fix ugly compilation hack
 - install new class parser
+
+- (Smalltalk compiler evaluate: 'Object < #MyObject22
+		sharedVariables: { #A . #B };
+		package: #MyPackage') build.
 "
 Class {
 	#name : #CDQuestion,
