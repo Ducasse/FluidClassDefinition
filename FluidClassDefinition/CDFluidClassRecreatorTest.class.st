@@ -33,9 +33,9 @@ CDFluidClassRecreatorTest >> testByteString [
 CDFluidClassRecreatorTest >> testChronologyConstants [
 	
 	self assert: ChronologyConstants asFluidDefinitionString equals: 'SharedPool < #ChronologyConstants
-	sharedVariables: { #NanosInSecond. #MonthNames. #SecondsInHour. #SecondsInDay. #SqueakEpoch. #NanosInMillisecond. #DayNames. #DaysInMonth. #SecondsInMinute. #MicrosecondsInDay };
+	sharedVariables: { #NanosInSecond . #MonthNames . #SecondsInHour . #SecondsInDay . #SqueakEpoch . #NanosInMillisecond . #DayNames . #DaysInMonth . #SecondsInMinute . #MicrosecondsInDay };
 	tag: ''Chronology'';
-	package: ''Kernel''' 
+	package: ''Kernel'''
 ]
 
 { #category : #tests }

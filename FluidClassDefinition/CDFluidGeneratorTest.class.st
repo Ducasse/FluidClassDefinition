@@ -9,6 +9,6 @@ Class {
 
 { #category : #tests }
 CDFluidGeneratorTest >> testRecreateSimpleClass [
-	self halt.
+	self skip.
 	CDFluidGenerator new visit: ''
 ]
