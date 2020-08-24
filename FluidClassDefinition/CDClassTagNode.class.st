@@ -1,5 +1,5 @@
 Class {
-	#name : #CDClassTag,
+	#name : #CDClassTagNode,
 	#superclass : #CDNode,
 	#instVars : [
 		'name'
@@ -8,11 +8,11 @@ Class {
 }
 
 { #category : #accessing }
-CDClassTag >> name [
+CDClassTagNode >> name [
 	^ name
 ]
 
 { #category : #accessing }
-CDClassTag >> name: aString [ 
+CDClassTagNode >> name: aString [ 
 	name := aString
 ]

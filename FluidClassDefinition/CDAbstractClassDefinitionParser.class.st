@@ -9,7 +9,7 @@ Class {
 		'classDefinition',
 		'subclass'
 	],
-	#category : #'FluidClassDefinition-Extensions'
+	#category : #'FluidClassDefinition-New Nodes'
 }
 
 { #category : #'instance creation' }

@@ -4,8 +4,14 @@ Class {
 	#instVars : [
 		'packageName'
 	],
-	#category : #'FluidClassDefinition-Extensions'
+	#category : #'FluidClassDefinition-New Nodes'
 }
+
+{ #category : #visitor }
+CDPackageNode >> acceptVisitor: aProgramNodeVisitor [
+	
+	aProgramNodeVisitor visitPackage: self
+]
 
 { #category : #accessing }
 CDPackageNode >> packageName [

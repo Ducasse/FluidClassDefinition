@@ -101,43 +101,19 @@ CDFluidClassDefinitionParser >> classNameNodeClass [
 	^ CDClassNameNode
 ]
 
-{ #category : #parsing }
+{ #category : #'handling  nodes' }
 CDFluidClassDefinitionParser >> handleClassAndSuperclassOf: aNode [
 	
 	(self isInstanceSideDefinition: aNode receiver)
 		ifTrue: [ 
-			self parseSuperclassNode: aNode receiver receiver.
-			self parseClassName: aNode receiver arguments first  
+			self handleSuperclassNode: aNode receiver receiver.
+			self handleClassName: aNode receiver arguments first  
 			]
-		ifFalse: [ self parseClassName: aNode receiver receiver ].
+		ifFalse: [ self handleClassName: aNode receiver receiver ].
 ]
 
-{ #category : #testing }
-CDFluidClassDefinitionParser >> isInstanceSideDefinition: aRBMessageNode [
-	"Based on the Point or Point class structure, returns whether the definition is a class or instance side definition."
-	"Depending on the chosen syntax for class side we could make sure that we are looking for <"
-	^ aRBMessageNode isMessage and: [ aRBMessageNode selector = #< ]
-	
-]
-
-{ #category : #accessing }
-CDFluidClassDefinitionParser >> package: aNode [ 
-	
-	classDefinition packageNameNode: aNode astNode: aNode
-]
-
-{ #category : #'parsing main' }
-CDFluidClassDefinitionParser >> parse: aString [ 
-	
-	| expressionTree |
-	expressionTree := RBParser parseExpression: aString.
-	expressionTree doSemanticAnalysis.
-	
-	^ self parseRootNode: expressionTree
-]
-
-{ #category : #parsing }
-CDFluidClassDefinitionParser >> parseClassName: aNode [
+{ #category : #'handling  nodes' }
+CDFluidClassDefinitionParser >> handleClassName: aNode [
 	| className superclassNode |
 	className := (aNode isVariable
 		ifTrue: [ aNode name ]
@@ -148,15 +124,8 @@ CDFluidClassDefinitionParser >> parseClassName: aNode [
 	classDefinition className: className astNode: superclassNode
 ]
 
-{ #category : #parsing }
-CDFluidClassDefinitionParser >> parseClassName: aNode withType: aSymbol [
-	
-	self parseClassName: aNode.
-	classDefinition classKind: aSymbol
-]
-
-{ #category : #parsing }
-CDFluidClassDefinitionParser >> parseInstanceVariablesFromNode: aNode [
+{ #category : #'handling  nodes' }
+CDFluidClassDefinitionParser >> handleInstanceVariablesFromNode: aNode [
 	| slots slotNodes instanceVariablesString |
 	instanceVariablesString := aNode value.
 	slots := instanceVariablesString substrings.
@@ -174,14 +143,20 @@ CDFluidClassDefinitionParser >> parseInstanceVariablesFromNode: aNode [
 	classDefinition slots: slotNodes
 ]
 
-{ #category : #parsing }
-CDFluidClassDefinitionParser >> parseLayout: aNode [
+{ #category : #'handling  nodes' }
+CDFluidClassDefinitionParser >> handleLayout: aNode [
 
 	classDefinition classKind: aNode binding value kind
 ]
 
-{ #category : #parsing }
-CDFluidClassDefinitionParser >> parsePoolDictionariesFromNode: aNode [
+{ #category : #accessing }
+CDFluidClassDefinitionParser >> handlePackage: aNode [ 
+	
+	classDefinition packageNameNode: aNode astNode: aNode
+]
+
+{ #category : #'handling  nodes' }
+CDFluidClassDefinitionParser >> handleSharedPoolsFromNode: aNode [
 	| shareds sharedPoolNodes sharedPoolString |
 	sharedPoolString := aNode value.
 	shareds := sharedPoolString substrings.
@@ -197,61 +172,8 @@ CDFluidClassDefinitionParser >> parsePoolDictionariesFromNode: aNode [
 	classDefinition sharedPools: sharedPoolNodes
 ]
 
-{ #category : #parsing }
-CDFluidClassDefinitionParser >> parseRootNode: expressionTree [
-	expressionTree extractClassDefinitionFor: self. 
-	classDefinition originalNode: expressionTree.
-	
-	expressionTree acceptVisitor: self.
-	^ classDefinition
-]
-
-{ #category : #'parsing main' }
-CDFluidClassDefinitionParser >> parseSelectorPart: aString withArgument: aNode [ 
-	"We could do this with reflection, or with a dictionary and closures.
-	I chose to use a series of if for readability only."
-	
-
-	aString =	 #slots:
-		ifTrue: [ ^ self parseSlotsNodesFromArrayNode: aNode ].
-	aString =	 #sharedVariables: 
-		ifTrue: [ ^ self parseSharedVariableNames: aNode ].	
-	aString =	 #package:
-		ifTrue: [ ^ self package: aNode ].
-	aString = #layout:
-		ifTrue: [ ^ self parseLayout: aNode ].	
-	aString = #tag: 
-		ifTrue: [  ^self parseTag: aNode ].
-	aString =	 #uses:
-		ifTrue: [ ^ self parseTraitDefinitionFromNode: aNode ].
-	aString =	 #sharedPools:
-		ifTrue: [ ^ self parseSharedPoolsFromNode: aNode ].
-	
-	CDUnrecognizedClassPart new
-		classDefinition: self; 
-		unrecognizedPart: aString;
-		signal
-]
-
-{ #category : #parsing }
-CDFluidClassDefinitionParser >> parseSharedPoolsFromNode: aNode [
-	| shareds sharedPoolNodes sharedPoolString |
-	sharedPoolString := aNode value.
-	shareds := sharedPoolString substrings.
-	sharedPoolNodes := shareds
-		collect: [ :slotName | 
-			| start |
-			start := aNode start + (sharedPoolString findString: slotName).
-			self sharedPoolNodeClass
-				node: aNode
-				name: slotName
-				start: start
-				stop: start + slotName size ].
-	classDefinition sharedPools: sharedPoolNodes
-]
-
-{ #category : #parsing }
-CDFluidClassDefinitionParser >> parseSharedVariableNames: aNode [ 
+{ #category : #'handling  nodes' }
+CDFluidClassDefinitionParser >> handleSharedVariableNames: aNode [ 
 	
 	| slotNodes classVariablesString |
 	classVariablesString := aNode sourceCode.
@@ -269,8 +191,8 @@ CDFluidClassDefinitionParser >> parseSharedVariableNames: aNode [
 	classDefinition sharedSlots: slotNodes
 ]
 
-{ #category : #parsing }
-CDFluidClassDefinitionParser >> parseSlotNode: aRBMessageNode [
+{ #category : #'handling  nodes' }
+CDFluidClassDefinitionParser >> handleSlotNode: aRBMessageNode [
 
 	"what ugly method! Pay attention start and stop should be tested and probably adjusted!"
 
@@ -323,15 +245,15 @@ CDFluidClassDefinitionParser >> parseSlotNode: aRBMessageNode [
 				^ self ] ]
 ]
 
-{ #category : #parsing }
-CDFluidClassDefinitionParser >> parseSlotsNodesFromArrayNode: aRBArrayNode [
+{ #category : #'handling  nodes' }
+CDFluidClassDefinitionParser >> handleSlotsNodesFromArrayNode: aRBArrayNode [
 	
 	aRBArrayNode statements do: [ :slotStatement |
-		self parseSlotNode: slotStatement ]
+		self handleSlotNode: slotStatement ]
 ]
 
-{ #category : #parsing }
-CDFluidClassDefinitionParser >> parseSuperclassNode: aSuperclassNode [
+{ #category : #'handling  nodes' }
+CDFluidClassDefinitionParser >> handleSuperclassNode: aSuperclassNode [
 	| aSuperclassName superclassNode |
 	aSuperclassName := aSuperclassNode isLiteralNode
 		ifTrue: [ nil ]
@@ -344,18 +266,72 @@ CDFluidClassDefinitionParser >> parseSuperclassNode: aSuperclassNode [
 		astNode: superclassNode
 ]
 
-{ #category : #parsing }
-CDFluidClassDefinitionParser >> parseTag: aNode [
+{ #category : #'handling  nodes' }
+CDFluidClassDefinitionParser >> handleTag: aNode [
 
-	classDefinition tag: (CDClassTag new name: aNode value)
+	classDefinition tag: (CDClassTagNode new name: aNode value)
 ]
 
-{ #category : #parsing }
-CDFluidClassDefinitionParser >> parseTraitDefinitionFromNode: aNode [
+{ #category : #'handling  nodes' }
+CDFluidClassDefinitionParser >> handleTraitDefinitionFromNode: aNode [
 	
 	| traitComposition |
 	traitComposition := CDTraitCompositionBuilder new buildFrom: aNode.	
 	classDefinition traitDefinition: traitComposition.
+]
+
+{ #category : #testing }
+CDFluidClassDefinitionParser >> isInstanceSideDefinition: aRBMessageNode [
+	"Based on the Point or Point class structure, returns whether the definition is a class or instance side definition."
+	"Depending on the chosen syntax for class side we could make sure that we are looking for <"
+	^ aRBMessageNode isMessage and: [ aRBMessageNode selector = #< ]
+	
+]
+
+{ #category : #'parsing main' }
+CDFluidClassDefinitionParser >> parse: aString [ 
+	
+	| expressionTree |
+	expressionTree := RBParser parseExpression: aString.
+	expressionTree doSemanticAnalysis.
+	
+	^ self parseRootNode: expressionTree
+]
+
+{ #category : #'parsing-internal' }
+CDFluidClassDefinitionParser >> parseRootNode: expressionTree [
+	expressionTree extractClassDefinitionFor: self. 
+	classDefinition originalNode: expressionTree.
+	
+	expressionTree acceptVisitor: self.
+	^ classDefinition
+]
+
+{ #category : #'parsing-internal' }
+CDFluidClassDefinitionParser >> parseSelectorPart: aString withArgument: aNode [ 
+	"We could do this with reflection, or with a dictionary and closures.
+	I chose to use a series of if for readability only."
+	
+
+	aString =	 #slots:
+		ifTrue: [ ^ self handleSlotsNodesFromArrayNode: aNode ].
+	aString =	 #sharedVariables: 
+		ifTrue: [ ^ self handleSharedVariableNames: aNode ].	
+	aString =	 #package:
+		ifTrue: [ ^ self handlePackage: aNode ].
+	aString = #layout:
+		ifTrue: [ ^ self handleLayout: aNode ].	
+	aString = #tag: 
+		ifTrue: [  ^self handleTag: aNode ].
+	aString =	 #uses:
+		ifTrue: [ ^ self handleTraitDefinitionFromNode: aNode ].
+	aString =	 #sharedPools:
+		ifTrue: [ ^ self handleSharedPoolsFromNode: aNode ].
+	
+	CDUnrecognizedClassPart new
+		classDefinition: self; 
+		unrecognizedPart: aString;
+		signal
 ]
 
 { #category : #internal }
@@ -382,7 +358,7 @@ CDFluidClassDefinitionParser >> slotNodeClass [
 	^ CDSlotNode
 ]
 
-{ #category : #parsing }
+{ #category : #'parsing-internal' }
 CDFluidClassDefinitionParser >> visitCascadeNode: aRBCascadeNode [ 
 	
 	self handleClassAndSuperclassOf: aRBCascadeNode.	
@@ -393,7 +369,7 @@ CDFluidClassDefinitionParser >> visitCascadeNode: aRBCascadeNode [
 			self parseSelectorPart: selectorPart withArgument: argument ] ]
 ]
 
-{ #category : #parsing }
+{ #category : #'parsing-internal' }
 CDFluidClassDefinitionParser >> visitMessageNode: aRBMessageNode [
 
 	"Object < #Point
