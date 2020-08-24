@@ -37,8 +37,7 @@ In Pharo, a metaclass cannot be created in isolation (yes we can programmaticall
 ``` 
 	Point class
 		uses: TraitX;
-		slots: { foo };
-		package: ''Kernel-BasicObjects'''
+		slots: { foo }
 ```	
 
 
@@ -221,8 +220,8 @@ CDFluidClassDefinitionParser >> parseSelectorPart: aString withArgument: aNode [
 		ifTrue: [ ^ self package: aNode ].
 	aString = #layout:
 		ifTrue: [ ^ self parseLayout: aNode ].	
-	aString = #tags: 
-		ifTrue: [  ^self "do nothing since class definition do not store them." ].
+	aString = #tag: 
+		ifTrue: [  ^self parseTag: aNode ].
 	aString =	 #uses:
 		ifTrue: [ ^ self parseTraitDefinitionFromNode: aNode ].
 	aString =	 #sharedPools:
@@ -343,6 +342,12 @@ CDFluidClassDefinitionParser >> parseSuperclassNode: aSuperclassNode [
 	classDefinition
 		superclassName: aSuperclassName
 		astNode: superclassNode
+]
+
+{ #category : #parsing }
+CDFluidClassDefinitionParser >> parseTag: aNode [
+
+	classDefinition tag: (CDClassTag new name: aNode value)
 ]
 
 { #category : #parsing }

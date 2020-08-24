@@ -4,5 +4,5 @@ Class {
 	#instVars : [
 		'stream'
 	],
-	#category : #'FluidClassDefinition-Parser'
+	#category : #'FluidClassDefinition-Visitor'
 }

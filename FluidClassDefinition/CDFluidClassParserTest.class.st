@@ -18,7 +18,7 @@ CDFluidClassParserTest >> testClassSideDefinitionIsClassSide [
 
 	| def |
 	def := self classDefinitionParserClass parse: 'Point class
-			package: ''Kernel-BasicObjects'''.
+			slot: {  }'.
 
 	self assert: def isClassSideDefinition 
 ]
@@ -198,7 +198,7 @@ CDFluidClassParserTest >> testTag [
 		tag: ''tag1'';
 		package: #MyPackage'.
 	def := parser parse: defString.
-	self assert: def tag equals: 'tag1'
+	self assert: def tag name equals: 'tag1'
 ]
 
 { #category : #'tests - (r) traits' }
