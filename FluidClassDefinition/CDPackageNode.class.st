@@ -1,3 +1,6 @@
+"
+I'm a simple node to represent the package part in a class definition.
+"
 Class {
 	#name : #CDPackageNode,
 	#superclass : #CDNode,
