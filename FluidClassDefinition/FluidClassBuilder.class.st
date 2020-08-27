@@ -86,7 +86,7 @@ FluidClassBuilder >> classNameToBuild: aSymbol [
 FluidClassBuilder >> fillShiftClassBuilder [ 
 
 	shiftClassBuilder := ShiftClassBuilder new
-		buildEnvironment: self class environment; "for now"
+		buildEnvironment: ShSmalltalkGlobalsEnvironment new;
 		name: classNameToBuild;
 		superclass: superclassToBuild;
 		category: packageName.
@@ -155,7 +155,7 @@ FluidClassBuilder >> sharedVariablesToBuild [
 { #category : #building }
 FluidClassBuilder >> shiftClassBuilder [ 
 
-	^ shiftClassBuilder
+	^ shiftClassBuilder 
 ]
 
 { #category : #accessing }
