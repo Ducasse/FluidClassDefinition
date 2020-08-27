@@ -49,7 +49,8 @@ Class {
 		'traitComposition',
 		'sharedPools',
 		'shiftClassBuilder',
-		'stBuilder'
+		'stBuilder',
+		'name'
 	],
 	#category : #'FluidClassDefinition-Builder'
 }
@@ -179,6 +180,11 @@ FluidClassBuilder >> tag: aString [
 { #category : #accessing }
 FluidClassBuilder >> tagToBuild [
 	^ tagToBuild
+]
+
+{ #category : #accessing }
+FluidClassBuilder >> traitToBuild: aString [ 
+	name := aString
 ]
 
 { #category : #accessing }
