@@ -24,23 +24,15 @@ And we should send build to the fluidclassbuilder to actually kick the building.
 The mandatory information (name, superclass, package) are systematically passed to the builder.
 Others are checked first and when available passed. 	
 	
-	
+### To install a class (to be used later)
 
-### Todo
+```
+ShiftClassInstaller new makeWithBuilder: (Object < #Point33 
+ slots: { #x . #y };
+ tag: 'Basics';
+ package: 'Kernel') shiftClassBuilder	
+```
 
-Hi Stef, 
-   the classBuilder is made in a way that it always produces a valid class. For all its ""parameters"" it has default values. The only needed one is the className. It can be used direclty creating it by ShiftClassBuilder new, and it can already create and configure the class. It does not install it in the environment (that is done by the ClassInstaller). 
-The use of 
-ShiftClassInstaller make: [ :builder| ...] is just to get a builder that is configured for such installer. 
-Maybe this part of the api can be upgraded, so I can give a builder to the installer and say, install whatever this builder creates. 
-For the example:
-ShiftClassBuilder new
-    buildEnvironment: (ShSmalltalkGlobalsEnvironment new);
-    name: #CDAbstractClassDefinitionParser;
-    slots: { #classDefinition. #subclass };
-    category: 'FluidClassDefinition-Foo';
-    build
-The build message will create the class, until that point nothing is used. I am seeing some things I will like to change, for example I like the split of the package and the tag (and replace the old category).
 "
 Class {
 	#name : #FluidClassBuilder,
