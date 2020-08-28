@@ -375,9 +375,6 @@ CDFluidClassDefinitionParser >> visitMessageNode: aRBMessageNode [
 	"Object < #Point
 			package: ''Kernel-BasicObjects'''.
 	or 
-	
-	Class side definition to be discussed.
-	 either 
 	Object < #Point
 			uses: TraitX;
 			slots: { foo };
@@ -386,11 +383,11 @@ CDFluidClassDefinitionParser >> visitMessageNode: aRBMessageNode [
 	or 
 	Point class
 		uses: TraitX;
-		slots: { foo };
-		package: ''Kernel-BasicObjects'''
+		slots: { foo }
+		
 	With this one we do not pass via the builder.
+	"		
 	
-		"		
 	self handleClassAndSuperclassOf: aRBMessageNode.
 	
 	

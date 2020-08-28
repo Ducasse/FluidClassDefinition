@@ -188,7 +188,7 @@ CDFluidClassParserTest >> testSimpleSlots [
 	self assert: def slots second name equals: #b. 
 ]
 
-{ #category : #'test - tags' }
+{ #category : #'tests - (r) tags' }
 CDFluidClassParserTest >> testTag [
 
 	| parser defString def |
