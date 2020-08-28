@@ -282,10 +282,12 @@ CDFluidClassDefinitionParser >> handleTag: aNode [
 ]
 
 { #category : #'handling  nodes' }
-CDFluidClassDefinitionParser >> handleTraitDefinitionFromNode: aNode [
+CDFluidClassDefinitionParser >> handleTraitUsesFromNode: aNode [
 	
 	| traitComposition |
-	traitComposition := CDTraitCompositionBuilder new buildFrom: aNode.	
+
+	aNode isDynamicArray and: [aNode allStatements ifEmpty: [ ^self  ]].
+ 	traitComposition := CDTraitCompositionBuilder new buildFrom: aNode.	
 	definition traitDefinition: traitComposition.
 ]
 
@@ -342,7 +344,7 @@ CDFluidClassDefinitionParser >> parseSelectorPart: aString withArgument: aNode [
 	aString = #tag: 
 		ifTrue: [  ^self handleTag: aNode ].
 	aString =	 #uses:
-		ifTrue: [ ^ self handleTraitDefinitionFromNode: aNode ].
+		ifTrue: [ ^ self handleTraitUsesFromNode: aNode ].
 	aString =	 #sharedPools:
 		ifTrue: [ ^ self handleSharedPoolsFromNode: aNode ].
 	

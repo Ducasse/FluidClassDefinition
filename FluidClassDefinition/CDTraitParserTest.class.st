@@ -77,7 +77,21 @@ CDTraitParserTest >> testWithEmptyUses [
 			package: ''Kernel-BasicObjects'''.
 	"please rename class name!!! it should be class"
 	self assert: def className equals: #TPoint2.
-	self assert: def traitDefinition equals: 1.
+	self assert: def traitDefinition equals: nil.
+	self assert: def packageName equals:  #'Kernel-BasicObjects'
+
+]
+
+{ #category : #'tests - trait users' }
+CDTraitParserTest >> testWithUses [
+
+	| def |
+	def := self classDefinitionParserClass parse: 'Trait << #TPoint2
+			uses: TViewInModel;
+			package: ''Kernel-BasicObjects'''.
+	"please rename class name!!! it should be class"
+	self assert: def className equals: #TPoint2.
+	self assert: def traitDefinition name equals: #TViewInModel.
 	self assert: def packageName equals:  #'Kernel-BasicObjects'
 
 ]

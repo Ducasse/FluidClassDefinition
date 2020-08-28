@@ -229,7 +229,7 @@ CDFluidClassParserTest >> testTraitEmpty [
 		package: #MyPackage'.
 		
 	def := parser parse: defString.
-	self assert: def traitDefinition tokens equals: nil
+	self assert: def traitDefinition equals: nil
 ]
 
 { #category : #'tests - (r) traits' }
