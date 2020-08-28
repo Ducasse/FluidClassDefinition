@@ -118,7 +118,7 @@ CDFluidClassParserTest >> testSharedPools [
 ]
 
 { #category : #'tests - (r) simple class definition' }
-CDFluidClassParserTest >> testSimpleDefinitionClassName [
+CDFluidClassParserTest >> testSimpleDefinition [
 
 	| def |
 	def := self classDefinitionParserClass parse: 'Object < #Point
