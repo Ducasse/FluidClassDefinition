@@ -30,8 +30,7 @@ Class >> asFluidDefinitionString [
 				nextPutAll: ';';
 				cr ].
 		
-		self slots ifNotEmpty: 
-			[ 
+		self slots ifNotEmpty: [ 
 					s tab.
 					s nextPutAll: 'slots: {'. 
 					self slots do: [ :each | s nextPutAll: each definitionString ]

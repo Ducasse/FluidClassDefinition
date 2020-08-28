@@ -10,7 +10,7 @@ Class {
 	#category : #'FluidClassDefinition-Parser'
 }
 
-{ #category : #tests }
+{ #category : #'tests - classes' }
 CDFluidClassRecreatorTest >> testArray [
 
 	self assert: Array asFluidDefinitionString equals: 'ArrayedCollection < #Array
@@ -19,7 +19,7 @@ CDFluidClassRecreatorTest >> testArray [
 	package: ''Collections-Sequenceable'''
 ]
 
-{ #category : #tests }
+{ #category : #'tests - classes' }
 CDFluidClassRecreatorTest >> testByteString [
 
 	self assert: ByteString asFluidDefinitionString equals: 'String < #ByteString
@@ -29,7 +29,7 @@ CDFluidClassRecreatorTest >> testByteString [
 	package: ''Collections-Strings'''  
 ]
 
-{ #category : #tests }
+{ #category : #'tests - classes' }
 CDFluidClassRecreatorTest >> testChronologyConstants [
 	
 	self assert: ChronologyConstants asFluidDefinitionString equals: 'SharedPool < #ChronologyConstants
@@ -38,7 +38,7 @@ CDFluidClassRecreatorTest >> testChronologyConstants [
 	package: ''Kernel'''
 ]
 
-{ #category : #tests }
+{ #category : #'tests - classes' }
 CDFluidClassRecreatorTest >> testMetaclass [
 	
 	self assert: Metaclass asFluidDefinitionString equals: 'ClassDescription < #Metaclass
@@ -47,7 +47,7 @@ CDFluidClassRecreatorTest >> testMetaclass [
 	package: ''Kernel''' 
 ]
 
-{ #category : #tests }
+{ #category : #'tests - classes' }
 CDFluidClassRecreatorTest >> testMetaclassClass [
 	
 	self assert: Metaclass class asFluidDefinitionString equals: 
@@ -55,7 +55,7 @@ CDFluidClassRecreatorTest >> testMetaclassClass [
 	package: ''Kernel'''	
 ]
 
-{ #category : #tests }
+{ #category : #'tests - classes' }
 CDFluidClassRecreatorTest >> testPoint [
 	
 	self assert: Point asFluidDefinitionString equals: 'Object < #Point
@@ -83,7 +83,33 @@ CDFluidClassRecreatorTest >> testPointMinimalInformation [
 	
 ]
 
-{ #category : #tests }
+{ #category : #'tests - traits' }
+CDFluidClassRecreatorTest >> testTBehavior [
+
+	self assert: TBehavior asFluidDefinitionString equals: 'Trait  << #TBehavior
+	package: ''TraitsV2-Compatibility'''
+]
+
+{ #category : #'tests - traits' }
+CDFluidClassRecreatorTest >> testTSlot [
+
+	self 
+		assert: (Trait << #TTUses slots: {  #x . #y }; package: 'Fake') build asFluidDefinitionString 
+		equals: 
+	'Trait  << #TTUses
+	slots: {#x . #y};
+	package: ''_UnpackagedPackage''' 
+]
+
+{ #category : #'tests - traits' }
+CDFluidClassRecreatorTest >> testTUses [
+
+	self assert: (Trait << #TTUses uses: TBehavior; package: 'Fake') build asFluidDefinitionString equals:  'Trait  << #TTUses
+	uses: TBehavior;
+	package: ''_UnpackagedPackage'''
+]
+
+{ #category : #'tests - classes' }
 CDFluidClassRecreatorTest >> testText [
 
 	self assert: Text asFluidDefinitionString equals: 
@@ -94,7 +120,7 @@ CDFluidClassRecreatorTest >> testText [
 	package: ''Text-Core''' 
 ]
 
-{ #category : #tests }
+{ #category : #'tests - classes' }
 CDFluidClassRecreatorTest >> testTraitAtMetaclass [
 	
 	self assert: RubScrolledTextModel asFluidDefinitionString equals: 'Object < #RubScrolledTextModel
