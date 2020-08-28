@@ -193,7 +193,6 @@ CDFluidClassParserTest >> testTag [
 
 	| parser defString def |
 	parser := self classDefinitionParserClass new.
-	self skip.
 	defString := 'Object < #MyObject
 		tag: ''tag1'';
 		package: #MyPackage'.

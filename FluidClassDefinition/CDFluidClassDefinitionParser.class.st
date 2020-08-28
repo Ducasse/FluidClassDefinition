@@ -47,8 +47,8 @@ Class {
 	#name : #CDFluidClassDefinitionParser,
 	#superclass : #Object,
 	#instVars : [
-		'classDefinition',
-		'subclass'
+		'subclass',
+		'definition'
 	],
 	#classVars : [
 		'On'
@@ -87,13 +87,19 @@ CDFluidClassDefinitionParser class >> setOn: aBoolean [
 { #category : #internal }
 CDFluidClassDefinitionParser >> beClassDefinition [
 		
-	classDefinition := CDClassDefinitionNode new
+	definition := CDClassDefinitionNode new
 ]
 
 { #category : #internal }
 CDFluidClassDefinitionParser >> beMetaclassDefinition [
 		
-	classDefinition := CDMetaclassDefinitionNode new
+	definition := CDMetaclassDefinitionNode new
+]
+
+{ #category : #internal }
+CDFluidClassDefinitionParser >> beTraitDefinition [
+		
+	definition := CDTraitDefinitionNode new
 ]
 
 { #category : #'private class factory' }
@@ -103,7 +109,10 @@ CDFluidClassDefinitionParser >> classNameNodeClass [
 
 { #category : #'handling  nodes' }
 CDFluidClassDefinitionParser >> handleClassAndSuperclassOf: aNode [
-	
+
+	(self isTraitDefinition: aNode receiver)
+		ifTrue: [ self handleClassName: aNode receiver arguments first. ^ self ].
+		
 	(self isInstanceSideDefinition: aNode receiver)
 		ifTrue: [ 
 			self handleSuperclassNode: aNode receiver receiver.
@@ -114,14 +123,14 @@ CDFluidClassDefinitionParser >> handleClassAndSuperclassOf: aNode [
 
 { #category : #'handling  nodes' }
 CDFluidClassDefinitionParser >> handleClassName: aNode [
-	| className superclassNode |
+	| className classNode |
 	className := (aNode isVariable
 		ifTrue: [ aNode name ]
 		ifFalse: [ aNode value ]) asSymbol.
-	superclassNode := self classNameNodeClass new
+	classNode := self classNameNodeClass new
 		originalNode: aNode;
 		className: className.
-	classDefinition className: className astNode: superclassNode
+	definition className: className astNode: classNode
 ]
 
 { #category : #'handling  nodes' }
@@ -140,19 +149,19 @@ CDFluidClassDefinitionParser >> handleInstanceVariablesFromNode: aNode [
 				slotClassName: #InstanceVariableSlot
 				start: start
 				stop: start + slotName size ].
-	classDefinition slots: slotNodes
+	definition slots: slotNodes
 ]
 
 { #category : #'handling  nodes' }
 CDFluidClassDefinitionParser >> handleLayout: aNode [
 
-	classDefinition classKind: aNode binding value kind
+	definition classKind: aNode binding value kind
 ]
 
 { #category : #accessing }
 CDFluidClassDefinitionParser >> handlePackage: aNode [ 
 	
-	classDefinition packageNameNode: aNode astNode: aNode
+	definition packageNameNode: aNode astNode: aNode
 ]
 
 { #category : #'handling  nodes' }
@@ -169,7 +178,7 @@ CDFluidClassDefinitionParser >> handleSharedPoolsFromNode: aNode [
 				name: slotName
 				start: start
 				stop: start + slotName size ].
-	classDefinition sharedPools: sharedPoolNodes
+	definition sharedPools: sharedPoolNodes
 ]
 
 { #category : #'handling  nodes' }
@@ -188,7 +197,7 @@ CDFluidClassDefinitionParser >> handleSharedVariableNames: aNode [
 				slotClassName: 'ClassVariableSlot'
 				start: start
 				stop: start + literalNode size ].
-	classDefinition sharedSlots: slotNodes
+	definition sharedSlots: slotNodes
 ]
 
 { #category : #'handling  nodes' }
@@ -207,7 +216,7 @@ CDFluidClassDefinitionParser >> handleSlotNode: aRBMessageNode [
 			        initializationMessage: self slotInitializationNodeClass new
 			        start: aRBMessageNode start
 			        stop: aRBMessageNode stop.
-		classDefinition addSlot: slot.
+		definition addSlot: slot.
 		^ self ].
 
 	aRBMessageNode selector = '=>' ifTrue: [ 
@@ -223,7 +232,7 @@ CDFluidClassDefinitionParser >> handleSlotNode: aRBMessageNode [
 						        self slotInitializationNodeClass new
 						        start: aRBMessageNode start
 						        stop: aRBMessageNode stop.
-					classDefinition addSlot: slot.
+					definition addSlot: slot.
 					^ self ]
 				"we will have to do something for example if we have 
 				#x => 2" ]
@@ -241,7 +250,7 @@ CDFluidClassDefinitionParser >> handleSlotNode: aRBMessageNode [
 							         aRBMessageNode arguments first arguments)
 					        start: aRBMessageNode start
 					        stop: aRBMessageNode stop.
-				classDefinition addSlot: slot.
+				definition addSlot: slot.
 				^ self ] ]
 ]
 
@@ -261,7 +270,7 @@ CDFluidClassDefinitionParser >> handleSuperclassNode: aSuperclassNode [
 	superclassNode := self classNameNodeClass new
 		originalNode: aSuperclassNode;
 		className: aSuperclassName.
-	classDefinition
+	definition
 		superclassName: aSuperclassName
 		astNode: superclassNode
 ]
@@ -269,7 +278,7 @@ CDFluidClassDefinitionParser >> handleSuperclassNode: aSuperclassNode [
 { #category : #'handling  nodes' }
 CDFluidClassDefinitionParser >> handleTag: aNode [
 
-	classDefinition tag: (CDClassTagNode new name: aNode value)
+	definition tag: (CDClassTagNode new name: aNode value)
 ]
 
 { #category : #'handling  nodes' }
@@ -277,7 +286,7 @@ CDFluidClassDefinitionParser >> handleTraitDefinitionFromNode: aNode [
 	
 	| traitComposition |
 	traitComposition := CDTraitCompositionBuilder new buildFrom: aNode.	
-	classDefinition traitDefinition: traitComposition.
+	definition traitDefinition: traitComposition.
 ]
 
 { #category : #testing }
@@ -285,6 +294,14 @@ CDFluidClassDefinitionParser >> isInstanceSideDefinition: aRBMessageNode [
 	"Based on the Point or Point class structure, returns whether the definition is a class or instance side definition."
 	"Depending on the chosen syntax for class side we could make sure that we are looking for <"
 	^ aRBMessageNode isMessage and: [ aRBMessageNode selector = #< ]
+	
+]
+
+{ #category : #testing }
+CDFluidClassDefinitionParser >> isTraitDefinition: aRBMessageNode [
+	"Based on the message structure, returns whether the definition is a trait definition."
+
+	^ aRBMessageNode isMessage and: [ aRBMessageNode selector = #<< ]
 	
 ]
 
@@ -300,11 +317,12 @@ CDFluidClassDefinitionParser >> parse: aString [
 
 { #category : #'parsing-internal' }
 CDFluidClassDefinitionParser >> parseRootNode: expressionTree [
+	
 	expressionTree extractClassDefinitionFor: self. 
-	classDefinition originalNode: expressionTree.
+	definition originalNode: expressionTree.
 	
 	expressionTree acceptVisitor: self.
-	^ classDefinition
+	^ definition
 ]
 
 { #category : #'parsing-internal' }
@@ -337,6 +355,8 @@ CDFluidClassDefinitionParser >> parseSelectorPart: aString withArgument: aNode [
 { #category : #internal }
 CDFluidClassDefinitionParser >> setAdequateClassDefinitionFrom: expressionTree [
 	"set a class or metaclass class definition as class definition object."
+	(self isTraitDefinition: expressionTree)
+		ifTrue: [ self beTraitDefinition. ^ self ].
 	(self isInstanceSideDefinition: expressionTree)
 		ifTrue: [ self beClassDefinition ]
 		ifFalse: [ self beMetaclassDefinition ]
@@ -387,7 +407,7 @@ CDFluidClassDefinitionParser >> visitMessageNode: aRBMessageNode [
 		
 	With this one we do not pass via the builder.
 	"		
-	
+
 	self handleClassAndSuperclassOf: aRBMessageNode.
 	
 	
