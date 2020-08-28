@@ -30,8 +30,29 @@ FluidTraitBuilderTest >> testBuildSimplePoint2 [
 ]
 
 { #category : #tests }
-FluidTraitBuilderTest >> testTrait [
+FluidTraitBuilderTest >> testTraitNoSlotsNoUse [
 
-	Trait << #TPoint3
-		package: 'Fake'
+	| trait |
+	builder := Trait << #TPoint3
+		package: 'Fake'.
+	trait := builder build.
+	
+	self assert: trait name equals: #TPoint3.
+	self assert: trait package packageName equals: '_UnpackagedPackage'
+	
+
+]
+
+{ #category : #tests }
+FluidTraitBuilderTest >> testTraitUse [
+	
+	| trait |
+	builder := Trait << #TPoint3
+		uses: TViewModel;
+		package: 'Fake'.
+	trait := builder build.
+	
+	self assert: trait name equals: #TPoint3.
+	self assert: trait traitComposition innerClass equals: TViewModel.
+	self assert: trait package packageName equals: '_UnpackagedPackage'
 ]

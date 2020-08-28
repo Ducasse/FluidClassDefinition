@@ -28,8 +28,9 @@ FluidTraitBuilder >> fillShiftClassBuilder [
 		name: name;
 		superclass: nil;
 		metaSuperclass: Trait;
-		metaclassClass: MetaclassForTraits;
-		slots: slots;
+		metaclassClass: MetaclassForTraits.
+	slots ifNotNil: [ builder slots: slots].
+	builder	
 		sharedVariables: '';
 		sharedPools: '';
 		category: packageName.
