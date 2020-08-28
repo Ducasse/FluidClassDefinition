@@ -3,8 +3,7 @@ Extension { #name : #Class }
 { #category : #'*FluidClassDefinition' }
 Class >> asFluidDefinitionString [
 	^ String streamContents: [ :s |
-		| tag poolString |
-		poolString := self sharedPoolsString.
+		| tag |
 		
 		superclass 
 			ifNotNil: [s nextPutAll: superclass name]
@@ -57,12 +56,12 @@ Class >> asFluidDefinitionString [
 				s cr
 				].
 			
-		poolString = '' ifFalse: [
+		self sharedPools ifNotEmpty: [:pools |
 			s 
 				tab ; 
-				nextPutAll: 'sharedPools: ' ;
-				store: poolString ;
-				nextPutAll: ';' ;
+				nextPutAll: 'sharedPools: { '.
+			pools do: 	[ :p | s nextPutAll: p name ] separatedBy: [ s nextPutAll: ' . ' ].
+			s	nextPutAll: ' };' ;
 				cr ].	
 			
 		s 	

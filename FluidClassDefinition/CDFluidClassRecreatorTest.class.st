@@ -64,6 +64,15 @@ CDFluidClassRecreatorTest >> testMetaclassClass [
 	package: ''Kernel'''	
 ]
 
+{ #category : #'tests - traits' }
+CDFluidClassRecreatorTest >> testMultiPools [
+
+	self assert: ClassMultiplePoolUser asFluidDefinitionString equals: 'Object < #ClassMultiplePoolUser
+	tag: ''Classes'';
+	sharedPools: { PoolDefiner . PoolDefiner2 };
+	package: ''Kernel-Tests''' 
+]
+
 { #category : #'tests - classes' }
 CDFluidClassRecreatorTest >> testPoint [
 	
@@ -133,11 +142,10 @@ CDFluidClassRecreatorTest >> testTUses [
 { #category : #'tests - classes' }
 CDFluidClassRecreatorTest >> testText [
 
-	self assert: Text asFluidDefinitionString equals: 
- 'ArrayedCollection < #Text
+	self assert: Text asFluidDefinitionString equals: 'ArrayedCollection < #Text
 	slots: {#string . #runs};
 	tag: ''Base'';
-	sharedPools: ''TextConstants'';
+	sharedPools: { TextConstants };
 	package: ''Text-Core''' 
 ]
 
