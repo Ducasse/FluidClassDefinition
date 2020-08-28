@@ -10,6 +10,15 @@ Class {
 	#category : #'FluidClassDefinition-Parser'
 }
 
+{ #category : #'tests - traits' }
+CDFluidClassRecreatorTest >> testAlignmentMorphClass [
+
+	self 
+		assert: AlignmentMorph class asFluidDefinitionString 
+		equals: 'AlignmentMorph class 
+	uses: TAbleToRotate classTrait' 
+]
+
 { #category : #'tests - classes' }
 CDFluidClassRecreatorTest >> testArray [
 
@@ -90,6 +99,19 @@ CDFluidClassRecreatorTest >> testTBehavior [
 ]
 
 { #category : #'tests - traits' }
+CDFluidClassRecreatorTest >> testTComparableClassTrait [
+
+	self assert: TComparable classTrait asFluidDefinitionString equals: 'TComparable classTrait' 
+]
+
+{ #category : #'tests - traits' }
+CDFluidClassRecreatorTest >> testTEventVisitorClassTrait [
+
+	self assert: EpTEventVisitor classTrait asFluidDefinitionString equals: 'EpTEventVisitor classTrait
+	uses: EpTCodeChangeVisitor classTrait'
+]
+
+{ #category : #'tests - traits' }
 CDFluidClassRecreatorTest >> testTSlot [
 
 	self 
@@ -117,6 +139,13 @@ CDFluidClassRecreatorTest >> testText [
 	tag: ''Base'';
 	sharedPools: ''TextConstants'';
 	package: ''Text-Core''' 
+]
+
+{ #category : #'tests - traits' }
+CDFluidClassRecreatorTest >> testTrait3 [
+
+	self assert: Trait3 classTrait asFluidDefinitionString equals: 'Trait3 classTrait
+	uses: Trait2 classTrait'
 ]
 
 { #category : #'tests - classes' }

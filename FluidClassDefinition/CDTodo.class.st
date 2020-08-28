@@ -21,3 +21,20 @@ CDTodo >> todo3 [
 
 	"in ClassDefinition node traitdefnitino is traitComposition "
 ]
+
+{ #category : #'as yet unclassified' }
+CDTodo >> todo4 [
+
+	"class side parsing 
+		what happens if we have traits at the class side and slots
+	
+	AlignmentMorph class
+		uses: TableRotate classTrait;
+		slots: { #x . #y}
+	
+	Same question for traits.
+		Tassertable classTrait
+			uses: ....
+	
+	"
+]
