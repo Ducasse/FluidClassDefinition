@@ -75,11 +75,10 @@ CDFluidClassRecreatorTest >> testPointMinimalInformation [
 	slots: {#x . #y};
 	tag: 'BasicObjects';
 	package: 'Kernel') build.
-	self flag: #pablo. 
 	self assert: class asFluidDefinitionString equals: 'Object < #Point2
 	slots: {#x . #y};
 	tag: ''BasicObjects'';
-	package: ''Kernel'''
+	package: ''_UndefinedPackage'''
 	
 ]
 
