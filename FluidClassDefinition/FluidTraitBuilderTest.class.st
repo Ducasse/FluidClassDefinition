@@ -19,9 +19,9 @@ FluidTraitBuilderTest >> setUp [
 FluidTraitBuilderTest >> testBuildSimplePoint2 [
 
 	| trait |
-	builder := Trait << #TPoint2.
-	builder slots: { #x . #y }.
-	builder package: 'FakedCore'.
+	builder := Trait << #TPoint2
+					slots: { #x . #y };
+					package: 'FakedCore'.
 	trait := builder build.
 	
 	self assert: trait name equals: #TPoint2.
