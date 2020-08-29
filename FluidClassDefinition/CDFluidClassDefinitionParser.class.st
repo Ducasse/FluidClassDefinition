@@ -166,18 +166,13 @@ CDFluidClassDefinitionParser >> handlePackage: aNode [
 
 { #category : #'handling  nodes' }
 CDFluidClassDefinitionParser >> handleSharedPoolsFromNode: aNode [
-	| shareds sharedPoolNodes sharedPoolString |
-	sharedPoolString := aNode value.
-	shareds := sharedPoolString substrings.
-	sharedPoolNodes := shareds
-		collect: [ :slotName | 
-			| start |
-			start := aNode start + (sharedPoolString findString: slotName).
-			self sharedPoolNodeClass
-				node: aNode
-				name: slotName
-				start: start
-				stop: start + slotName size ].
+	| sharedPoolNodes |
+	sharedPoolNodes := aNode children
+		collect: [ :aPoolNode | 
+			self sharedPoolNodeClass new
+				node: aPoolNode;
+				name: aPoolNode name
+			].
 	definition sharedPools: sharedPoolNodes
 ]
 
