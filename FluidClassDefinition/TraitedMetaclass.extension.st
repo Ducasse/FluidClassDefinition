@@ -3,7 +3,6 @@ Extension { #name : #TraitedMetaclass }
 { #category : #'*FluidClassDefinition' }
 TraitedMetaclass >> asFluidDefinitionString [
 
-
 	^ String streamContents: 
 		[:strm |
 		strm nextPutAll: self name.

@@ -7,7 +7,7 @@ Class >> asFluidDefinitionString [
 		
 		superclass 
 			ifNotNil: [s nextPutAll: superclass name]
-			ifNil: [s nextPutAll: 'ProtoObject'].
+			ifNil: [s nextPutAll: 'nil'].
 		s 
 			nextPutAll: ' < #';
 			nextPutAll: name;

@@ -2,15 +2,14 @@ Extension { #name : #Metaclass }
 
 { #category : #'*FluidClassDefinition' }
 Metaclass >> asFluidDefinitionString [
+	
+
+
 	^ String streamContents: [ :s |
 		
 		superclass 
-			ifNotNil: [s nextPutAll: superclass name]
-			ifNil: [s nextPutAll: 'ProtoObject'].
-		s 
-			nextPutAll: ' < #';
-			nextPutAll: thisClass name;
-			cr.
+			ifNotNil: [ s nextPutAll: self name ]
+			ifNil: [ s nextPutAll: 'ProtoObject ' ].
 		
 		self hasTraitComposition ifTrue: [
 			s 
@@ -28,14 +27,17 @@ Metaclass >> asFluidDefinitionString [
 						separatedBy: [  s nextPutAll: ' . '].
 					s nextPutAll: '};'.
 					s cr].
-			
-		s 	
-			tab;
-			nextPutAll: 'package: '; 
-			nextPut: $';
-			nextPutAll: self package packageName;
-			nextPut: $'
 		]
+]
+
+{ #category : #'*FluidClassDefinition' }
+Metaclass >> definition [
+	"Refer to the comment in ClassDescription|definition."
+
+	Slot showSlotClassDefinition ifTrue: [ 
+		^ self definitionWithSlots ].
+
+	^ self definitionWithoutSlots
 ]
 
 { #category : #'*FluidClassDefinition' }

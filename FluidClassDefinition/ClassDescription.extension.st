@@ -1,6 +1,22 @@
 Extension { #name : #ClassDescription }
 
 { #category : #'*FluidClassDefinition' }
+ClassDescription >> asFluidDefinitionString [
+	^ self subclassResponsibility
+]
+
+{ #category : #'*FluidClassDefinition' }
+ClassDescription >> definition [
+	"Answer a String that defines the receiver."
+
+	Slot showSlotClassDefinition ifTrue: [ 
+		^ self asFluidDefinitionString ].
+	
+	^ self definitionWithoutSlots
+	
+]
+
+{ #category : #'*FluidClassDefinition' }
 ClassDescription >> definitionWithSlots [
 	"The class definition with a way to specify slots. Shown when the class defines special Slot"
 	^ self instanceSide asFluidDefinitionString

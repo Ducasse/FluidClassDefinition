@@ -44,9 +44,17 @@ Trait >> asFluidDefinitionString [
 { #category : #'*FluidClassDefinition' }
 Trait >> definition [
 	
+	^ Slot showSlotClassDefinition
+		ifTrue: [ self asFluidDefinitionString ]
+		ifFalse: [ self definitionWithoutSlots ]
+	
+]
+
+{ #category : #'*FluidClassDefinition' }
+Trait >> definitionWithoutSlots [
+
 	(self instanceSide name == #Trait) ifTrue: [ ^ super definition ].
-	^ self asFluidDefinitionString 
-	"
+
 	^ String streamContents: [ :s | 
 		s 
 			nextPutAll: 'Trait named: ';
@@ -61,5 +69,4 @@ Trait >> definition [
 		s tab; nextPutAll: ' package: ';
 			nextPutAll: self category asString printString
 	]
-"
 ]

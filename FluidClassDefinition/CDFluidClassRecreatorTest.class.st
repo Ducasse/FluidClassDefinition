@@ -47,7 +47,22 @@ CDFluidClassRecreatorTest >> testChronologyConstants [
 	package: ''Kernel'''
 ]
 
-{ #category : #'tests - classes' }
+{ #category : #'tests - metaclasses' }
+CDFluidClassRecreatorTest >> testClassSideDoesNotShowPackage [
+
+	self assert: MOPTraitTest class asFluidDefinitionString  equals: 'MOPTraitTest class'
+]
+
+{ #category : #'tests - traits' }
+CDFluidClassRecreatorTest >> testComplexTrait [
+
+	self assert: MOPTestClassD asFluidDefinitionString equals: 'Object < #MOPTestClassD
+	uses: Trait2 @ {#c3->#c2};
+	tag: ''Traits-MOP'';
+	package: ''Tests''' 
+]
+
+{ #category : #'tests - metaclasses' }
 CDFluidClassRecreatorTest >> testMetaclass [
 	
 	self assert: Metaclass asFluidDefinitionString equals: 'ClassDescription < #Metaclass
@@ -56,12 +71,18 @@ CDFluidClassRecreatorTest >> testMetaclass [
 	package: ''Kernel''' 
 ]
 
-{ #category : #'tests - classes' }
+{ #category : #'tests - metaclasses' }
 CDFluidClassRecreatorTest >> testMetaclassClass [
 	
 	self assert: Metaclass class asFluidDefinitionString equals: 
- 'ClassDescription class < #Metaclass
-	package: ''Kernel'''	
+ 'Metaclass class'	
+]
+
+{ #category : #'tests - metaclasses' }
+CDFluidClassRecreatorTest >> testMetaclassWithTrait [
+	
+	self assert: MOPTestClassD class asFluidDefinitionString equals: 'MOPTestClassD class
+	uses: Trait2 classTrait' 
 ]
 
 { #category : #'tests - traits' }
@@ -98,6 +119,20 @@ CDFluidClassRecreatorTest >> testPointMinimalInformation [
 	tag: ''BasicObjects'';
 	package: ''_UndefinedPackage'''
 	
+]
+
+{ #category : #'tests - classes' }
+CDFluidClassRecreatorTest >> testProtoObject [
+	
+	self assert: ProtoObject asFluidDefinitionString equals: 'nil < #ProtoObject
+	tag: ''Objects'';
+	package: ''Kernel''' 
+]
+
+{ #category : #'tests - classes' }
+CDFluidClassRecreatorTest >> testProtoObjectClass [
+	
+	self assert: ProtoObject class asFluidDefinitionString equals: 'ProtoObject class'
 ]
 
 { #category : #'tests - traits' }
@@ -150,18 +185,18 @@ CDFluidClassRecreatorTest >> testText [
 ]
 
 { #category : #'tests - traits' }
-CDFluidClassRecreatorTest >> testTrait3 [
-
-	self assert: Trait3 classTrait asFluidDefinitionString equals: 'Trait3 classTrait
-	uses: Trait2 classTrait'
-]
-
-{ #category : #'tests - classes' }
-CDFluidClassRecreatorTest >> testTraitAtMetaclass [
+CDFluidClassRecreatorTest >> testTrait [
 	
 	self assert: RubScrolledTextModel asFluidDefinitionString equals: 'Object < #RubScrolledTextModel
 	uses: TViewModel;
 	slots: {#hasUnacceptedEdits . #announcer . #text . #primarySelectionInterval . #interactionModel};
 	tag: ''Editing-Widgets'';
 	package: ''Rubric''' 
+]
+
+{ #category : #'tests - traits' }
+CDFluidClassRecreatorTest >> testTrait3 [
+
+	self assert: Trait3 classTrait asFluidDefinitionString equals: 'Trait3 classTrait
+	uses: Trait2 classTrait'
 ]
