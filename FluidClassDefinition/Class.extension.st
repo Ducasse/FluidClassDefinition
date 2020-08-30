@@ -31,10 +31,9 @@ Class >> asFluidDefinitionString [
 		
 		self slots ifNotEmpty: [ 
 					s tab.
-					s nextPutAll: 'slots: { '. 
-					self slots do: [ :each | s nextPutAll: each definitionString ]
-						separatedBy: [  s nextPutAll: ' . '].
-					s nextPutAll: ' };'.
+					s nextPutAll: 'slots: '. 
+					s nextPutAll: self slotDefinitionString.
+					s nextPutAll: ';'.
 					s cr].
 		self classVariables ifNotEmpty: [  
 				s 

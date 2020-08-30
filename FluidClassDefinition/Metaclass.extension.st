@@ -21,11 +21,9 @@ Metaclass >> asFluidDefinitionString [
 		
 		self slots ifNotEmpty: 
 			[ 
-					s crtab.
-					s nextPutAll: 'slots: { '. 
-					self slots do: [ :each | s nextPutAll: each definitionString ]
-						separatedBy: [  s nextPutAll: ' . '].
-					s nextPutAll: ' }' ].
+				s crtab.
+				s nextPutAll: 'slots: '. 
+				s nextPutAll: self slotDefinitionString ].
 		]
 ]
 
