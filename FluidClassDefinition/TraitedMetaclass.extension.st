@@ -7,7 +7,6 @@ TraitedMetaclass >> asFluidDefinitionString [
 	^ String streamContents: 
 		[:strm |
 		strm nextPutAll: self name.
-		strm nextPutAll: ' '.
 		
 		self hasTraitComposition ifTrue: [
 			strm

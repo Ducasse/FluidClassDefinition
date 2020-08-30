@@ -8,6 +8,40 @@ Trait class >> << aSymbol [
 ]
 
 { #category : #'*FluidClassDefinition' }
+Trait >> asFluidDefinitionString [ 
+
+	^ String streamContents: [ :s |		
+		s 
+			nextPutAll: 'Trait  << #';
+			nextPutAll: name;
+			cr.
+		
+		self hasTraitComposition ifTrue: [
+			s 
+				tab; 
+				nextPutAll: 'uses: ';
+				nextPutAll: self traitCompositionString ;
+				nextPutAll: ';';
+				cr ].
+		
+		self slots ifNotEmpty: [ 
+					s tab.
+					s nextPutAll: 'slots: {'. 
+					self slots do: [ :each | s nextPutAll: each definitionString ]
+						separatedBy: [  s nextPutAll: ' . '].
+					s nextPutAll: '};'.
+					s cr ].
+
+		s 	
+			tab;
+			nextPutAll: 'package: '; 
+			nextPut: $';
+			nextPutAll: self package packageName;
+			nextPut: $'
+		]
+]
+
+{ #category : #'*FluidClassDefinition' }
 Trait >> definition [
 	
 	(self instanceSide name == #Trait) ifTrue: [ ^ super definition ].
