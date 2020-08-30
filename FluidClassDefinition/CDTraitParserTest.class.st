@@ -13,6 +13,20 @@ CDTraitParserTest >> classDefinitionParserClass [
 	^ CDFluidClassDefinitionParser
 ]
 
+{ #category : #'tests - trait users' }
+CDTraitParserTest >> testClassSideOfATrait [
+	"MetaclassForTraits allInstances select: [ :each | each hasTraitComposition ]"
+	| def |
+	def := self classDefinitionParserClass parse: 'Trait3 classTrait
+	uses: Trait2 classTrait'.
+
+	self assert: def className equals: #Trait3.
+	self assert: def class equals: CDClassSideTraitDefinitionNode.
+	self assert: def traitDefinition name equals: #Trait2.
+
+
+]
+
 { #category : #'tests - simple trait definition' }
 CDTraitParserTest >> testSimpleDefinition [
 

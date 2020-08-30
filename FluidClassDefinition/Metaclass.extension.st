@@ -37,3 +37,16 @@ Metaclass >> asFluidDefinitionString [
 			nextPut: $'
 		]
 ]
+
+{ #category : #'*FluidClassDefinition' }
+Metaclass >> definitionWithSlots [
+	"Refer to the comment in ClassDescription|definition."
+	^ self asFluidDefinitionString
+
+"	^ String streamContents: [:stream |
+		stream print: self.
+		stream
+			crtab;
+			nextPutAll: 'slots: ';
+			nextPutAll: self slotDefinitionString ]"
+]

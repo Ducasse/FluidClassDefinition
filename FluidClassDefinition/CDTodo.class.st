@@ -5,12 +5,6 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-CDTodo >> todo1 [
-
-	"pools sohuld be an array of Variable"
-]
-
-{ #category : #'as yet unclassified' }
 CDTodo >> todo2 [
 
 	"in classDefinitionNodeclassName should be name"

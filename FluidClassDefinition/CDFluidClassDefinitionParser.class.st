@@ -91,6 +91,12 @@ CDFluidClassDefinitionParser >> beClassDefinition [
 ]
 
 { #category : #internal }
+CDFluidClassDefinitionParser >> beClassSideTraitDefinition [
+		
+	definition := CDClassSideTraitDefinitionNode new
+]
+
+{ #category : #internal }
 CDFluidClassDefinitionParser >> beMetaclassDefinition [
 		
 	definition := CDMetaclassDefinitionNode new
@@ -112,12 +118,13 @@ CDFluidClassDefinitionParser >> handleClassAndSuperclassOf: aNode [
 
 	(self isTraitDefinition: aNode receiver)
 		ifTrue: [ self handleClassName: aNode receiver arguments first. ^ self ].
-		
+	(self isTraitClassSideDefinition: aNode receiver)
+		ifTrue: [ self handleClassName: aNode receiver receiver. ^ self].
+	
 	(self isInstanceSideDefinition: aNode receiver)
 		ifTrue: [ 
 			self handleSuperclassNode: aNode receiver receiver.
-			self handleClassName: aNode receiver arguments first  
-			]
+			self handleClassName: aNode receiver arguments first ]
 		ifFalse: [ self handleClassName: aNode receiver receiver ].
 ]
 
@@ -290,15 +297,23 @@ CDFluidClassDefinitionParser >> handleTraitUsesFromNode: aNode [
 
 { #category : #testing }
 CDFluidClassDefinitionParser >> isInstanceSideDefinition: aRBMessageNode [
-	"Based on the Point or Point class structure, returns whether the definition is a class or instance side definition."
-	"Depending on the chosen syntax for class side we could make sure that we are looking for <"
+	"Returns whether the definition is a class or instance side definition. Superclass < #myObject. Trait << are handled prior to this method."
+	
 	^ aRBMessageNode isMessage and: [ aRBMessageNode selector = #< ]
 	
 ]
 
 { #category : #testing }
-CDFluidClassDefinitionParser >> isTraitDefinition: aRBMessageNode [
+CDFluidClassDefinitionParser >> isTraitClassSideDefinition: aRBMessageNode [
 	"Based on the message structure, returns whether the definition is a trait definition."
+
+	^ aRBMessageNode isMessage and: [ aRBMessageNode selector = #classTrait ]
+	
+]
+
+{ #category : #testing }
+CDFluidClassDefinitionParser >> isTraitDefinition: aRBMessageNode [
+	"Returns whether the definition is a trait definition, i.e., Trait << #Tbehavior."
 
 	^ aRBMessageNode isMessage and: [ aRBMessageNode selector = #<< ]
 	
@@ -353,9 +368,12 @@ CDFluidClassDefinitionParser >> parseSelectorPart: aString withArgument: aNode [
 
 { #category : #internal }
 CDFluidClassDefinitionParser >> setAdequateClassDefinitionFrom: expressionTree [
-	"set a class or metaclass class definition as class definition object."
+	"Set a class, trait, class side trait or metaclass definition as definition object."
+	
 	(self isTraitDefinition: expressionTree)
 		ifTrue: [ self beTraitDefinition. ^ self ].
+	(self isTraitClassSideDefinition: expressionTree)	
+		ifTrue: [ self beClassSideTraitDefinition. ^ self ].
 	(self isInstanceSideDefinition: expressionTree)
 		ifTrue: [ self beClassDefinition ]
 		ifFalse: [ self beMetaclassDefinition ]

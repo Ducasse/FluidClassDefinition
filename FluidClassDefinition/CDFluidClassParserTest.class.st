@@ -23,6 +23,24 @@ CDFluidClassParserTest >> testClassSideDefinitionIsClassSide [
 	self assert: def isClassSideDefinition 
 ]
 
+{ #category : #'tests - (r) class side' }
+CDFluidClassParserTest >> testClassSideWitTraits [
+
+	| parser defString def |
+	parser := self classDefinitionParserClass new.
+	
+	defString := 'AlignmentMorph class
+		uses: TableRotate classTrait;
+		slots: { #x . #y}'.
+		
+	def := parser parse: defString.
+	self assert: def class equals: CDMetaclassDefinitionNode.
+	self assert: def hasTraitComposition.
+	self assert: def traitDefinition class equals: CDClassTraitNode.
+	self assert: def traitDefinition name equals: #TableRotate.
+	self assert: def slots first name equals: #x
+]
+
 { #category : #'tests - (r) class variables' }
 CDFluidClassParserTest >> testClassVariables [
 

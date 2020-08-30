@@ -22,26 +22,24 @@ TraitedMetaclass >> asFluidDefinitionString [
 
 { #category : #'*FluidClassDefinition' }
 TraitedMetaclass >> definition [
+
+	^ Slot showSlotClassDefinition
+		ifTrue: [ self asFluidDefinitionString ]
+		ifFalse: [ self definitionWithoutSlots ]
+]
+
+{ #category : #'*FluidClassDefinition' }
+TraitedMetaclass >> definitionWithoutSlots [
 	"Refer to the comment in ClassDescription|definition."
-	^ self asFluidDefinitionString 
-	"^ String streamContents: 
-		[:strm |
-		strm print: self.
-		self hasTraitComposition ifTrue: [
+	^ String streamContents: [:strm |
+			strm print: self.
+			self hasTraitComposition ifTrue: [
+				strm
+					crtab;
+					nextPutAll: 'uses: ';
+					print: self traitComposition ].
 			strm
 				crtab;
-				nextPutAll: 'uses: ';
-				print: self traitComposition ].
-		
-		(self slotsNeedFullDefinition or: [ Slot showSlotClassDefinition ])
-			ifFalse: [  
-						strm
-							crtab;
-							nextPutAll: 'instanceVariableNames: ';
-							store: self instanceVariablesString]
-			ifTrue: [ 
-						strm
-							crtab;
-							nextPutAll: 'slots: ';
-							nextPutAll: self slotDefinitionString]]"
+				nextPutAll: 'instanceVariableNames: ';
+				store: self instanceVariablesString ] 
 ]

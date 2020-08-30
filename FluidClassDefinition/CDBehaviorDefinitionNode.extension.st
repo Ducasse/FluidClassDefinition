@@ -7,6 +7,12 @@ CDBehaviorDefinitionNode >> classKind [
 ]
 
 { #category : #'*FluidClassDefinition' }
+CDBehaviorDefinitionNode >> hasTraitComposition [
+	
+	^ traitDefinition isNotNil
+]
+
+{ #category : #'*FluidClassDefinition' }
 CDBehaviorDefinitionNode >> tokens [
 	^ tokens
 ]
