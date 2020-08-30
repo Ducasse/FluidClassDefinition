@@ -135,6 +135,13 @@ CDFluidClassRecreatorTest >> testProtoObjectClass [
 	self assert: ProtoObject class asFluidDefinitionString equals: 'ProtoObject class'
 ]
 
+{ #category : #'tests - metaclasses' }
+CDFluidClassRecreatorTest >> testSystemAnnouncerClass [
+	
+	self assert: SystemAnnouncer class asFluidDefinitionString equals: 'SystemAnnouncer class
+	slots: { #announcer }'
+]
+
 { #category : #'tests - traits' }
 CDFluidClassRecreatorTest >> testTBehavior [
 
