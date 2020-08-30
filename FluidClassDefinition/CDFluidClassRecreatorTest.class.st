@@ -66,7 +66,7 @@ CDFluidClassRecreatorTest >> testComplexTrait [
 CDFluidClassRecreatorTest >> testMetaclass [
 	
 	self assert: Metaclass asFluidDefinitionString equals: 'ClassDescription < #Metaclass
-	slots: {#thisClass};
+	slots: { #thisClass };
 	tag: ''Classes'';
 	package: ''Kernel''' 
 ]
@@ -98,7 +98,7 @@ CDFluidClassRecreatorTest >> testMultiPools [
 CDFluidClassRecreatorTest >> testPoint [
 	
 	self assert: Point asFluidDefinitionString equals: 'Object < #Point
-	slots: {#x . #y};
+	slots: { #x . #y };
 	tag: ''BasicObjects'';
 	package: ''Kernel'''
 	
@@ -162,7 +162,7 @@ CDFluidClassRecreatorTest >> testTSlot [
 		assert: (Trait << #TTUses slots: {  #x . #y }; package: 'Fake') build asFluidDefinitionString 
 		equals: 
 	'Trait  << #TTUses
-	slots: {#x . #y};
+	slots: { #x . #y };
 	package: ''_UnpackagedPackage''' 
 ]
 
@@ -178,7 +178,7 @@ CDFluidClassRecreatorTest >> testTUses [
 CDFluidClassRecreatorTest >> testText [
 
 	self assert: Text asFluidDefinitionString equals: 'ArrayedCollection < #Text
-	slots: {#string . #runs};
+	slots: { #string . #runs };
 	tag: ''Base'';
 	sharedPools: { TextConstants };
 	package: ''Text-Core''' 
@@ -189,7 +189,7 @@ CDFluidClassRecreatorTest >> testTrait [
 	
 	self assert: RubScrolledTextModel asFluidDefinitionString equals: 'Object < #RubScrolledTextModel
 	uses: TViewModel;
-	slots: {#hasUnacceptedEdits . #announcer . #text . #primarySelectionInterval . #interactionModel};
+	slots: { #hasUnacceptedEdits . #announcer . #text . #primarySelectionInterval . #interactionModel };
 	tag: ''Editing-Widgets'';
 	package: ''Rubric''' 
 ]

@@ -13,7 +13,7 @@ Metaclass >> asFluidDefinitionString [
 		
 		self hasTraitComposition ifTrue: [
 			s 
-				tab; 
+				crtab; 
 				nextPutAll: 'uses: ';
 				nextPutAll: self traitCompositionString ;
 				nextPutAll: ';';
@@ -22,11 +22,10 @@ Metaclass >> asFluidDefinitionString [
 		self slots ifNotEmpty: 
 			[ 
 					s tab.
-					s nextPutAll: 'slots: {'. 
+					s nextPutAll: 'slots: { '. 
 					self slots do: [ :each | s nextPutAll: each definitionString ]
 						separatedBy: [  s nextPutAll: ' . '].
-					s nextPutAll: '};'.
-					s cr].
+					s nextPutAll: ' }' ].
 		]
 ]
 

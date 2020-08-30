@@ -26,10 +26,10 @@ Trait >> asFluidDefinitionString [
 		
 		self slots ifNotEmpty: [ 
 					s tab.
-					s nextPutAll: 'slots: {'. 
+					s nextPutAll: 'slots: { '. 
 					self slots do: [ :each | s nextPutAll: each definitionString ]
 						separatedBy: [  s nextPutAll: ' . '].
-					s nextPutAll: '};'.
+					s nextPutAll: ' };'.
 					s cr ].
 
 		s 	
