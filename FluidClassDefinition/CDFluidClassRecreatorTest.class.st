@@ -103,9 +103,8 @@ CDFluidClassRecreatorTest >> testPointMinimalInformation [
 { #category : #'tests - traits' }
 CDFluidClassRecreatorTest >> testTBehavior [
 
-	self assert: TBehavior asFluidDefinitionString equals: 'ProtoObject < #TBehavior
-	tag: ''Traits'';
-	package: ''TraitsV2-Compatibility''' 
+	self assert: TBehavior asFluidDefinitionString equals: 'Trait  << #TBehavior
+	package: ''TraitsV2-Compatibility'''
 ]
 
 { #category : #'tests - traits' }
