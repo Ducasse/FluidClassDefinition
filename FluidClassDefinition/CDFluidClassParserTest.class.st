@@ -110,7 +110,7 @@ CDFluidClassParserTest >> testSharedPools [
 	parser := self classDefinitionParserClass new.
 	
 	defString := 'Object < #MyObject
-	   sharedPools: ''TextConstants''
+	   sharedPools: {TextConstants};
 		package: #MyPackage'.
 	
 	def := parser parse: defString.

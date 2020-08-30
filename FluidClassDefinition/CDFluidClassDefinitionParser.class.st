@@ -169,9 +169,11 @@ CDFluidClassDefinitionParser >> handleSharedPoolsFromNode: aNode [
 	| sharedPoolNodes |
 	sharedPoolNodes := aNode children
 		collect: [ :aPoolNode | 
-			self sharedPoolNodeClass new
-				node: aPoolNode;
+			self sharedPoolNodeClass
+				node: aPoolNode
 				name: aPoolNode name
+				start: aPoolNode start 
+				stop: aPoolNode start + aPoolNode name size
 			].
 	definition sharedPools: sharedPoolNodes
 ]
