@@ -38,3 +38,9 @@ CDTodo >> todo5 [
 
 	"Expandable definition for metaclass, traits + verification they work."
 ]
+
+{ #category : #'as yet unclassified' }
+CDTodo >> todo6 [
+
+	"Expandable definition should work also on old class definition"
+]

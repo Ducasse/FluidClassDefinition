@@ -9,7 +9,7 @@ ClyClassCreationToolMorph >> classTemplate [
 		ifTrue: [ 
 			^ ClassDescription definitionFullyExpandedButPackage: self packageName ].
 	 
-'Object subclass: #NameOfSubclass
+template := 'Object subclass: #NameOfSubclass
 	instanceVariableNames: ''''
 	classVariableNames: ''''
 	package: '''.
