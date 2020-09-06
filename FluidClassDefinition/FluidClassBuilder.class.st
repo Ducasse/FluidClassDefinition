@@ -49,7 +49,6 @@ Class {
 		'traitComposition',
 		'sharedPools',
 		'shiftClassBuilder',
-		'stBuilder',
 		'name'
 	],
 	#category : #'FluidClassDefinition-Builder'
@@ -83,11 +82,15 @@ FluidClassBuilder >> fillShiftClassBuilder [
 		name: classNameToBuild;
 		superclass: superclassToBuild;
 		category: packageName.
-	slotsToBuild ifNotNil: [ shiftClassBuilder slots: slotsToBuild ].
+	slotsToBuild ifNotNil: [:s | s isEmpty ifFalse: [ shiftClassBuilder slots: slotsToBuild ]].
+	traitComposition ifNotNil: [ :t | t isEmpty ifFalse: [shiftClassBuilder traitComposition: traitComposition ]].
+	sharedVariables ifNotNil: [ :s | s isEmpty ifFalse: [shiftClassBuilder sharedVariables: sharedVariables]].
+	poolDictionaries ifNotNil: [ :p | p isEmpty ifFalse: [shiftClassBuilder sharedPools: poolDictionaries  ]].
+	
+	"I could initialize all of them to #() instead of nil but we should check also the parser"
+	
 	layout ifNotNil: [ shiftClassBuilder layoutClass: layout ].
-	traitComposition ifNotNil: [ shiftClassBuilder traitComposition: traitComposition ].
-	sharedVariables ifNotNil: [ shiftClassBuilder sharedVariables: sharedVariables].
-	poolDictionaries ifNotNil: [ shiftClassBuilder sharedPools: poolDictionaries  ].
+	
 	
 
 
@@ -180,11 +183,6 @@ FluidClassBuilder >> tag: aString [
 { #category : #accessing }
 FluidClassBuilder >> tagToBuild [
 	^ tagToBuild
-]
-
-{ #category : #accessing }
-FluidClassBuilder >> traitToBuild: aString [ 
-	name := aString
 ]
 
 { #category : #accessing }

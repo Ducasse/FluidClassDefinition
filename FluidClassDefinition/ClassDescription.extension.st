@@ -18,11 +18,22 @@ ClassDescription >> definition [
 
 { #category : #'*FluidClassDefinition' }
 ClassDescription >> definitionFullExpanded [
-	"this definition propose all the with an empty arguments so that the user can just type and empty elements will be ignored by the builder and parser. Should check that this is true and write tests."
+	"This definition propose all the with an empty arguments so that the user can just type and empty elements will be ignored by the builder and parser. Should check that this is true and write tests. 
 	
-	^ self instanceSide asFluidDefinitionString
+	We should improve this in with a version with another class and grab the package from it for 
+	example."
 	
-	
+	^ String streamContents: [ :s |
+			s nextPutAll: 'Object < #MyClass'; crtab.
+			s nextPutAll: 'layout: FixedLayout;'; crtab.
+			s nextPutAll: 'uses: {};'; crtab.
+			s nextPutAll: 'slots: {};'; crtab. 
+			s nextPutAll: 'sharedVariables: {};'; crtab.
+			s nextPutAll: 'tag: '''' ;';crtab.
+			s nextPutAll: 'sharedPools: {};'; crtab.
+			s nextPutAll: 'package: ''MyPackage'';'.	
+		]		
+
 ]
 
 { #category : #'*FluidClassDefinition' }

@@ -62,6 +62,22 @@ CDFluidClassRecreatorTest >> testComplexTrait [
 	package: ''Tests''' 
 ]
 
+{ #category : #'tests - expanded' }
+CDFluidClassRecreatorTest >> testExpandedSimple [
+
+	self 
+		assert: ClassDescription definitionFullExpanded 
+		equals:  'Object < #MyClass
+	layout: FixedLayout;
+	uses: {};
+	slots: {};
+	sharedVariables: {};
+	tag: '''' ;
+	sharedPools: {};
+	package: ''MyPackage'';'
+	
+]
+
 { #category : #'tests - metaclasses' }
 CDFluidClassRecreatorTest >> testMetaclass [
 	
