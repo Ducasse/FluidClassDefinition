@@ -17,6 +17,15 @@ ClassDescription >> definition [
 ]
 
 { #category : #'*FluidClassDefinition' }
+ClassDescription >> definitionFullExpanded [
+	"this definition propose all the with an empty arguments so that the user can just type and empty elements will be ignored by the builder and parser. Should check that this is true and write tests."
+	
+	^ self instanceSide asFluidDefinitionString
+	
+	
+]
+
+{ #category : #'*FluidClassDefinition' }
 ClassDescription >> definitionWithSlots [
 	"The class definition with a way to specify slots. Shown when the class defines special Slot"
 	^ self instanceSide asFluidDefinitionString
@@ -71,4 +80,56 @@ ClassDescription >> definitionWithSlots [
 		stream space; nextPutAll: 'superclass: nil'. ].
 
 	^ stream contents"
+]
+
+{ #category : #'*FluidClassDefinition' }
+ClassDescription >> definitionWithoutSlots [
+
+	| poolString stream |
+	poolString := self sharedPoolsString.
+	stream := (String new: 800) writeStream.
+	superclass
+		ifNotNil: [ stream nextPutAll: superclass name ]
+		ifNil: [ stream nextPutAll: 'ProtoObject' ].
+	
+	stream
+		nextPutAll: self kindOfSubclass;
+		store: self name.
+	self hasTraitComposition ifTrue: [ 
+		stream
+			crtab;
+			nextPutAll: 'uses: ';
+			nextPutAll: self traitCompositionString ].
+	stream
+		crtab;
+		nextPutAll: 'instanceVariableNames: ';
+		store: self instanceVariablesString.
+	stream
+		crtab;
+		nextPutAll: 'classVariableNames: ';
+		store: self classVariablesString.
+	
+	poolString = '' ifFalse: [ 
+		stream 
+			crtab;
+			nextPutAll: 'poolDictionaries: ';
+			store: poolString ].
+	
+	stream
+		crtab;
+		nextPutAll: 'package: ';
+		store: self category asString.
+		
+	superclass ifNil: [ 
+		stream
+			nextPutAll: '.';
+			cr.
+		stream 
+			nextPutAll: self name.
+		stream
+			space;
+			nextPutAll: 'superclass: nil' ].
+
+	^ stream contents
+	
 ]
