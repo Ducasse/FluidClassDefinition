@@ -32,3 +32,9 @@ CDTodo >> todo4 [
 	
 	"
 ]
+
+{ #category : #'as yet unclassified' }
+CDTodo >> todo5 [
+
+	"Expandable definition for metaclass, traits + verification they work."
+]

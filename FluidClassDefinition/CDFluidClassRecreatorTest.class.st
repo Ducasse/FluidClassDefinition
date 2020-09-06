@@ -66,7 +66,7 @@ CDFluidClassRecreatorTest >> testComplexTrait [
 CDFluidClassRecreatorTest >> testExpandedSimple [
 
 	self 
-		assert: ClassDescription definitionFullExpanded 
+		assert: ClassDescription definitionFullyExpanded 
 		equals:  'Object < #MyClass
 	layout: FixedLayout;
 	uses: {};
