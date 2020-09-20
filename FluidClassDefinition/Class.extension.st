@@ -44,6 +44,16 @@ Class >> asFluidDefinitionString [
 					cr
 				].
 				
+		
+			
+		self sharedPools ifNotEmpty: [:pools |
+			s 
+				tab ; 
+				nextPutAll: 'sharedPools: { '.
+			pools do: 	[ :p | s nextPutAll: p name ] separatedBy: [ s nextPutAll: ' . ' ].
+			s	nextPutAll: ' };' ;
+				cr ].	
+			
 		tag := (self package classTagForClass: self) name.
 		tag = self package name
 			ifFalse:  [
@@ -54,15 +64,7 @@ Class >> asFluidDefinitionString [
 					nextPutAll: ''';'.
 				s cr
 				].
-			
-		self sharedPools ifNotEmpty: [:pools |
-			s 
-				tab ; 
-				nextPutAll: 'sharedPools: { '.
-			pools do: 	[ :p | s nextPutAll: p name ] separatedBy: [ s nextPutAll: ' . ' ].
-			s	nextPutAll: ' };' ;
-				cr ].	
-			
+				
 		s 	
 			tab;
 			nextPutAll: 'package: '; 

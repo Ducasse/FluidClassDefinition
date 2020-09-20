@@ -7,13 +7,13 @@ Class {
 { #category : #'as yet unclassified' }
 CDTodo >> todo2 [
 
-	"in classDefinitionNodeclassName should be name"
+	"in classDefinitionNode className should be name"
 ]
 
 { #category : #'as yet unclassified' }
 CDTodo >> todo3 [
 
-	"in ClassDefinition node traitdefnitino is traitComposition "
+	"in ClassDefinition node traitdefnition is traitComposition "
 ]
 
 { #category : #'as yet unclassified' }

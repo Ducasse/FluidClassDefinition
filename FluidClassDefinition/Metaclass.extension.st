@@ -3,8 +3,6 @@ Extension { #name : #Metaclass }
 { #category : #'*FluidClassDefinition' }
 Metaclass >> asFluidDefinitionString [
 	
-
-
 	^ String streamContents: [ :s |
 		
 		superclass 

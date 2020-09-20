@@ -44,6 +44,12 @@ ClassDescription >> definitionExpanded [
 						s nextPutAll: 'slots: ', self slotDefinitionString, ';'; crtab. 
 						s nextPutAll: 'sharedVariables: ', self classVariableDefinitionString, ';'; crtab.
 						
+						
+							
+						s nextPutAll: 'sharedPools: {'.
+						self sharedPoolStringOn: s.
+						s nextPutAll: '};' ; crtab.
+						
 						tag := (self package classTagForClass: self) name.
 						"what an ugly logic!"
 						tag = self package name
@@ -54,10 +60,7 @@ ClassDescription >> definitionExpanded [
 										nextPutAll: ''';'  ]
 							ifTrue: [ s 	nextPutAll: 'tag: '''';']. 
 						s crtab.	 			
-							
-						s nextPutAll: 'sharedPools: { '.
-						self sharedPoolStringOn: s.
-						s nextPutAll: ' };' ; crtab.
+						
 									
 						s nextPutAll: 'package: ''', self package packageName, '''']]
 		ifFalse: [  
@@ -87,8 +90,8 @@ ClassDescription >> definitionFullyExpandedButPackage: aString [
 						s nextPutAll: 'uses: {};'; crtab.
 						s nextPutAll: 'slots: {};'; crtab. 
 						s nextPutAll: 'sharedVariables: {};'; crtab.
-						s nextPutAll: 'tag: '''' ;';crtab.
 						s nextPutAll: 'sharedPools: {};'; crtab.
+						s nextPutAll: 'tag: '''' ;';crtab.
 						s nextPutAll: 'package: ''', aString, '''' ] 
 					]
 		ifFalse: [  
@@ -218,7 +221,11 @@ ClassDescription >> sharedPoolString [
 ClassDescription >> sharedPoolStringOn: aStream [
 	"Answer a string of my shared pools separated by spaces."
 
-		self sharedPools do:  [ :p | aStream nextPutAll: p name ] separatedBy: [ aStream nextPutAll: ' . ' ]
+		self sharedPools 
+			do:  [ :p | aStream space. 
+							aStream nextPutAll: p name.
+							aStream space ] 
+			separatedBy: [ aStream nextPutAll: '.' ]
 ]
 
 { #category : #'*FluidClassDefinition' }
@@ -233,13 +240,15 @@ ClassDescription >> slotDefinitionStringOn: aStream [
 	"Write on the arg aStream an executable description of my Slots"
 
 	| useFull |
-	aStream nextPutAll: '{ '.
+	aStream nextPutAll: '{'.
 	self localSlots
 		do: [ :slot | 
+			aStream space.
 			aStream nextPutAll: slot definitionString.
-			useFull := slot needsFullDefinition ]
+			useFull := slot needsFullDefinition.
+			aStream space ]
 		separatedBy: [ 
-			aStream nextPutAll: ' . '.
+			aStream nextPutAll: '.'.
 			useFull ifTrue: [ 
 				aStream
 					cr;
@@ -247,5 +256,5 @@ ClassDescription >> slotDefinitionStringOn: aStream [
 					tab;
 					tab;
 					tab ] ].
-	aStream nextPutAll: ' }'
+	aStream nextPutAll: '}'
 ]

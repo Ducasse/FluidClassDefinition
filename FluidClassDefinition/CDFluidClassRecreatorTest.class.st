@@ -63,33 +63,60 @@ CDFluidClassRecreatorTest >> testComplexTrait [
 ]
 
 { #category : #'tests - expanded' }
+CDFluidClassRecreatorTest >> testExpandedEmptyLayoutClass [
+
+	self 
+		assert: EmptyLayout class definitionExpanded  
+		equals: 'EmptyLayout class
+	uses: {};
+	slots: { #instance }'
+]
+
+{ #category : #'tests - expanded' }
 CDFluidClassRecreatorTest >> testExpandedPoint [
 
 	self 
-		assert: Point definitionExpanded equals:  'Object < Point
+		assert: Point definitionExpanded 
+		equals: 'Object < Point
 	layout: FixedLayout
 	uses: {};
 	slots: { #x . #y };
-	sharedVariables: {  };
+	sharedVariables: {};
+	sharedPools: {};
 	tag: ''BasicObjects'';
-	sharedPools: {  };
+	package: ''Kernel''' 
+	
+]
+
+{ #category : #'tests - expanded' }
+CDFluidClassRecreatorTest >> testExpandedTime [
+
+	self 
+		assert: Time definitionExpanded  
+		equals: 'Object < Time
+	layout: FixedLayout
+	uses: {};
+	slots: { #seconds . #nanos };
+	sharedVariables: {};
+	sharedPools: { ChronologyConstants };
+	tag: ''Chronology'';
 	package: ''Kernel'''
-		 
 ]
 
 { #category : #'tests - expanded' }
 CDFluidClassRecreatorTest >> testFullyExpandedSimple [
 
 	self 
-		assert: ClassDescription definitionFullyExpanded  
-		equals: 'Object < #MyClass
+		assert: ClassDescription definitionFullyExpanded 
+		equals:  'Object < #MyClass
 	layout: FixedLayout;
 	uses: {};
 	slots: {};
 	sharedVariables: {};
-	tag: '''' ;
 	sharedPools: {};
+	tag: '''' ;
 	package: ''MyPackage'''
+		
 ]
 
 { #category : #'tests - metaclasses' }
@@ -119,8 +146,8 @@ CDFluidClassRecreatorTest >> testMetaclassWithTrait [
 CDFluidClassRecreatorTest >> testMultiPools [
 
 	self assert: ClassMultiplePoolUser asFluidDefinitionString equals: 'Object < #ClassMultiplePoolUser
-	tag: ''Classes'';
 	sharedPools: { PoolDefiner . PoolDefiner2 };
+	tag: ''Classes'';
 	package: ''Kernel-Tests''' 
 ]
 
@@ -216,8 +243,8 @@ CDFluidClassRecreatorTest >> testText [
 
 	self assert: Text asFluidDefinitionString equals: 'ArrayedCollection < #Text
 	slots: { #string . #runs };
-	tag: ''Base'';
 	sharedPools: { TextConstants };
+	tag: ''Base'';
 	package: ''Text-Core''' 
 ]
 
