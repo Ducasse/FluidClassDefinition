@@ -73,6 +73,24 @@ CDFluidClassRecreatorTest >> testExpandedEmptyLayoutClass [
 ]
 
 { #category : #'tests - expanded' }
+CDFluidClassRecreatorTest >> testExpandedEpTEventVisitorClassTrait [
+
+	self 
+		assert: EpTEventVisitor classTrait definitionExpanded   
+		equals: 'EpTEventVisitor classTrait
+	uses: EpTCodeChangeVisitor classTrait;
+	slots: {}'
+]
+
+{ #category : #'tests - expanded' }
+CDFluidClassRecreatorTest >> testExpandedMetaclassWithTrait [
+	
+	self assert: MOPTestClassD class definitionExpanded equals: 'MOPTestClassD class
+	uses: Trait2 classTrait;
+	slots: {}' 
+]
+
+{ #category : #'tests - expanded' }
 CDFluidClassRecreatorTest >> testExpandedPoint [
 
 	self 
@@ -89,6 +107,17 @@ CDFluidClassRecreatorTest >> testExpandedPoint [
 ]
 
 { #category : #'tests - expanded' }
+CDFluidClassRecreatorTest >> testExpandedTComparableClassTrait [
+
+	self 
+		assert:  TComparable classTrait definitionExpanded 
+		equals:  'TComparable classTrait
+	uses: {};
+	slots: {}'
+	
+]
+
+{ #category : #'tests - expanded' }
 CDFluidClassRecreatorTest >> testExpandedTime [
 
 	self 
@@ -101,6 +130,17 @@ CDFluidClassRecreatorTest >> testExpandedTime [
 	sharedPools: { ChronologyConstants };
 	tag: ''Chronology'';
 	package: ''Kernel'''
+]
+
+{ #category : #'tests - expanded' }
+CDFluidClassRecreatorTest >> testExpandedTrait3ClassTrait [
+
+	self 
+		assert: Trait3 classTrait definitionExpanded 
+		equals:  'Trait3 classTrait
+	uses: Trait2 classTrait;
+	slots: {}'
+		
 ]
 
 { #category : #'tests - expanded' }
