@@ -63,19 +63,33 @@ CDFluidClassRecreatorTest >> testComplexTrait [
 ]
 
 { #category : #'tests - expanded' }
-CDFluidClassRecreatorTest >> testExpandedSimple [
+CDFluidClassRecreatorTest >> testExpandedPoint [
 
 	self 
-		assert: ClassDescription definitionFullyExpanded 
-		equals:  'Object < #MyClass
+		assert: Point definitionExpanded equals:  'Object < Point
+	layout: FixedLayout
+	uses: {};
+	slots: { #x . #y };
+	sharedVariables: {  };
+	tag: ''BasicObjects'';
+	sharedPools: {  };
+	package: ''Kernel'''
+		 
+]
+
+{ #category : #'tests - expanded' }
+CDFluidClassRecreatorTest >> testFullyExpandedSimple [
+
+	self 
+		assert: ClassDescription definitionFullyExpanded  
+		equals: 'Object < #MyClass
 	layout: FixedLayout;
 	uses: {};
 	slots: {};
 	sharedVariables: {};
 	tag: '''' ;
 	sharedPools: {};
-	package: ''MyPackage'';'
-	
+	package: ''MyPackage'''
 ]
 
 { #category : #'tests - metaclasses' }
