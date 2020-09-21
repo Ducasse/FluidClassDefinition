@@ -42,30 +42,31 @@ ClassDescription >> definitionExpanded [
 						s crtab.
 
 						s nextPutAll: 'slots: ', self slotDefinitionString, ';'; crtab. 
-						s nextPutAll: 'sharedVariables: ', self classVariableDefinitionString, ';'; crtab.
-						
-						
+						s 	
+							nextPutAll: 'sharedVariables: ';
+							nextPutAll: self classVariableDefinitionString;
+							nextPutAll: ';'; crtab.
 							
 						s nextPutAll: 'sharedPools: {'.
 						self sharedPoolStringOn: s.
 						s nextPutAll: '};' ; crtab.
 						
-						tag := (self package classTagForClass: self) name.
-						"what an ugly logic!"
-						tag = self package name
-							ifFalse:  [
-									s  
-				 						nextPutAll: 'tag: '''; 
-										nextPutAll: tag asString ; 
-										nextPutAll: ''';'  ]
-							ifTrue: [ s 	nextPutAll: 'tag: '''';']. 
-						s crtab.	 			
-						
-									
-						s nextPutAll: 'package: ''', self package packageName, '''']]
-		ifFalse: [  
-				self definitionWithoutSlots		
-				]
+						(self package classTagForClass: self) ifNotNil: [:t | 
+							tag := t name.
+							tag = self package name
+								ifFalse:  [
+									s nextPutAll: 'tag: '; 
+					nextPut: $'; 
+					nextPutAll: tag asString ; 
+					nextPutAll: ''';'.
+					s crtab
+				]].
+				
+				s 
+					nextPutAll: 'package: ''';
+					nextPutAll: self package packageName;
+					nextPutAll: '''' ]]
+		ifFalse: [  self definitionWithoutSlots	]
 
 ]
 

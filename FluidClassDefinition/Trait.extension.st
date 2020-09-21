@@ -30,7 +30,9 @@ Trait >> asFluidDefinitionString [
 					s nextPutAll: self slotDefinitionString.
 					s nextPutAll: ';'.
 					s cr ].
-
+				
+		self tagOn: s.
+		
 		s 	
 			tab;
 			nextPutAll: 'package: '; 

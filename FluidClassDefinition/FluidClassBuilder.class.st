@@ -80,8 +80,10 @@ FluidClassBuilder >> fillShiftClassBuilder [
 	shiftClassBuilder := ShiftClassBuilder new
 		buildEnvironment: ShSmalltalkGlobalsEnvironment new;
 		name: classNameToBuild;
-		superclass: superclassToBuild;
-		category: packageName.
+		superclass: superclassToBuild.
+	tagToBuild isNil or: [ tagToBuild isEmpty 
+		ifTrue: [ shiftClassBuilder category: packageName ]
+		ifFalse: [ shiftClassBuilder category: packageName, '-',tagToBuild asString ]].
 	slotsToBuild ifNotNil: [:s | s isEmpty ifFalse: [ shiftClassBuilder slots: slotsToBuild ]].
 	traitComposition ifNotNil: [ :t | t isEmpty ifFalse: [shiftClassBuilder traitComposition: traitComposition ]].
 	sharedVariables ifNotNil: [ :s | s isEmpty ifFalse: [shiftClassBuilder sharedVariables: sharedVariables]].

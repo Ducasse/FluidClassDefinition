@@ -54,16 +54,7 @@ Class >> asFluidDefinitionString [
 			s	nextPutAll: ' };' ;
 				cr ].	
 			
-		tag := (self package classTagForClass: self) name.
-		tag = self package name
-			ifFalse:  [
-				s 	tab;  
-				 	nextPutAll: 'tag: '; 
-					nextPut: $'; 
-					nextPutAll: tag asString ; 
-					nextPutAll: ''';'.
-				s cr
-				].
+		self tagOn: s.
 				
 		s 	
 			tab;
@@ -72,4 +63,21 @@ Class >> asFluidDefinitionString [
 			nextPutAll: self package packageName;
 			nextPut: $'
 		]
+]
+
+{ #category : #'*FluidClassDefinition' }
+Class >> tagOn: str [
+	| tag |
+	(self package classTagForClass: self) 
+			ifNotNil: [:t | 	
+					tag := t name.
+					tag = self package name
+						ifFalse:  [
+					str 	tab;  
+					 	nextPutAll: 'tag: '; 
+						nextPut: $'; 
+						nextPutAll: tag asString ; 
+						nextPutAll: ''';'.
+					str cr
+				]].
 ]

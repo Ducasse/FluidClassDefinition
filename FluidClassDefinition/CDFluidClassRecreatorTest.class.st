@@ -206,15 +206,15 @@ CDFluidClassRecreatorTest >> testPointMinimalInformation [
 	"I would like to be able to test if I provide too many empty values that
 	the default empty values are just ignored."
 	| class |
-	self skip.
-	class := (Object < #Point2
+	class := (Object < #CDFluidMock
 	slots: {#x . #y};
 	tag: 'BasicObjects';
 	package: 'Kernel') build.
-	self assert: class asFluidDefinitionString equals: 'Object < #Point2
-	slots: {#x . #y};
-	tag: ''BasicObjects'';
-	package: ''_UndefinedPackage'''
+	"I cannot test the tag because the class is not installed so the package manager
+	does not know the package and the class."
+	self assert: class asFluidDefinitionString equals: 'Object < #CDFluidMock
+	slots: { #x . #y };
+	package: ''_UnpackagedPackage'''
 	
 ]
 
@@ -242,7 +242,10 @@ CDFluidClassRecreatorTest >> testSystemAnnouncerClass [
 { #category : #'tests - traits' }
 CDFluidClassRecreatorTest >> testTBehavior [
 
-	self assert: TBehavior asFluidDefinitionString equals: 'Trait  << #TBehavior
+	self 
+		assert: TBehavior asFluidDefinitionString 
+		equals: 'Trait  << #TBehavior
+	tag: ''Traits'';
 	package: ''TraitsV2-Compatibility'''
 ]
 
@@ -303,4 +306,15 @@ CDFluidClassRecreatorTest >> testTrait3 [
 
 	self assert: Trait3 classTrait asFluidDefinitionString equals: 'Trait3 classTrait
 	uses: Trait2 classTrait'
+]
+
+{ #category : #'tests - traits' }
+CDFluidClassRecreatorTest >> testTrait3AndTag [
+
+	self 
+		assert: Trait3 asFluidDefinitionString 
+		equals: 'Trait  << #Trait3
+	uses: Trait2;
+	tag: ''Traits-MOP'';
+	package: ''Tests''' 
 ]

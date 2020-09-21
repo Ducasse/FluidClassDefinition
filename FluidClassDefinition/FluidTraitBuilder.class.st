@@ -6,7 +6,9 @@ Class {
 		'slots',
 		'name',
 		'uses',
-		'builder'
+		'builder',
+		'tagToBuild',
+		'shiftClassBuilder'
 	],
 	#category : #'FluidClassDefinition-Builder'
 }
@@ -29,6 +31,9 @@ FluidTraitBuilder >> fillShiftClassBuilder [
 		superclass: nil;
 		metaSuperclass: Trait;
 		metaclassClass: MetaclassForTraits.
+	tagToBuild isNil or: [ tagToBuild isEmpty 
+		ifTrue: [ shiftClassBuilder category: packageName ]
+		ifFalse: [ shiftClassBuilder category: packageName, '-',tagToBuild asString ]].
 	slots ifNotNil: [ builder slots: slots].
 	builder	
 		sharedVariables: '';
@@ -63,6 +68,16 @@ FluidTraitBuilder >> package: aString [
 FluidTraitBuilder >> slots: anArray [
 
 	slots := anArray
+]
+
+{ #category : #accessing }
+FluidTraitBuilder >> tag [
+	^ tagToBuild
+]
+
+{ #category : #accessing }
+FluidTraitBuilder >> tag: anObject [
+	tagToBuild := anObject
 ]
 
 { #category : #accessing }
