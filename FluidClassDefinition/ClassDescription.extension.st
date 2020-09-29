@@ -26,7 +26,7 @@ ClassDescription >> definitionExpanded [
 		ifTrue: [
 				String streamContents: [ :s | 
 						| tag |
-						s nextPutAll: 'Object < ', self name asSymbol; crtab.
+						s nextPutAll: 'Object < #', self name asSymbol; crtab.
 						
 						s 
 							nextPutAll: 'layout: ';
