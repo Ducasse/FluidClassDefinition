@@ -15,8 +15,8 @@ TraitedMetaclass >> asFluidDefinitionString [
 		self slots ifNotEmpty: [  
 			strm
 				crtab;
-				nextPutAll: 'slots: ';
-				nextPutAll: self slotDefinitionString]]
+				nextPutAll: 'slots: '.
+			self slotDefinitionStringOn: strm	]]
 ]
 
 { #category : #'*FluidClassDefinition' }

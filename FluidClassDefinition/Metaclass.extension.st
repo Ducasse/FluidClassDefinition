@@ -20,8 +20,8 @@ Metaclass >> asFluidDefinitionString [
 		self slots ifNotEmpty: 
 			[ 
 				s crtab.
-				s nextPutAll: 'slots: '. 
-				s nextPutAll: self slotDefinitionString ].
+				s nextPutAll: 'slots: '.
+				self slotDefinitionStringOn: s ].
 		]
 ]
 
@@ -59,7 +59,8 @@ Metaclass >> definitionExpanded [
 							ifFalse: [ s nextPutAll: 'uses: {};'].
 						s crtab.
 
-						s nextPutAll: 'slots: ', self slotDefinitionString. 
+						s nextPutAll: 'slots: '.
+						self slotDefinitionStringOn: s. 
 						]]
 		ifFalse: [  self definitionWithoutSlots	]
 

@@ -27,7 +27,7 @@ Trait >> asFluidDefinitionString [
 		self slots ifNotEmpty: [ 
 					s tab.
 					s nextPutAll: 'slots: '.
-					s nextPutAll: self slotDefinitionString.
+					self slotDefinitionStringOn: s.
 					s nextPutAll: ';'.
 					s cr ].
 				

@@ -3,8 +3,6 @@ Extension { #name : #Class }
 { #category : #'*FluidClassDefinition' }
 Class >> asFluidDefinitionString [
 	^ String streamContents: [ :s |
-		| tag |
-		
 		superclass 
 			ifNotNil: [s nextPutAll: superclass name]
 			ifNil: [s nextPutAll: 'nil'].
@@ -31,10 +29,10 @@ Class >> asFluidDefinitionString [
 		
 		self slots ifNotEmpty: [ 
 					s tab.
-					s nextPutAll: 'slots: '. 
-					s nextPutAll: self slotDefinitionString.
+					s nextPutAll: 'slots: '.
+					self slotDefinitionStringOn: s. 
 					s nextPutAll: ';'.
-					s cr].
+					s cr ].
 		self classVariables ifNotEmpty: [  
 				s 
 					tab;
