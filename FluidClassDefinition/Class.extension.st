@@ -41,8 +41,6 @@ Class >> asFluidDefinitionString [
 					nextPutAll: ';';
 					cr
 				].
-				
-		
 			
 		self sharedPools ifNotEmpty: [:pools |
 			s 
