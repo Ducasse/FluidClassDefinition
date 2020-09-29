@@ -5,10 +5,28 @@ Class {
 	#name : #CDFluidClassRecreatorTest,
 	#superclass : #TestCase,
 	#instVars : [
-		'classDefinition'
+		'classDefinition',
+		'slotuse'
 	],
 	#category : #'FluidClassDefinition-Parser'
 }
+
+{ #category : #'tests - classes' }
+CDFluidClassRecreatorTest >> setUp [ 
+	
+	slotuse := Slot showSlotClassDefinition.
+	Slot showSlotClassDefinition: true.
+	super setUp.
+	
+]
+
+{ #category : #'tests - classes' }
+CDFluidClassRecreatorTest >> tearDown [ 
+	
+	Slot showSlotClassDefinition: slotuse.
+	super tearDown.
+	
+]
 
 { #category : #'tests - traits' }
 CDFluidClassRecreatorTest >> testAlignmentMorphClass [
@@ -148,6 +166,22 @@ CDFluidClassRecreatorTest >> testFullyExpandedSimple [
 
 	self 
 		assert: ClassDescription definitionFullyExpanded 
+		equals:  'Object < #MyClass
+	layout: FixedLayout;
+	uses: {};
+	slots: {};
+	sharedVariables: {};
+	sharedPools: {};
+	tag: '''' ;
+	package: ''MyPackage'''
+		
+]
+
+{ #category : #'tests - expanded' }
+CDFluidClassRecreatorTest >> testFullyExpandedTrait [
+
+	self 
+		assert: Trait definitionFullyExpanded 
 		equals:  'Object < #MyClass
 	layout: FixedLayout;
 	uses: {};

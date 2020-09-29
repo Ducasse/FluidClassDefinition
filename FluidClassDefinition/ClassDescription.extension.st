@@ -96,7 +96,11 @@ ClassDescription >> definitionFullyExpandedButPackage: aString [
 						s nextPutAll: 'package: ''', aString, '''' ] 
 					]
 		ifFalse: [  
-				self definitionWithoutSlots		
+				String streamContents: [ :s |
+						s nextPutAll: 'Object subclass: #MyClass' ; crtab.
+						s nextPutAll: 'instanceVariableNames: '''' '; crtab. 
+						s nextPutAll: 'classVariableNames: '''''; crtab.
+						s nextPutAll: 'package: ''', aString, '''' ] 				
 				]
 
 ]

@@ -52,6 +52,28 @@ Trait >> definition [
 ]
 
 { #category : #'*FluidClassDefinition' }
+Trait >> definitionFullyExpandedButPackage: aString [
+	"This definition propose all the with an empty arguments so that the user can just type and empty elements will be ignored by the builder and parser. Should check that this is true and write tests. 
+	"
+	"For now I will check here for Slot 
+	"
+	^ Slot showSlotClassDefinition 
+		ifTrue: [
+				String streamContents: [ :s |
+						s nextPutAll: 'Trait named: #MyClass'; crtab.
+						s nextPutAll: 'layout: FixedLayout;'; crtab.
+						s nextPutAll: 'uses: {};'; crtab.
+						s nextPutAll: 'slots: {};'; crtab. 
+						s nextPutAll: 'tag: '''' ;';crtab.
+						s nextPutAll: 'package: ''', aString, '''' ] 
+					]
+		ifFalse: [  
+				self definitionWithoutSlots		
+				]
+
+]
+
+{ #category : #'*FluidClassDefinition' }
 Trait >> definitionWithoutSlots [
 
 	(self instanceSide name == #Trait) ifTrue: [ ^ super definition ].
