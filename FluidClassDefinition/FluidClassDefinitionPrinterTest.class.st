@@ -1,10 +1,6 @@
 Class {
 	#name : #FluidClassDefinitionPrinterTest,
-	#superclass : #TestCase,
-	#instVars : [
-		'classDefinition',
-		'slotuse'
-	],
+	#superclass : #CommonClassDefinitionPrinterTest,
 	#category : #'FluidClassDefinition-Printer-UnderDev'
 }
 
