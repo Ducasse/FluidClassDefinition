@@ -19,6 +19,21 @@ ClassDefinitionPrinterTest >> testFluidConfiguration [
 ]
 
 { #category : #tests }
+ClassDefinitionPrinterTest >> testLegacyPharoConfiguration [
+
+	self 
+		assert: (ClassDefinitionPrinter new 
+ 						legacy;
+ 						for: Array;
+						definitionString)
+		equals: 'ArrayedCollection variableSubclass: #Array
+	instanceVariableNames: ''''
+	classVariableNames: ''''
+	poolDictionaries: ''''
+	category: ''Collections-Sequenceable-Base'''
+]
+
+{ #category : #tests }
 ClassDefinitionPrinterTest >> testOldPharoConfiguration [
 
 	self 
