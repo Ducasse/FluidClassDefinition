@@ -6,7 +6,6 @@ Class {
 		'slots',
 		'name',
 		'uses',
-		'builder',
 		'tagToBuild',
 		'shiftClassBuilder'
 	],
@@ -16,7 +15,7 @@ Class {
 { #category : #accessing }
 FluidTraitBuilder >> build [
 
-	^ builder build 
+	^ shiftClassBuilder build 
 
 
 ]
@@ -24,9 +23,9 @@ FluidTraitBuilder >> build [
 { #category : #accessing }
 FluidTraitBuilder >> fillShiftClassBuilder [
 
-	builder := ShiftClassBuilder new.
-	builder buildEnvironment: ShSmalltalkGlobalsEnvironment new. 
-	builder
+	shiftClassBuilder  := ShiftClassBuilder new.
+	shiftClassBuilder  buildEnvironment: ShSmalltalkGlobalsEnvironment new. 
+	shiftClassBuilder 
 		name: name;
 		superclass: nil;
 		metaSuperclass: Trait;
@@ -34,15 +33,15 @@ FluidTraitBuilder >> fillShiftClassBuilder [
 	tagToBuild isNil or: [ tagToBuild isEmpty 
 		ifTrue: [ shiftClassBuilder category: packageName ]
 		ifFalse: [ shiftClassBuilder category: packageName, '-',tagToBuild asString ]].
-	slots ifNotNil: [ builder slots: slots].
-	builder	
+	slots ifNotNil: [ shiftClassBuilder slots: slots ].
+	shiftClassBuilder	
 		sharedVariables: '';
 		sharedPools: '';
 		category: packageName.
 	uses ifNotNil: [ 
-		builder traitComposition: uses asTraitComposition.
-		builder classTraitComposition: uses asTraitComposition classComposition ].
-	builder classSlots: #()
+		shiftClassBuilder traitComposition: uses asTraitComposition.
+		shiftClassBuilder classTraitComposition: uses asTraitComposition classComposition ].
+	shiftClassBuilder classSlots: #()
 ]
 
 { #category : #accessing }

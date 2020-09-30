@@ -206,15 +206,14 @@ FluidClassBuilderTest >> testInstalledMinimalExceptOneMockClassRecreatorIsMinima
 	sharedVariables: {};
 	tag: '''' ;
 	sharedPools: {};
-	package: ''MyPackage'''.
+	package: ''FluidClassDefinition'''.
 	shiftClassBuilder := builder shiftClassBuilder.
 	ShiftClassInstaller new makeWithBuilder: shiftClassBuilder.
 	
 	installedClass := self class environment at: #MyClass ifAbsent: [self fail].
-	         
-	self assert: installedClass asFluidDefinitionString equals: 'Object < #MyClass
+	self assert: installedClass asFluidDefinitionString  equals: 'Object < #MyClass
 	slots: { #x };
-	package: ''MyPackage''']
+	package: ''FluidClassDefinition''']
 		ensure: [ self removeFromSystem  ]
 ]
 
@@ -232,13 +231,13 @@ FluidClassBuilderTest >> testInstalledMinimalMockClassRecreatorIsMinimal [
 	sharedVariables: {};
 	tag: '''' ;
 	sharedPools: {};
-	package: ''MyPackage'''.
+	package: ''FluidClassDefinition'''.
 	shiftClassBuilder := builder shiftClassBuilder.
 	ShiftClassInstaller new makeWithBuilder: shiftClassBuilder.
 	
 	installedClass := self class environment at: #MyClass ifAbsent: [self fail].
 	         
 	self assert: installedClass asFluidDefinitionString equals: 'Object < #MyClass
-	package: ''MyPackage''']
+	package: ''FluidClassDefinition''']
 		ensure: [ self removeFromSystem  ]
 ]

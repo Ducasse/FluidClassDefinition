@@ -181,16 +181,11 @@ CDFluidClassRecreatorTest >> testFullyExpandedSimple [
 CDFluidClassRecreatorTest >> testFullyExpandedTrait [
 
 	self 
-		assert: Trait definitionFullyExpanded 
-		equals:  'Object < #MyClass
-	layout: FixedLayout;
+		assert: Trait definitionFullyExpanded equals: 'Trait << #TMyTrait
 	uses: {};
 	slots: {};
-	sharedVariables: {};
-	sharedPools: {};
 	tag: '''' ;
 	package: ''MyPackage'''
-		
 ]
 
 { #category : #'tests - metaclasses' }
