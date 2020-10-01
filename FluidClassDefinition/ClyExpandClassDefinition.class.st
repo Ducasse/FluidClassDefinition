@@ -19,7 +19,7 @@ ClyExpandClassDefinition class >> sourceCodeMenuActivation [
 ClyExpandClassDefinition >> applyResultInContext: aToolContext [
 
 	super applyResultInContext: aToolContext.
-	aToolContext tool editingClass: targetClass
+	aToolContext tool pendingText: targetClass definitionExpanded
 ]
 
 { #category : #accessing }
