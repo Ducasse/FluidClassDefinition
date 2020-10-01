@@ -31,6 +31,7 @@ ClassDescription >> definitionExpanded [
 						s 
 							nextPutAll: 'layout: ';
 							nextPutAll: self classLayout class name; 
+							nextPutAll: ';';
 							crtab. 
 						
 						self hasTraitComposition 

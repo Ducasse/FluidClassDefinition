@@ -114,7 +114,7 @@ CDFluidClassRecreatorTest >> testExpandedPoint [
 	self 
 		assert: Point definitionExpanded 
 		equals: 'Object < #Point
-	layout: FixedLayout
+	layout: FixedLayout;
 	uses: {};
 	slots: { #x . #y };
 	sharedVariables: {};
@@ -141,7 +141,7 @@ CDFluidClassRecreatorTest >> testExpandedTime [
 	self 
 		assert: Time definitionExpanded  
 		equals: 'Object < #Time
-	layout: FixedLayout
+	layout: FixedLayout;
 	uses: {};
 	slots: { #seconds . #nanos };
 	sharedVariables: {};
