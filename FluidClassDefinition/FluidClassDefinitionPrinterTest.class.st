@@ -4,23 +4,6 @@ Class {
 	#category : #'FluidClassDefinition-Printer-UnderDev'
 }
 
-{ #category : #'tests - classes' }
-FluidClassDefinitionPrinterTest >> setUp [ 
-	
-	slotuse := ClassDefinitionPrinter showSlotClassDefinition.
-	ClassDefinitionPrinter showSlotClassDefinition: true.
-	super setUp.
-	
-]
-
-{ #category : #'tests - classes' }
-FluidClassDefinitionPrinterTest >> tearDown [ 
-	
-	Slot showSlotClassDefinition: slotuse.
-	super tearDown.
-	
-]
-
 { #category : #'tests - traits' }
 FluidClassDefinitionPrinterTest >> testAlignmentMorphClass [
 
@@ -109,7 +92,7 @@ FluidClassDefinitionPrinterTest >> testExpandedPoint [
 	self 
 		assert: Point definitionExpanded 
 		equals: 'Object < #Point
-	layout: FixedLayout
+	layout: FixedLayout;
 	uses: {};
 	slots: { #x . #y };
 	sharedVariables: {};
@@ -136,7 +119,7 @@ FluidClassDefinitionPrinterTest >> testExpandedTime [
 	self 
 		assert: Time definitionExpanded  
 		equals: 'Object < #Time
-	layout: FixedLayout
+	layout: FixedLayout;
 	uses: {};
 	slots: { #seconds . #nanos };
 	sharedVariables: {};
