@@ -211,7 +211,7 @@ FluidClassBuilderTest >> testInstalledMinimalExceptOneMockClassRecreatorIsMinima
 	ShiftClassInstaller new makeWithBuilder: shiftClassBuilder.
 	
 	installedClass := self class environment at: #MyClass ifAbsent: [self fail].
-	self assert: installedClass asFluidDefinitionString  equals: 'Object < #MyClass
+	self assert: installedClass definitionString  equals: 'Object < #MyClass
 	slots: { #x };
 	package: ''FluidClassDefinition''']
 		ensure: [ self removeFromSystem  ]
@@ -237,7 +237,7 @@ FluidClassBuilderTest >> testInstalledMinimalMockClassRecreatorIsMinimal [
 	
 	installedClass := self class environment at: #MyClass ifAbsent: [self fail].
 	         
-	self assert: installedClass asFluidDefinitionString equals: 'Object < #MyClass
+	self assert: installedClass definitionString equals: 'Object < #MyClass
 	package: ''FluidClassDefinition''']
 		ensure: [ self removeFromSystem  ]
 ]

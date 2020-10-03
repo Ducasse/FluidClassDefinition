@@ -294,7 +294,7 @@ FluidClassDefinitionPrinterTest >> testTEventVisitorClassTrait [
 FluidClassDefinitionPrinterTest >> testTSlot [
 
 	self 
-		assert: (Trait << #TTUses slots: {  #x . #y }; package: 'Fake') build asFluidDefinitionString 
+		assert: (Trait << #TTUses slots: {  #x . #y }; package: 'Fake') build definitionString 
 		equals: 
 	'Trait  << #TTUses
 	slots: { #x . #y };
@@ -304,7 +304,7 @@ FluidClassDefinitionPrinterTest >> testTSlot [
 { #category : #'tests - traits' }
 FluidClassDefinitionPrinterTest >> testTUses [
 
-	self assert: (Trait << #TTUses uses: TBehavior; package: 'Fake') build asFluidDefinitionString equals:  'Trait  << #TTUses
+	self assert: (Trait << #TTUses uses: TBehavior; package: 'Fake') build definitionString equals:  'Trait  << #TTUses
 	uses: TBehavior;
 	package: ''_UnpackagedPackage'''
 ]
