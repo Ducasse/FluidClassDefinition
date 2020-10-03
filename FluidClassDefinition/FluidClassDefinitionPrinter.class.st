@@ -38,3 +38,8 @@ FluidClassDefinitionPrinter >> definitionString [
 FluidClassDefinitionPrinter >> expandedDefinitionString [
 	^ forClass definitionExpanded 
 ]
+
+{ #category : #printing }
+FluidClassDefinitionPrinter >> fullyExpandedDefinitionString [
+	^ forClass definitionFullyExpandedButPackage: forClass package packageName
+]

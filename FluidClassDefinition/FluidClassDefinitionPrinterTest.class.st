@@ -4,11 +4,32 @@ Class {
 	#category : #'FluidClassDefinition-Printer-UnderDev'
 }
 
+{ #category : #helpers }
+FluidClassDefinitionPrinterTest >> expandedForClass: aClass [
+	^ (FluidClassDefinitionPrinter for: aClass) expandedDefinitionString 
+
+
+]
+
+{ #category : #helpers }
+FluidClassDefinitionPrinterTest >> forClass: aClass [
+	^ (FluidClassDefinitionPrinter for: aClass) definitionString 
+
+
+]
+
+{ #category : #helpers }
+FluidClassDefinitionPrinterTest >> fullyExpandedForClass: aClass [
+	^ (FluidClassDefinitionPrinter for: aClass) fullyExpandedDefinitionString 
+
+
+]
+
 { #category : #'tests - traits' }
 FluidClassDefinitionPrinterTest >> testAlignmentMorphClass [
 
 	self 
-		assert: AlignmentMorph class asFluidDefinitionString 
+		assert: (self forClass: AlignmentMorph class) 
 		equals: 'AlignmentMorph class
 	uses: TAbleToRotate classTrait' 
 ]
@@ -17,7 +38,7 @@ FluidClassDefinitionPrinterTest >> testAlignmentMorphClass [
 FluidClassDefinitionPrinterTest >> testArray [
 
 	self 
-		assert: (FluidClassDefinitionPrinter for: Array) definitionString 
+		assert: (self forClass: Array)
 		equals: 'ArrayedCollection < #Array
 	layout: VariableLayout;
 	tag: ''Base'';
@@ -27,7 +48,7 @@ FluidClassDefinitionPrinterTest >> testArray [
 { #category : #'tests - classes' }
 FluidClassDefinitionPrinterTest >> testByteString [
 
-	self assert: ByteString asFluidDefinitionString equals: 'String < #ByteString
+	self assert: (self forClass: ByteString) equals: 'String < #ByteString
 	layout: ByteLayout;
 	sharedVariables: { #NonAsciiMap };
 	tag: ''Base'';
@@ -37,7 +58,7 @@ FluidClassDefinitionPrinterTest >> testByteString [
 { #category : #'tests - classes' }
 FluidClassDefinitionPrinterTest >> testChronologyConstants [
 	
-	self assert: ChronologyConstants asFluidDefinitionString equals: 'SharedPool < #ChronologyConstants
+	self assert: (self forClass: ChronologyConstants) equals: 'SharedPool < #ChronologyConstants
 	sharedVariables: { #NanosInSecond . #MonthNames . #SecondsInHour . #SecondsInDay . #SqueakEpoch . #NanosInMillisecond . #DayNames . #DaysInMonth . #SecondsInMinute . #MicrosecondsInDay };
 	tag: ''Chronology'';
 	package: ''Kernel'''
@@ -46,13 +67,13 @@ FluidClassDefinitionPrinterTest >> testChronologyConstants [
 { #category : #'tests - metaclasses' }
 FluidClassDefinitionPrinterTest >> testClassSideDoesNotShowPackage [
 
-	self assert: MOPTraitTest class asFluidDefinitionString  equals: 'MOPTraitTest class'
+	self assert: (self forClass: MOPTraitTest class) equals: 'MOPTraitTest class'
 ]
 
 { #category : #'tests - traits' }
 FluidClassDefinitionPrinterTest >> testComplexTrait [
 
-	self assert: MOPTestClassD asFluidDefinitionString equals: 'Object < #MOPTestClassD
+	self assert: (self forClass: MOPTestClassD) equals: 'Object < #MOPTestClassD
 	uses: Trait2 @ {#c3->#c2};
 	tag: ''Traits-MOP'';
 	package: ''Tests''' 
@@ -62,7 +83,7 @@ FluidClassDefinitionPrinterTest >> testComplexTrait [
 FluidClassDefinitionPrinterTest >> testExpandedEmptyLayoutClass [
 
 	self 
-		assert: (FluidClassDefinitionPrinter for: EmptyLayout class) expandedDefinitionString  
+		assert: (self expandedForClass: EmptyLayout class)  
 		equals: 'EmptyLayout class
 	uses: {};
 	slots: { #instance }'
@@ -72,7 +93,7 @@ FluidClassDefinitionPrinterTest >> testExpandedEmptyLayoutClass [
 FluidClassDefinitionPrinterTest >> testExpandedEpTEventVisitorClassTrait [
 
 	self 
-		assert: EpTEventVisitor classTrait definitionExpanded   
+		assert: (self expandedForClass: EpTEventVisitor classTrait)   
 		equals: 'EpTEventVisitor classTrait
 	uses: EpTCodeChangeVisitor classTrait;
 	slots: {}'
@@ -81,7 +102,7 @@ FluidClassDefinitionPrinterTest >> testExpandedEpTEventVisitorClassTrait [
 { #category : #'tests - expanded' }
 FluidClassDefinitionPrinterTest >> testExpandedMetaclassWithTrait [
 	
-	self assert: MOPTestClassD class definitionExpanded equals: 'MOPTestClassD class
+	self assert: (self expandedForClass: MOPTestClassD class) equals: 'MOPTestClassD class
 	uses: Trait2 classTrait;
 	slots: {}' 
 ]
@@ -90,7 +111,7 @@ FluidClassDefinitionPrinterTest >> testExpandedMetaclassWithTrait [
 FluidClassDefinitionPrinterTest >> testExpandedPoint [
 
 	self 
-		assert: Point definitionExpanded 
+		assert: (self expandedForClass: Point) 
 		equals: 'Object < #Point
 	layout: FixedLayout;
 	uses: {};
@@ -106,7 +127,7 @@ FluidClassDefinitionPrinterTest >> testExpandedPoint [
 FluidClassDefinitionPrinterTest >> testExpandedTComparableClassTrait [
 
 	self 
-		assert:  TComparable classTrait definitionExpanded 
+		assert:  (self expandedForClass: TComparable classTrait) 
 		equals:  'TComparable classTrait
 	uses: {};
 	slots: {}'
@@ -117,7 +138,7 @@ FluidClassDefinitionPrinterTest >> testExpandedTComparableClassTrait [
 FluidClassDefinitionPrinterTest >> testExpandedTime [
 
 	self 
-		assert: Time definitionExpanded  
+		assert: (self expandedForClass: Time)  
 		equals: 'Object < #Time
 	layout: FixedLayout;
 	uses: {};
@@ -132,18 +153,18 @@ FluidClassDefinitionPrinterTest >> testExpandedTime [
 FluidClassDefinitionPrinterTest >> testExpandedTrait3ClassTrait [
 
 	self 
-		assert: Trait3 classTrait definitionExpanded 
+		assert: (self expandedForClass: Trait3 classTrait) 
 		equals:  'Trait3 classTrait
 	uses: Trait2 classTrait;
 	slots: {}'
 		
 ]
 
-{ #category : #'tests - expanded' }
+{ #category : #'tests - fully expanded' }
 FluidClassDefinitionPrinterTest >> testFullyExpandedSimple [
 
 	self 
-		assert: ClassDescription definitionFullyExpanded 
+		assert: (self fullyExpandedForClass: ClassDescription) 
 		equals:  'Object < #MyClass
 	layout: FixedLayout;
 	uses: {};
@@ -151,25 +172,25 @@ FluidClassDefinitionPrinterTest >> testFullyExpandedSimple [
 	sharedVariables: {};
 	sharedPools: {};
 	tag: '''' ;
-	package: ''MyPackage'''
+	package: ''Kernel'''
 		
 ]
 
-{ #category : #'tests - expanded' }
+{ #category : #'tests - fully expanded' }
 FluidClassDefinitionPrinterTest >> testFullyExpandedTrait [
 
 	self 
-		assert: Trait definitionFullyExpanded equals: 'Trait << #TMyTrait
+		assert: (self fullyExpandedForClass: Trait) equals: 'Trait << #TMyTrait
 	uses: {};
 	slots: {};
 	tag: '''' ;
-	package: ''MyPackage'''
+	package: ''TraitsV2'''
 ]
 
 { #category : #'tests - metaclasses' }
 FluidClassDefinitionPrinterTest >> testMetaclass [
 	
-	self assert: Metaclass asFluidDefinitionString equals: 'ClassDescription < #Metaclass
+	self assert: (self forClass: Metaclass) equals: 'ClassDescription < #Metaclass
 	slots: { #thisClass };
 	tag: ''Classes'';
 	package: ''Kernel''' 
@@ -178,21 +199,21 @@ FluidClassDefinitionPrinterTest >> testMetaclass [
 { #category : #'tests - metaclasses' }
 FluidClassDefinitionPrinterTest >> testMetaclassClass [
 	
-	self assert: Metaclass class asFluidDefinitionString equals: 
+	self assert: (self forClass: Metaclass class) equals: 
  'Metaclass class'	
 ]
 
 { #category : #'tests - metaclasses' }
 FluidClassDefinitionPrinterTest >> testMetaclassWithTrait [
 	
-	self assert: MOPTestClassD class asFluidDefinitionString equals: 'MOPTestClassD class
+	self assert: (self forClass: MOPTestClassD class) equals: 'MOPTestClassD class
 	uses: Trait2 classTrait' 
 ]
 
 { #category : #'tests - traits' }
 FluidClassDefinitionPrinterTest >> testMultiPools [
 
-	self assert: ClassMultiplePoolUser asFluidDefinitionString equals: 'Object < #ClassMultiplePoolUser
+	self assert: (self forClass: ClassMultiplePoolUser) equals: 'Object < #ClassMultiplePoolUser
 	sharedPools: { PoolDefiner . PoolDefiner2 };
 	tag: ''Classes'';
 	package: ''Kernel-Tests''' 
@@ -201,7 +222,7 @@ FluidClassDefinitionPrinterTest >> testMultiPools [
 { #category : #'tests - classes' }
 FluidClassDefinitionPrinterTest >> testPoint [
 	
-	self assert: Point asFluidDefinitionString equals: 'Object < #Point
+	self assert: (self forClass: Point) equals: 'Object < #Point
 	slots: { #x . #y };
 	tag: ''BasicObjects'';
 	package: ''Kernel'''
@@ -219,7 +240,7 @@ FluidClassDefinitionPrinterTest >> testPointMinimalInformation [
 	package: 'Kernel') build.
 	"I cannot test the tag because the class is not installed so the package manager
 	does not know the package and the class."
-	self assert: (FluidClassDefinitionPrinter for: class) definitionString equals: 'Object < #CDFluidMock
+	self assert: (self forClass: class) equals: 'Object < #CDFluidMock
 	slots: { #x . #y };
 	package: ''_UnpackagedPackage'''
 	
@@ -228,7 +249,7 @@ FluidClassDefinitionPrinterTest >> testPointMinimalInformation [
 { #category : #'tests - classes' }
 FluidClassDefinitionPrinterTest >> testProtoObject [
 	
-	self assert: ProtoObject asFluidDefinitionString equals: 'nil < #ProtoObject
+	self assert: (self forClass: ProtoObject) equals: 'nil < #ProtoObject
 	tag: ''Objects'';
 	package: ''Kernel''' 
 ]
@@ -236,13 +257,13 @@ FluidClassDefinitionPrinterTest >> testProtoObject [
 { #category : #'tests - classes' }
 FluidClassDefinitionPrinterTest >> testProtoObjectClass [
 	
-	self assert: ProtoObject class asFluidDefinitionString equals: 'ProtoObject class'
+	self assert: (self forClass: ProtoObject class) equals: 'ProtoObject class'
 ]
 
 { #category : #'tests - metaclasses' }
 FluidClassDefinitionPrinterTest >> testSystemAnnouncerClass [
 	
-	self assert: SystemAnnouncer class asFluidDefinitionString equals: 'SystemAnnouncer class
+	self assert: (self forClass: SystemAnnouncer class) equals: 'SystemAnnouncer class
 	slots: { #announcer }'
 ]
 
@@ -250,7 +271,7 @@ FluidClassDefinitionPrinterTest >> testSystemAnnouncerClass [
 FluidClassDefinitionPrinterTest >> testTBehavior [
 
 	self 
-		assert: TBehavior asFluidDefinitionString 
+		assert: (self forClass: TBehavior) 
 		equals: 'Trait  << #TBehavior
 	tag: ''Traits'';
 	package: ''TraitsV2-Compatibility'''
@@ -259,13 +280,13 @@ FluidClassDefinitionPrinterTest >> testTBehavior [
 { #category : #'tests - traits' }
 FluidClassDefinitionPrinterTest >> testTComparableClassTrait [
 
-	self assert: TComparable classTrait asFluidDefinitionString equals: 'TComparable classTrait' 
+	self assert: (self forClass: TComparable classTrait) equals: 'TComparable classTrait' 
 ]
 
 { #category : #'tests - traits' }
 FluidClassDefinitionPrinterTest >> testTEventVisitorClassTrait [
 
-	self assert: EpTEventVisitor classTrait asFluidDefinitionString equals: 'EpTEventVisitor classTrait
+	self assert: (self forClass: EpTEventVisitor classTrait) equals: 'EpTEventVisitor classTrait
 	uses: EpTCodeChangeVisitor classTrait'
 ]
 
@@ -291,7 +312,7 @@ FluidClassDefinitionPrinterTest >> testTUses [
 { #category : #'tests - classes' }
 FluidClassDefinitionPrinterTest >> testText [
 
-	self assert: Text asFluidDefinitionString equals: 'ArrayedCollection < #Text
+	self assert: (self forClass: Text) equals: 'ArrayedCollection < #Text
 	slots: { #string . #runs };
 	sharedPools: { TextConstants };
 	tag: ''Base'';
@@ -301,7 +322,7 @@ FluidClassDefinitionPrinterTest >> testText [
 { #category : #'tests - traits' }
 FluidClassDefinitionPrinterTest >> testTrait [
 	
-	self assert: RubScrolledTextModel asFluidDefinitionString equals: 'Object < #RubScrolledTextModel
+	self assert: (self forClass: RubScrolledTextModel) equals: 'Object < #RubScrolledTextModel
 	uses: TViewModel;
 	slots: { #hasUnacceptedEdits . #announcer . #text . #primarySelectionInterval . #interactionModel };
 	tag: ''Editing-Widgets'';
@@ -311,7 +332,7 @@ FluidClassDefinitionPrinterTest >> testTrait [
 { #category : #'tests - traits' }
 FluidClassDefinitionPrinterTest >> testTrait3 [
 
-	self assert: Trait3 classTrait asFluidDefinitionString equals: 'Trait3 classTrait
+	self assert: (self forClass: Trait3 classTrait) equals: 'Trait3 classTrait
 	uses: Trait2 classTrait'
 ]
 
@@ -319,7 +340,7 @@ FluidClassDefinitionPrinterTest >> testTrait3 [
 FluidClassDefinitionPrinterTest >> testTrait3AndTag [
 
 	self 
-		assert: Trait3 asFluidDefinitionString 
+		assert: (self forClass: Trait3) 
 		equals: 'Trait  << #Trait3
 	uses: Trait2;
 	tag: ''Traits-MOP'';
