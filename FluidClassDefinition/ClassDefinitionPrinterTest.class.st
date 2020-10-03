@@ -8,8 +8,7 @@ Class {
 ClassDefinitionPrinterTest >> testFluidConfiguration [
 
 	self 
-		assert: (ClassDefinitionPrinter new 
- 						fluid;
+		assert: ((ClassDefinitionPrinter fluid)
  						for: Array;
 						definitionString)
 		equals: 'ArrayedCollection < #Array
@@ -22,8 +21,7 @@ ClassDefinitionPrinterTest >> testFluidConfiguration [
 ClassDefinitionPrinterTest >> testLegacyPharoConfiguration [
 
 	self 
-		assert: (ClassDefinitionPrinter new 
- 						legacy;
+		assert: (ClassDefinitionPrinter legacy
  						for: Array;
 						definitionString)
 		equals: 'ArrayedCollection variableSubclass: #Array
@@ -37,8 +35,7 @@ ClassDefinitionPrinterTest >> testLegacyPharoConfiguration [
 ClassDefinitionPrinterTest >> testOldPharoConfiguration [
 
 	self 
-		assert: (ClassDefinitionPrinter new 
- 						oldPharo;
+		assert: (ClassDefinitionPrinter oldPharo
  						for: Array;
 						definitionString)
 		equals: 'ArrayedCollection variableSubclass: #Array
