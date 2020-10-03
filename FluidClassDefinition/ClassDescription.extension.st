@@ -107,6 +107,18 @@ ClassDescription >> definitionFullyExpandedButPackage: aString [
 ]
 
 { #category : #'*FluidClassDefinition' }
+ClassDescription >> definitionPrinter [
+	"Return the printer"
+	^ ClassDefinitionPrinter for: self
+]
+
+{ #category : #'*FluidClassDefinition' }
+ClassDescription >> definitionString [
+	"Return the string of the class definition, each of my subclass may tell the printer how to printer it. A kind of double dispatch since we have multiple printers and multiple entities to be printed."
+	^ self subclassResponsibility
+]
+
+{ #category : #'*FluidClassDefinition' }
 ClassDescription >> definitionWithSlots [
 	"The class definition with a way to specify slots. Shown when the class defines special Slot"
 	^ self instanceSide asFluidDefinitionString

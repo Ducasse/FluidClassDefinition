@@ -67,6 +67,12 @@ Metaclass >> definitionExpanded [
 ]
 
 { #category : #'*FluidClassDefinition' }
+Metaclass >> definitionString [ 
+
+	^ self definitionPrinter metaclassDefinitionString 
+]
+
+{ #category : #'*FluidClassDefinition' }
 Metaclass >> definitionWithSlots [
 	"Refer to the comment in ClassDescription|definition."
 	^ self asFluidDefinitionString

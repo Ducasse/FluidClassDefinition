@@ -73,6 +73,12 @@ Trait class >> definitionFullyExpandedButPackage: aString [
 ]
 
 { #category : #'*FluidClassDefinition' }
+Trait >> definitionString [ 
+
+	^ self definitionPrinter traitDefinitionString
+]
+
+{ #category : #'*FluidClassDefinition' }
 Trait >> definitionWithoutSlots [
 
 	(self instanceSide name == #Trait) ifTrue: [ ^ super definition ].

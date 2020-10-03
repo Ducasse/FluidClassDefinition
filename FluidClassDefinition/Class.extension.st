@@ -80,6 +80,12 @@ Class >> classVariableDefinitionString [
 ]
 
 { #category : #'*FluidClassDefinition' }
+Class >> definitionString [ 
+
+	^ self definitionPrinter classDefinitionString 
+]
+
+{ #category : #'*FluidClassDefinition' }
 Class >> tagOn: str [
 	| tag |
 	(self package classTagForClass: self) 

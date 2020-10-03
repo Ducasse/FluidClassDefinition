@@ -13,10 +13,10 @@ Class {
 
 { #category : #'tests - classes' }
 CommonClassDefinitionPrinterTest >> setUp [ 
-	
+	super setUp.
 	slotuse := ClassDefinitionPrinter showSlotClassDefinition.
 	ClassDefinitionPrinter showSlotClassDefinition: true.
-	super setUp.
+	
 	
 ]
 

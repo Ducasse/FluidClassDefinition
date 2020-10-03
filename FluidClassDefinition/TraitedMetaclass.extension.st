@@ -28,6 +28,12 @@ TraitedMetaclass >> definition [
 ]
 
 { #category : #'*FluidClassDefinition' }
+TraitedMetaclass >> definitionString [ 
+
+	^ self definitionPrinter traitedMetaclassDefinitionString 
+]
+
+{ #category : #'*FluidClassDefinition' }
 TraitedMetaclass >> definitionWithoutSlots [
 	"Refer to the comment in ClassDescription|definition."
 	^ String streamContents: [:strm |

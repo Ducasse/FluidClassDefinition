@@ -56,58 +56,53 @@ Class {
 	#name : #ClassDefinitionPrinter,
 	#superclass : #Object,
 	#instVars : [
-		'printer',
 		'forClass'
 	],
 	#classVars : [
-		'Printer'
-	],
-	#classInstVars : [
-		'slotClassDefinition'
+		'SlotClassDefinition'
 	],
 	#category : #'FluidClassDefinition-Printer-UnderDev'
 }
 
 { #category : #'instance creation' }
+ClassDefinitionPrinter class >> fluid [ 
+	^  FluidClassDefinitionPrinter new 
+]
+
+{ #category : #'instance creation' }
 ClassDefinitionPrinter class >> for: aClass [ 
-	^ self new for: aClass; yourself
+	| instance |
+	instance :=  self showSlotClassDefinition 
+		ifTrue: [ self fluid ]
+		ifFalse: [ self oldPharo ].
+	instance for: aClass.
+	^ instance
+]
+
+{ #category : #'instance creation' }
+ClassDefinitionPrinter class >> legacy [
+	^ LegacyClassDefinitionPrinter new 
+]
+
+{ #category : #'instance creation' }
+ClassDefinitionPrinter class >> oldPharo [ 
+	^ OldPharoClassDefinitionPrinter new 
 ]
 
 { #category : #configure }
 ClassDefinitionPrinter class >> showSlotClassDefinition [
-	^slotClassDefinition ifNil: [ slotClassDefinition := false ]
+
+	^ SlotClassDefinition ifNil: [ SlotClassDefinition := false ]
 ]
 
 { #category : #configure }
-ClassDefinitionPrinter class >> showSlotClassDefinition: aBoolean [ 
-	slotClassDefinition := aBoolean
-]
-
-{ #category : #delegating }
-ClassDefinitionPrinter >> definitionString [
-
-	^ (printer for: forClass) definitionString
-]
-
-{ #category : #configuration }
-ClassDefinitionPrinter >> fluid [
-
-	printer := FluidClassDefinitionPrinter new
+ClassDefinitionPrinter class >> showSlotClassDefinition: aBoolean [
+ 
+	SlotClassDefinition := aBoolean
+	
 ]
 
 { #category : #accessing }
 ClassDefinitionPrinter >> for: aClass [ 
 	forClass := aClass
-]
-
-{ #category : #configuration }
-ClassDefinitionPrinter >> legacy [
-
-	printer := LegacyClassDefinitionPrinter new
-]
-
-{ #category : #configuration }
-ClassDefinitionPrinter >> oldPharo [
-
-	printer := OldPharoClassDefinitionPrinter new
 ]
