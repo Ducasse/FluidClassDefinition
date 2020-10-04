@@ -8,11 +8,8 @@ ClassDescription >> asFluidDefinitionString [
 { #category : #'*FluidClassDefinition' }
 ClassDescription >> definition [
 	"Answer a String that defines the receiver."
-
-	Slot showSlotClassDefinition ifTrue: [ 
-		^ self asFluidDefinitionString ].
 	
-	^ self definitionWithoutSlots
+	^ self definitionString
 	
 ]
 

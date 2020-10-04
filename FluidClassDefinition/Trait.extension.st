@@ -43,15 +43,6 @@ Trait >> asFluidDefinitionString [
 ]
 
 { #category : #'*FluidClassDefinition' }
-Trait >> definition [
-	
-	^ Slot showSlotClassDefinition
-		ifTrue: [ self asFluidDefinitionString ]
-		ifFalse: [ self definitionWithoutSlots ]
-	
-]
-
-{ #category : #'*FluidClassDefinition' }
 Trait class >> definitionFullyExpandedButPackage: aString [
 	"This definition propose all the with an empty arguments so that the user can just type and empty elements will be ignored by the builder and parser. Should check that this is true and write tests. 
 	"

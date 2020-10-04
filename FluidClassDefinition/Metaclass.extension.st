@@ -26,16 +26,6 @@ Metaclass >> asFluidDefinitionString [
 ]
 
 { #category : #'*FluidClassDefinition' }
-Metaclass >> definition [
-	"Refer to the comment in ClassDescription|definition."
-	" to remove ?"
-	Slot showSlotClassDefinition ifTrue: [ 
-		^ self definitionWithSlots ].
-
-	^ self definitionWithoutSlots
-]
-
-{ #category : #'*FluidClassDefinition' }
 Metaclass >> definitionExpanded [
 	"This definition presents all the receiver state also the empty one so that the user can just type and empty elements will be ignored by the builder and parser. 
 	"
@@ -70,18 +60,4 @@ Metaclass >> definitionExpanded [
 Metaclass >> definitionStringFor: aPrinter [
 
 	^ aPrinter metaclassDefinitionString 
-]
-
-{ #category : #'*FluidClassDefinition' }
-Metaclass >> definitionWithSlots [
-	"Refer to the comment in ClassDescription|definition."
-	" to remove from the package"
-	^ self asFluidDefinitionString
-
-"	^ String streamContents: [:stream |
-		stream print: self.
-		stream
-			crtab;
-			nextPutAll: 'slots: ';
-			nextPutAll: self slotDefinitionString ]"
 ]

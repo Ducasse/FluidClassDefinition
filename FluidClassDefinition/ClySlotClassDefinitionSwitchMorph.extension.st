@@ -2,8 +2,7 @@ Extension { #name : #ClySlotClassDefinitionSwitchMorph }
 
 { #category : #'*FluidClassDefinition' }
 ClySlotClassDefinitionSwitchMorph >> toggle [
-	Slot showSlotClassDefinition: Slot showSlotClassDefinition not.
-	CDFluidClassDefinitionParser setOn: Slot showSlotClassDefinition.
-	
+
+	ClassDefinitionPrinter showSlotClassDefinition: ClassDefinitionPrinter showSlotClassDefinition not.
 	ownerTool update
 ]

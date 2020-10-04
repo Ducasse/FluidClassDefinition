@@ -66,17 +66,15 @@ Class {
 
 { #category : #'instance creation' }
 ClassDefinitionPrinter class >> fluid [ 
-	^  FluidClassDefinitionPrinter new 
+	^  FluidClassDefinitionPrinter basicNew initialize 
 ]
 
 { #category : #'instance creation' }
 ClassDefinitionPrinter class >> for: aClass [ 
-	| instance |
-	instance :=  self showSlotClassDefinition 
-		ifTrue: [ self fluid ]
-		ifFalse: [ self oldPharo ].
-	instance for: aClass.
-	^ instance
+	^ self new
+		for: aClass; 
+		yourself
+
 ]
 
 { #category : #'instance creation' }
@@ -85,8 +83,17 @@ ClassDefinitionPrinter class >> legacy [
 ]
 
 { #category : #'instance creation' }
+ClassDefinitionPrinter class >> new [ 
+	| instance |
+	instance :=  self showSlotClassDefinition 
+		ifTrue: [ self fluid ]
+		ifFalse: [ self oldPharo ].
+	^ instance
+]
+
+{ #category : #'instance creation' }
 ClassDefinitionPrinter class >> oldPharo [ 
-	^ OldPharoClassDefinitionPrinter new 
+	^ OldPharoClassDefinitionPrinter basicNew initialize 
 ]
 
 { #category : #configure }

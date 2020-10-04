@@ -5,6 +5,12 @@ Class {
 }
 
 { #category : #delegating }
+OldPharoClassDefinitionPrinter >> classDefinitionParserClass [
+
+	^ CDClassDefinitionParser
+]
+
+{ #category : #delegating }
 OldPharoClassDefinitionPrinter >> classDefinitionString [
 
 	| poolString stream |

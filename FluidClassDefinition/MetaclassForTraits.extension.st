@@ -1,13 +1,6 @@
 Extension { #name : #MetaclassForTraits }
 
 { #category : #'*FluidClassDefinition' }
-MetaclassForTraits >> definition [
-	^ Slot showSlotClassDefinition
-		ifTrue: [ self asFluidDefinitionString ]
-		ifFalse: [ self definitionWithoutSlots ]
-]
-
-{ #category : #'*FluidClassDefinition' }
 MetaclassForTraits >> definitionExpanded [
 	^ String streamContents: [ :s | 
 		s nextPutAll: self instanceSide name;

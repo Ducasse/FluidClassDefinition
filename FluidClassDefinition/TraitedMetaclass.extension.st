@@ -20,14 +20,6 @@ TraitedMetaclass >> asFluidDefinitionString [
 ]
 
 { #category : #'*FluidClassDefinition' }
-TraitedMetaclass >> definition [
-
-	^ Slot showSlotClassDefinition
-		ifTrue: [ self asFluidDefinitionString ]
-		ifFalse: [ self definitionWithoutSlots ]
-]
-
-{ #category : #'*FluidClassDefinition' }
 TraitedMetaclass >> definitionStringFor: aPrinter [
 
 	^ aPrinter for: self ; traitedMetaclassDefinitionString 

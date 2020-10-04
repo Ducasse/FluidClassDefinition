@@ -29,6 +29,12 @@ Class {
 	#category : #'FluidClassDefinition-Printer-UnderDev'
 }
 
+{ #category : #running }
+FluidClassDefinitionPrinter >> classDefinitionParserClass [
+
+	^ CDFluidClassDefinitionParser
+]
+
 { #category : #'double dispatch API' }
 FluidClassDefinitionPrinter >> classDefinitionString [ 
 	"Next step
