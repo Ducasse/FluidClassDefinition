@@ -102,6 +102,14 @@ ClassDefinitionPrinter class >> showSlotClassDefinition: aBoolean [
 	
 ]
 
+{ #category : #printing }
+ClassDefinitionPrinter >> definitionString [
+	"The method is the start of the double dispatch. 
+	Each entity will select the right definition and call me back."
+	
+	^ forClass definitionString 
+]
+
 { #category : #accessing }
 ClassDefinitionPrinter >> for: aClass [ 
 	forClass := aClass

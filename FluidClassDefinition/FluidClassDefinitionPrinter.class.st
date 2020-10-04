@@ -95,11 +95,6 @@ FluidClassDefinitionPrinter >> classDefinitionString [
 ]
 
 { #category : #printing }
-FluidClassDefinitionPrinter >> definitionString [
-	^ forClass definitionString 
-]
-
-{ #category : #printing }
 FluidClassDefinitionPrinter >> expandedDefinitionString [
 	^ forClass definitionExpanded 
 ]
