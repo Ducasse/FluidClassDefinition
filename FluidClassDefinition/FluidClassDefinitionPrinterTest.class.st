@@ -225,7 +225,7 @@ FluidClassDefinitionPrinterTest >> testMultiPools [
 	package: ''Kernel-Tests''' 
 ]
 
-{ #category : #tests }
+{ #category : #'tests - classes' }
 FluidClassDefinitionPrinterTest >> testPoint [
 	
 	self assert: (self forClass: Point) equals: 'Object < #Point
