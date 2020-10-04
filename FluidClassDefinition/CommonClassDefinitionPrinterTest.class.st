@@ -15,8 +15,6 @@ Class {
 CommonClassDefinitionPrinterTest >> setUp [ 
 	super setUp.
 	slotuse := ClassDefinitionPrinter showSlotClassDefinition.
-	ClassDefinitionPrinter showSlotClassDefinition: true.
-	
 	
 ]
 

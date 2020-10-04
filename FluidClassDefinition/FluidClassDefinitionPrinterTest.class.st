@@ -25,6 +25,12 @@ FluidClassDefinitionPrinterTest >> fullyExpandedForClass: aClass [
 
 ]
 
+{ #category : #helpers }
+FluidClassDefinitionPrinterTest >> setUp [ 
+	super setUp.
+	ClassDefinitionPrinter showSlotClassDefinition: true.
+]
+
 { #category : #'tests - traits' }
 FluidClassDefinitionPrinterTest >> testAlignmentMorphClass [
 
@@ -219,7 +225,7 @@ FluidClassDefinitionPrinterTest >> testMultiPools [
 	package: ''Kernel-Tests''' 
 ]
 
-{ #category : #'tests - classes' }
+{ #category : #tests }
 FluidClassDefinitionPrinterTest >> testPoint [
 	
 	self assert: (self forClass: Point) equals: 'Object < #Point

@@ -4,13 +4,25 @@ Class {
 	#category : #'FluidClassDefinition-Printer-UnderDev'
 }
 
-{ #category : #running }
-OldPharoClassDefinitionPrinterTest >> setUp [
-	"Hooks that subclasses may override to define the fixture of test."
+{ #category : #'instance creation' }
+OldPharoClassDefinitionPrinterTest >> forClass: aClass [
+	^ (OldPharoClassDefinitionPrinter for: aClass) definitionString 
+
 
 ]
 
-{ #category : #running }
-OldPharoClassDefinitionPrinterTest >> tearDown [
-	"Hooks that subclasses may override to clean the fixture of test."
+{ #category : #'instance creation' }
+OldPharoClassDefinitionPrinterTest >> setUp [ 
+	super setUp.
+	ClassDefinitionPrinter showSlotClassDefinition: false.
+]
+
+{ #category : #tests }
+OldPharoClassDefinitionPrinterTest >> testPoint [
+
+	"it should break!!"
+	self assert: (self forClass: Point) equals: 'Object subclass: #Point
+	instanceVariableNames: ''x y''
+	classVariableNames: ''''
+	package: ''Kernel-BasicObjects'''
 ]
