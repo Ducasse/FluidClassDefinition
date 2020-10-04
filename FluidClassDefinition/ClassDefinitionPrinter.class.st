@@ -79,7 +79,7 @@ ClassDefinitionPrinter class >> for: aClass [
 
 { #category : #'instance creation' }
 ClassDefinitionPrinter class >> legacy [
-	^ LegacyClassDefinitionPrinter new 
+	^ LegacyClassDefinitionPrinter basicNew initialize
 ]
 
 { #category : #'instance creation' }

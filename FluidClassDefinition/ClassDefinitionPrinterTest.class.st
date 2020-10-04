@@ -1,6 +1,6 @@
 Class {
 	#name : #ClassDefinitionPrinterTest,
-	#superclass : #TestCase,
+	#superclass : #CommonClassDefinitionPrinterTest,
 	#category : #'FluidClassDefinition-Printer-UnderDev'
 }
 
