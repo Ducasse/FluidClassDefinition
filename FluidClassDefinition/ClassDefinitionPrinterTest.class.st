@@ -8,7 +8,7 @@ Class {
 ClassDefinitionPrinterTest >> testFluidConfiguration [
 
 	self 
-		assert: ((ClassDefinitionPrinter fluid)
+		assert: (ClassDefinitionPrinter fluid
  						for: Array;
 						definitionString)
 		equals: 'ArrayedCollection < #Array

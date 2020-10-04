@@ -2,7 +2,7 @@ Extension { #name : #Metaclass }
 
 { #category : #'*FluidClassDefinition' }
 Metaclass >> asFluidDefinitionString [
-	
+	"to remove"
 	^ String streamContents: [ :s |
 		
 		superclass 
@@ -28,7 +28,7 @@ Metaclass >> asFluidDefinitionString [
 { #category : #'*FluidClassDefinition' }
 Metaclass >> definition [
 	"Refer to the comment in ClassDescription|definition."
-
+	" to remove ?"
 	Slot showSlotClassDefinition ifTrue: [ 
 		^ self definitionWithSlots ].
 
@@ -67,14 +67,15 @@ Metaclass >> definitionExpanded [
 ]
 
 { #category : #'*FluidClassDefinition' }
-Metaclass >> definitionString [ 
+Metaclass >> definitionStringFor: aPrinter [
 
-	^ self definitionPrinter metaclassDefinitionString 
+	^ aPrinter metaclassDefinitionString 
 ]
 
 { #category : #'*FluidClassDefinition' }
 Metaclass >> definitionWithSlots [
 	"Refer to the comment in ClassDescription|definition."
+	" to remove from the package"
 	^ self asFluidDefinitionString
 
 "	^ String streamContents: [:stream |

@@ -73,9 +73,9 @@ Trait class >> definitionFullyExpandedButPackage: aString [
 ]
 
 { #category : #'*FluidClassDefinition' }
-Trait >> definitionString [ 
+Trait >> definitionStringFor: aPrinter [
 
-	^ self definitionPrinter traitDefinitionString
+	^ aPrinter for: self; traitDefinitionString
 ]
 
 { #category : #'*FluidClassDefinition' }

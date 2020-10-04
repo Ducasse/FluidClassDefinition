@@ -28,9 +28,9 @@ TraitedMetaclass >> definition [
 ]
 
 { #category : #'*FluidClassDefinition' }
-TraitedMetaclass >> definitionString [ 
+TraitedMetaclass >> definitionStringFor: aPrinter [
 
-	^ self definitionPrinter traitedMetaclassDefinitionString 
+	^ aPrinter for: self ; traitedMetaclassDefinitionString 
 ]
 
 { #category : #'*FluidClassDefinition' }

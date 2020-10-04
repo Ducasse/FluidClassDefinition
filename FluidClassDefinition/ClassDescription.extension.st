@@ -115,7 +115,8 @@ ClassDescription >> definitionPrinter [
 { #category : #'*FluidClassDefinition' }
 ClassDescription >> definitionString [
 	"Return the string of the class definition, each of my subclass may tell the printer how to printer it. A kind of double dispatch since we have multiple printers and multiple entities to be printed."
-	^ self subclassResponsibility
+
+	^ self definitionStringFor: self definitionPrinter
 ]
 
 { #category : #'*FluidClassDefinition' }

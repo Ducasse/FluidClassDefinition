@@ -5,7 +5,7 @@ Class {
 }
 
 { #category : #delegating }
-OldPharoClassDefinitionPrinter >> definitionString [
+OldPharoClassDefinitionPrinter >> classDefinitionString [
 
 	| poolString stream |
 	poolString := forClass sharedPoolsString.
@@ -73,4 +73,47 @@ OldPharoClassDefinitionPrinter >> metaclassDefinitionString [
 			nextPutAll: 'instanceVariableNames: '''.
 		forClass instanceVariablesOn: stream.
 		stream nextPut: $' ]
+]
+
+{ #category : #delegating }
+OldPharoClassDefinitionPrinter >> traitDefinitionString [ 
+	"Next step
+		- some of the methods defined on classe will have to be moved in this class.
+		- refactor to remove duplication with metaclass,...."
+
+	(forClass instanceSide name == #Trait) ifTrue: [ ^ self classDefinitionString ].
+
+	^ String streamContents: [ :s | 
+		s 
+			nextPutAll: 'Trait named: ';
+			nextPutAll:	forClass name printString;
+			cr; tab; 
+			nextPutAll: ' uses: ';
+			nextPutAll: forClass traitComposition traitCompositionExpression; 
+			cr.
+		forClass classLayout visibleSlots ifNotEmpty: [ 
+			s tab; nextPutAll: ' slots: ';
+			nextPutAll: forClass slotDefinitionString; cr. ].
+		s tab; nextPutAll: ' package: ';
+			nextPutAll: forClass category asString printString
+	]
+]
+
+{ #category : #delegating }
+OldPharoClassDefinitionPrinter >> traitedMetaclassDefinitionString [ 
+	"Next step
+		- some of the methods defined on classe will have to be moved in this class.
+		- refactor to remove duplication with metaclass,...."
+
+	^ String streamContents: [:strm |
+			strm print: forClass.
+			forClass hasTraitComposition ifTrue: [
+				strm
+					crtab;
+					nextPutAll: 'uses: ';
+					print: forClass traitComposition ].
+			strm
+				crtab;
+				nextPutAll: 'instanceVariableNames: ';
+				store: forClass instanceVariablesString ] 
 ]

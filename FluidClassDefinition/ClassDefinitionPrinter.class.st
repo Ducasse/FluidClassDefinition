@@ -104,10 +104,11 @@ ClassDefinitionPrinter class >> showSlotClassDefinition: aBoolean [
 
 { #category : #printing }
 ClassDefinitionPrinter >> definitionString [
-	"The method is the start of the double dispatch. 
-	Each entity will select the right definition and call me back."
+	"The method is part of the double dispatch. It is an extra starting point. 
+	Each entity will select the right definition and call me back.
+	Normally this method is not used because the main point is the class...."
 	
-	^ forClass definitionString 
+	^ forClass definitionStringFor: self
 ]
 
 { #category : #accessing }

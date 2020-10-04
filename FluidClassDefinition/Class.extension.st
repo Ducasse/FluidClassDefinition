@@ -82,7 +82,13 @@ Class >> classVariableDefinitionString [
 { #category : #'*FluidClassDefinition' }
 Class >> definitionString [ 
 
-	^ self definitionPrinter classDefinitionString 
+	^ self definitionStringFor: self definitionPrinter
+]
+
+{ #category : #'*FluidClassDefinition' }
+Class >> definitionStringFor: aPrinter [
+
+	^ aPrinter classDefinitionString 
 ]
 
 { #category : #'*FluidClassDefinition' }

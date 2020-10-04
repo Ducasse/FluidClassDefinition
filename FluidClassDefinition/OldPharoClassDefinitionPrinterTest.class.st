@@ -21,18 +21,17 @@ OldPharoClassDefinitionPrinterTest >> setUp [
 OldPharoClassDefinitionPrinterTest >> testAlignmentMorphClass [
 
 	self 
-		assert: (self forClass: AlignmentMorph class)  equals: 'BorderedMorph class subclass: ''AlignmentMorph class''
+		assert: (self forClass: AlignmentMorph class)  equals: 'AlignmentMorph class
 	uses: TAbleToRotate classTrait
-	instanceVariableNames: ''''
-	classVariableNames: ''''
-	package: ''Morphic-Base-Basic'''
+	instanceVariableNames: '''''
 ]
 
 { #category : #'tests - classes' }
 OldPharoClassDefinitionPrinterTest >> testArray [
 
 	self 
-		assert: (self forClass: Array) equals: 'ArrayedCollection variableSubclass: #Array
+		assert: (self forClass: Array) 
+		equals: 'ArrayedCollection variableSubclass: #Array
 	instanceVariableNames: ''''
 	classVariableNames: ''''
 	package: ''Collections-Sequenceable-Base'''
@@ -52,7 +51,9 @@ OldPharoClassDefinitionPrinterTest >> testByteString [
 { #category : #'tests - classes' }
 OldPharoClassDefinitionPrinterTest >> testChronologyConstants [
 	
-	self assert: (self forClass: ChronologyConstants) equals: 'SharedPool subclass: #ChronologyConstants
+	self 
+		assert: (self forClass: ChronologyConstants) 
+		equals: 'SharedPool subclass: #ChronologyConstants
 	instanceVariableNames: ''''
 	classVariableNames: ''DayNames DaysInMonth MicrosecondsInDay MonthNames NanosInMillisecond NanosInSecond SecondsInDay SecondsInHour SecondsInMinute SqueakEpoch''
 	package: ''Kernel-Chronology'''
@@ -61,10 +62,8 @@ OldPharoClassDefinitionPrinterTest >> testChronologyConstants [
 { #category : #'tests - metaclasses' }
 OldPharoClassDefinitionPrinterTest >> testClassSideDoesNotShowPackage [
 
-	self assert: (self forClass: MOPTraitTest class) equals: 'TestCase class subclass: ''MOPTraitTest class''
-	instanceVariableNames: ''''
-	classVariableNames: ''''
-	package: ''Tests-Traits-MOP'''
+	self assert: (self forClass: MOPTraitTest class) equals: 'MOPTraitTest class
+	instanceVariableNames: '''''
 ]
 
 { #category : #'tests - traits' }
@@ -92,10 +91,8 @@ OldPharoClassDefinitionPrinterTest >> testMetaclassClass [
 	
 	self 
 		assert: (self forClass: Metaclass class) 
-		equals: 'ClassDescription class subclass: ''Metaclass class''
-	instanceVariableNames: ''''
-	classVariableNames: ''''
-	package: ''Kernel-Classes'''	
+		equals: 'Metaclass class
+	instanceVariableNames: '''''	
 ]
 
 { #category : #'tests - traits' }
@@ -111,8 +108,9 @@ OldPharoClassDefinitionPrinterTest >> testMultiPools [
 { #category : #'tests - classes' }
 OldPharoClassDefinitionPrinterTest >> testPoint [
 
-	"it should break!!"
-	self assert: (self forClass: Point) equals: 'Object subclass: #Point
+	self 
+		assert: (self forClass: Point) 
+		equals: 'Object subclass: #Point
 	instanceVariableNames: ''x y''
 	classVariableNames: ''''
 	package: ''Kernel-BasicObjects'''
@@ -135,59 +133,32 @@ OldPharoClassDefinitionPrinterTest >> testSystemAnnouncerClass [
 	
 	self 
 		assert: (self forClass: SystemAnnouncer class) 
-		equals: 'Announcer class subclass: ''SystemAnnouncer class''
-	instanceVariableNames: ''announcer''
-	classVariableNames: ''''
-	package: ''System-Announcements-Core'''
+		equals: 'SystemAnnouncer class
+	instanceVariableNames: ''announcer'''
 ]
 
 { #category : #'tests - traits' }
 OldPharoClassDefinitionPrinterTest >> testTBehavior [
 
 	self 
-		assert: (self forClass: TBehavior)  equals: 'ProtoObject subclass: #TBehavior
-	instanceVariableNames: ''''
-	classVariableNames: ''''
-	package: ''TraitsV2-Compatibility-Traits''.
-TBehavior superclass: nil'
+		assert: (self forClass: TBehavior)  equals: 'Trait named: #TBehavior
+	 uses: {}
+	 package: ''TraitsV2-Compatibility-Traits'''
 ]
 
 { #category : #'tests - traits' }
 OldPharoClassDefinitionPrinterTest >> testTComparableClassTrait [
 
-	self assert: (self forClass: TComparable classTrait) equals: 'Trait subclass: ''TComparable classTrait''
-	instanceVariableNames: ''''
-	classVariableNames: ''''
-	package: ''Kernel-Traits-Base'''
+	self assert: (self forClass: TComparable classTrait) equals: 'TComparable classTrait
+	instanceVariableNames: '''''
 ]
 
 { #category : #'tests - traits' }
 OldPharoClassDefinitionPrinterTest >> testTEventVisitorClassTrait [
 
-	self assert: (self forClass: EpTEventVisitor classTrait) equals: 'Trait subclass: ''EpTEventVisitor classTrait''
+	self assert: (self forClass: EpTEventVisitor classTrait) equals: 'EpTEventVisitor classTrait
 	uses: EpTCodeChangeVisitor classTrait
-	instanceVariableNames: ''''
-	classVariableNames: ''''
-	package: ''Epicea-Visitors'''
-]
-
-{ #category : #'tests - traits' }
-OldPharoClassDefinitionPrinterTest >> testTSlot [
-
-	self 
-		assert: (Trait << #TTUses slots: {  #x . #y }; package: 'Fake') build definitionString 
-		equals: 
-	'Trait  << #TTUses
-	slots: { #x . #y };
-	package: ''_UnpackagedPackage''' 
-]
-
-{ #category : #'tests - traits' }
-OldPharoClassDefinitionPrinterTest >> testTUses [
-
-	self assert: (Trait << #TTUses uses: TBehavior; package: 'Fake') build definitionString equals:  'Trait  << #TTUses
-	uses: TBehavior;
-	package: ''_UnpackagedPackage'''
+	instanceVariableNames: '''''
 ]
 
 { #category : #'tests - classes' }
@@ -216,7 +187,7 @@ OldPharoClassDefinitionPrinterTest >> testTrait3 [
 
 	self assert: (self forClass: Trait3 classTrait) equals: 'Trait3 classTrait
 	uses: Trait2 classTrait
-	instanceVariableNames: '''
+	instanceVariableNames: '''''
 
 ]
 
