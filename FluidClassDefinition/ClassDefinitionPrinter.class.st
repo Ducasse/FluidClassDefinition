@@ -59,8 +59,7 @@ Class {
 		'forClass'
 	],
 	#classVars : [
-		'FluidClassDefinition',
-		'SlotClassDefinition'
+		'ShowFluidClassDefinition'
 	],
 	#category : #'FluidClassDefinition-Printer'
 }
@@ -100,33 +99,33 @@ ClassDefinitionPrinter class >> oldPharo [
 { #category : #configure }
 ClassDefinitionPrinter class >> showFluidClassDefinition [
 
-	^ SlotClassDefinition ifNil: [ SlotClassDefinition := false ]
+	^ ShowFluidClassDefinition ifNil: [ ShowFluidClassDefinition := false ]
 ]
 
 { #category : #configure }
 ClassDefinitionPrinter class >> showFluidClassDefinition: aBoolean [
  
-	SlotClassDefinition := aBoolean
+	ShowFluidClassDefinition := aBoolean
 	
 ]
 
 { #category : #configure }
 ClassDefinitionPrinter class >> showSlotClassDefinition [
 
-	^ SlotClassDefinition ifNil: [ SlotClassDefinition := false ]
+	^ ShowFluidClassDefinition ifNil: [ ShowFluidClassDefinition := false ]
 ]
 
 { #category : #configure }
 ClassDefinitionPrinter class >> showSlotClassDefinition: aBoolean [
  
-	SlotClassDefinition := aBoolean
+	ShowFluidClassDefinition := aBoolean
 	
 ]
 
 { #category : #configure }
 ClassDefinitionPrinter class >> toggleShowFluidClassDefinition [
 
-	^ FluidClassDefinition ifNil: [ FluidClassDefinition := false ]
+	^ self showFluidClassDefinition: self showFluidClassDefinition not 
 ]
 
 { #category : #printing }
