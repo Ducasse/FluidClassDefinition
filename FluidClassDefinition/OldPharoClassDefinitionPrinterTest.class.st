@@ -1,7 +1,7 @@
 Class {
 	#name : #OldPharoClassDefinitionPrinterTest,
 	#superclass : #CommonClassDefinitionPrinterTest,
-	#category : #'FluidClassDefinition-Printer-UnderDev'
+	#category : #'FluidClassDefinition-Printer'
 }
 
 { #category : #'instance creation' }

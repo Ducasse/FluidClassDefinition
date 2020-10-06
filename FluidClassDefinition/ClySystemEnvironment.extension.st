@@ -10,7 +10,7 @@ ClySystemEnvironment >> compileANewClassFrom: aString notifying: aController sta
 
 	| oldClass class newClassName defTokens keywdIx classCompiler |
 	"for now make it work!"
-	Slot showSlotClassDefinition
+	ClassDefinitionPrinter showFluidClassDefinition
 		ifTrue: [ ^ self defineNewClassFrom: aString notifying: aController  startingFrom: aClass ].
 	
 	oldClass := aClass.

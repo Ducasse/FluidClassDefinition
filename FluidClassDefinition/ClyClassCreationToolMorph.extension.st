@@ -4,8 +4,7 @@ Extension { #name : #ClyClassCreationToolMorph }
 ClyClassCreationToolMorph >> classTemplate [
 
 	| template |
-	
-	template := Slot showSlotClassDefinition
+	template := ClassDefinitionPrinter showFluidClassDefinition
 		ifTrue: [ 
 			^ ClassDescription definitionFullyExpandedButPackage: self packageName ].
 	 

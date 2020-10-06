@@ -8,13 +8,13 @@ Class {
 	#instVars : [
 		'slotuse'
 	],
-	#category : #'FluidClassDefinition-Printer-UnderDev'
+	#category : #'FluidClassDefinition-Printer'
 }
 
 { #category : #'tests - classes' }
 CommonClassDefinitionPrinterTest >> setUp [ 
 	super setUp.
-	slotuse := ClassDefinitionPrinter showSlotClassDefinition.
+	slotuse := ClassDefinitionPrinter showFluidClassDefinition.
 	
 ]
 

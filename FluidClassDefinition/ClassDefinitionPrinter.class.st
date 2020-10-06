@@ -59,9 +59,10 @@ Class {
 		'forClass'
 	],
 	#classVars : [
+		'FluidClassDefinition',
 		'SlotClassDefinition'
 	],
-	#category : #'FluidClassDefinition-Printer-UnderDev'
+	#category : #'FluidClassDefinition-Printer'
 }
 
 { #category : #'instance creation' }
@@ -85,7 +86,7 @@ ClassDefinitionPrinter class >> legacy [
 { #category : #'instance creation' }
 ClassDefinitionPrinter class >> new [ 
 	| instance |
-	instance :=  self showSlotClassDefinition 
+	instance :=  self showFluidClassDefinition 
 		ifTrue: [ self fluid ]
 		ifFalse: [ self oldPharo ].
 	^ instance
@@ -94,6 +95,19 @@ ClassDefinitionPrinter class >> new [
 { #category : #'instance creation' }
 ClassDefinitionPrinter class >> oldPharo [ 
 	^ OldPharoClassDefinitionPrinter basicNew initialize 
+]
+
+{ #category : #configure }
+ClassDefinitionPrinter class >> showFluidClassDefinition [
+
+	^ SlotClassDefinition ifNil: [ SlotClassDefinition := false ]
+]
+
+{ #category : #configure }
+ClassDefinitionPrinter class >> showFluidClassDefinition: aBoolean [
+ 
+	SlotClassDefinition := aBoolean
+	
 ]
 
 { #category : #configure }
@@ -107,6 +121,12 @@ ClassDefinitionPrinter class >> showSlotClassDefinition: aBoolean [
  
 	SlotClassDefinition := aBoolean
 	
+]
+
+{ #category : #configure }
+ClassDefinitionPrinter class >> toggleShowFluidClassDefinition [
+
+	^ FluidClassDefinition ifNil: [ FluidClassDefinition := false ]
 ]
 
 { #category : #printing }

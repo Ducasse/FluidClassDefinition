@@ -1,7 +1,7 @@
 Class {
 	#name : #LegacyClassDefinitionPrinter,
 	#superclass : #ClassDefinitionPrinter,
-	#category : #'FluidClassDefinition-Printer-UnderDev'
+	#category : #'FluidClassDefinition-Printer'
 }
 
 { #category : #delegating }

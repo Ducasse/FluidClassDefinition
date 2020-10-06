@@ -14,8 +14,8 @@ Class {
 { #category : #'tests - classes' }
 CDFluidClassRecreatorTest >> setUp [ 
 	
-	slotuse := Slot showSlotClassDefinition.
-	Slot showSlotClassDefinition: true.
+	slotuse := ClassDefinitionPrinter showFluidClassDefinition.
+	ClassDefinitionPrinter showFluidClassDefinition: true.
 	super setUp.
 	
 ]

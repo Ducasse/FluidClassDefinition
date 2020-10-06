@@ -2,7 +2,12 @@ Extension { #name : #ClySlotClassDefinitionSwitchMorph }
 
 { #category : #'*FluidClassDefinition' }
 ClySlotClassDefinitionSwitchMorph >> toggle [
-
-	ClassDefinitionPrinter showSlotClassDefinition: ClassDefinitionPrinter showSlotClassDefinition not.
+	ClassDefinitionPrinter toggleShowFluidClassDefinition.
 	ownerTool update
+]
+
+{ #category : #'*FluidClassDefinition' }
+ClySlotClassDefinitionSwitchMorph >> usesSlotBasedDefinition [
+
+	^ ClassDefinitionPrinter showFluidClassDefinition
 ]
