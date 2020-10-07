@@ -9,61 +9,6 @@ ClassDescription >> definition [
 ]
 
 { #category : #'*FluidClassDefinition' }
-ClassDescription >> definitionExpanded [
-	"This definition presents all the receiver state also the empty one so that the user can just type and empty elements will be ignored by the builder and parser. 
-	"
-	"For now I will check here for Slot 
-	"
-	^ Slot showSlotClassDefinition 
-		ifTrue: [
-				String streamContents: [ :s | 
-						| tag |
-						s nextPutAll: 'Object < #', self name asSymbol; crtab.
-						
-						s 
-							nextPutAll: 'layout: ';
-							nextPutAll: self classLayout class name; 
-							nextPutAll: ';';
-							crtab. 
-						
-						self hasTraitComposition 
-							ifTrue: [
-								s 
-									nextPutAll: 'uses: ';
-									nextPutAll: self traitCompositionString ]
-							ifFalse: [ s nextPutAll: 'uses: {};'].
-						s crtab.
-
-						s nextPutAll: 'slots: ', self slotDefinitionString, ';'; crtab. 
-						s 	
-							nextPutAll: 'sharedVariables: ';
-							nextPutAll: self classVariableDefinitionString;
-							nextPutAll: ';'; crtab.
-							
-						s nextPutAll: 'sharedPools: {'.
-						self sharedPoolStringOn: s.
-						s nextPutAll: '};' ; crtab.
-						
-						(self package classTagForClass: self) ifNotNil: [:t | 
-							tag := t name.
-							tag = self package name
-								ifFalse:  [
-									s nextPutAll: 'tag: '; 
-					nextPut: $'; 
-					nextPutAll: tag asString ; 
-					nextPutAll: ''';'.
-					s crtab
-				]].
-				
-				s 
-					nextPutAll: 'package: ''';
-					nextPutAll: self package packageName;
-					nextPutAll: '''' ]]
-		ifFalse: [  self definitionWithoutSlots	]
-
-]
-
-{ #category : #'*FluidClassDefinition' }
 ClassDescription >> definitionFullyExpanded [
 	"This definition propose all the with an empty arguments so that the user can just type and empty elements will be ignored by the builder and parser. Should check that this is true and write tests."
 	

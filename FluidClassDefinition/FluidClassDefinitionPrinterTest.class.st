@@ -114,6 +114,21 @@ FluidClassDefinitionPrinterTest >> testExpandedMetaclassWithTrait [
 ]
 
 { #category : #'tests - expanded' }
+FluidClassDefinitionPrinterTest >> testExpandedOnClassWithoutTag [
+
+	self 
+		assert: (self expandedForClass: EncoderForV3)
+		equals:   'Object < #EncoderForV3
+	layout: FixedLayout;
+	uses: {};
+	slots: {};
+	sharedVariables: {};
+	sharedPools: {};
+	tag: '''';
+	package: ''Kernel-BytecodeEncoders'''
+]
+
+{ #category : #'tests - expanded' }
 FluidClassDefinitionPrinterTest >> testExpandedPoint [
 
 	self 

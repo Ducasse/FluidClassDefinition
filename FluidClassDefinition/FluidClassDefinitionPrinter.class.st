@@ -54,62 +54,43 @@ FluidClassDefinitionPrinter >> classDefinitionString [
 		  forClass classLayout isFixedLayout ifFalse: [ self layoutOn: s ].
 
 		  forClass hasTraitComposition ifTrue: [ 
-			  s
-				  tab;
-				  nextPutAll: 'uses: ';
-				  nextPutAll: forClass traitCompositionString;
-				  nextPutAll: ';';
-				  cr ].
+			  s tab.
+			  self traitCompositionOn: s.
+			  s cr ].
 
 		  forClass slots ifNotEmpty: [ self slotsOn: s ].
 		  forClass classVariables ifNotEmpty: [ self sharedVariablesOn: s ].
 		  forClass sharedPools ifNotEmpty: [ self sharedPoolsOn: s ].
 
-		  forClass tagOn: s.
-
-		  s
-			  tab;
-			  nextPutAll: 'package: ';
-			  nextPut: $';
-			  nextPutAll: forClass package packageName;
-			  nextPut: $' ]
+		  self tagOn: s.
+		  self packageOn: s ]
 ]
 
 { #category : #'expanded double dispatch API' }
 FluidClassDefinitionPrinter >> expandedClassDefinitionString [
 
 	^ String streamContents: [ :s | 
-		  | tag |
 		  s
 			  nextPutAll: 'Object < #' , forClass name asSymbol;
 			  cr.
 		  self layoutOn: s.
 		  s tab.
 		  forClass hasTraitComposition
-			  ifTrue: [ 
-				  s
-					  nextPutAll: 'uses: ';
-					  nextPutAll: forClass traitCompositionString ]
+			  ifTrue: [ self traitCompositionOn: s ]
 			  ifFalse: [ s nextPutAll: 'uses: {};' ].
-		  	s cr.
-			self slotsOn: s.
-			self sharedVariablesOn: s.
-			forClass hasTraitComposition.
-			self sharedPoolsOn: s.
-			s tab.
-		  (forClass package classTagForClass: forClass) ifNotNil: [ :t | 
-			  tag := t name.
-			  tag = forClass package name ifFalse: [ 
-				  s
-					  nextPutAll: 'tag: ';
-					  nextPut: $';
-					  nextPutAll: tag asString;
-					  nextPutAll: ''';'.
-				  s crtab ] ].
-		  s
-			  nextPutAll: 'package: ''';
-			  nextPutAll: forClass package packageName;
-			  nextPutAll: '''' ]
+		  s cr.
+		  self slotsOn: s.
+		  self sharedVariablesOn: s.
+		  forClass hasTraitComposition.
+		  self sharedPoolsOn: s.
+		
+		(forClass package classTagForClass: forClass) ifNotNil: [ :t |
+			| tag | 
+			tag := t name.
+			tag = forClass package name 
+				ifTrue: [ s tab; nextPutAll: 'tag: '''';'; cr ]
+				ifFalse: [ self tagOn: s]].
+		  self packageOn: s ]
 ]
 
 { #category : #'expanded double dispatch API' }
@@ -222,6 +203,17 @@ FluidClassDefinitionPrinter >> metaclassDefinitionString [
 		]
 ]
 
+{ #category : #'definition double dispatch API' }
+FluidClassDefinitionPrinter >> packageOn: s [
+
+	s
+		tab;
+	 	nextPutAll: 'package: ';
+		nextPut: $';
+		nextPutAll: forClass package packageName;
+		nextPut: $'
+]
+
 { #category : #'elementary operations' }
 FluidClassDefinitionPrinter >> sharedPoolsOn: s [
 	| hasPools |
@@ -260,6 +252,31 @@ FluidClassDefinitionPrinter >> slotsOn: s [
 	s cr
 ]
 
+{ #category : #'expanded double dispatch API' }
+FluidClassDefinitionPrinter >> tagOn: s [
+
+	| tag |
+	(forClass package classTagForClass: forClass) ifNotNil: [ :t | 
+		tag := t name.
+		tag = forClass package name ifFalse: [ 
+			s tab.
+			s
+				nextPutAll: 'tag: ';
+				nextPut: $';
+				nextPutAll: tag asString;
+				nextPutAll: ''';'.
+			s cr ] ]
+]
+
+{ #category : #'expanded double dispatch API' }
+FluidClassDefinitionPrinter >> traitCompositionOn: s [
+
+	s
+		nextPutAll: 'uses: ';
+		nextPutAll: forClass traitCompositionString;
+		nextPutAll: ';'
+]
+
 { #category : #'definition double dispatch API' }
 FluidClassDefinitionPrinter >> traitDefinitionString [ 
 
@@ -284,7 +301,7 @@ FluidClassDefinitionPrinter >> traitDefinitionString [
 					s nextPutAll: ';'.
 					s cr ].
 				
-		forClass tagOn: s.
+		self tagOn: s.
 		
 		s 	
 			tab;
