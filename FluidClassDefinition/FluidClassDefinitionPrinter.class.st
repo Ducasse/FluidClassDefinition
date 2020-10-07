@@ -36,116 +36,107 @@ FluidClassDefinitionPrinter >> classDefinitionParserClass [
 ]
 
 { #category : #'definition double dispatch API' }
-FluidClassDefinitionPrinter >> classDefinitionString [ 
+FluidClassDefinitionPrinter >> classDefinitionString [
+
 	"Next step
 		- some of the methods defined on classe will have to be moved in this class.
 		- refactor to remove duplication with metaclass,...."
-	
-	^ String streamContents: [ :s |
-		forClass superclass 
-			ifNotNil: [s nextPutAll: forClass superclass name]
-			ifNil: [s nextPutAll: 'nil'].
-		s 
-			nextPutAll: ' < #';
-			nextPutAll: forClass name;
-			cr.
-		
-		forClass classLayout isFixedLayout ifFalse: [
-			s 
-				tab; 
-				nextPutAll: 'layout: ';
-				nextPutAll: forClass classLayout class name;
-				nextPutAll: ';';
-				cr ].
-		
-		forClass hasTraitComposition ifTrue: [
-			s 
-				tab; 
-				nextPutAll: 'uses: ';
-				nextPutAll: forClass traitCompositionString ;
-				nextPutAll: ';';
-				cr ].
-		
-		forClass slots ifNotEmpty: [ 
-					s tab.
-					s nextPutAll: 'slots: '.
-					forClass slotDefinitionStringOn: s. 
-					s nextPutAll: ';'.
-					s cr ].
-		forClass classVariables ifNotEmpty: [  
-				s 
-					tab;
-					nextPutAll: 'sharedVariables: ';
-					nextPutAll: forClass classVariableDefinitionString;
-					nextPutAll: ';';
-					cr
-				].
-			
-		forClass sharedPools ifNotEmpty: [:pools |
-			s 
-				tab ; 
-				nextPutAll: 'sharedPools: { '.
-			pools do: 	[ :p | s nextPutAll: p name ] separatedBy: [ s nextPutAll: ' . ' ].
-			s	nextPutAll: ' };' ;
-				cr ].	
-			
-		forClass tagOn: s.
-				
-		s 	
-			tab;
-			nextPutAll: 'package: '; 
-			nextPut: $';
-			nextPutAll: forClass package packageName;
-			nextPut: $'
-		]
+
+	^ String streamContents: [ :s | 
+		  forClass superclass
+			  ifNotNil: [ s nextPutAll: forClass superclass name ]
+			  ifNil: [ s nextPutAll: 'nil' ].
+		  s
+			  nextPutAll: ' < #';
+			  nextPutAll: forClass name;
+			  cr.
+
+		  forClass classLayout isFixedLayout ifFalse: [ self layoutOn: s ].
+
+		  forClass hasTraitComposition ifTrue: [ 
+			  s
+				  tab;
+				  nextPutAll: 'uses: ';
+				  nextPutAll: forClass traitCompositionString;
+				  nextPutAll: ';';
+				  cr ].
+
+		  forClass slots ifNotEmpty: [ self slotsOn: s ].
+		  forClass classVariables ifNotEmpty: [ 
+			  s
+				  tab;
+				  nextPutAll: 'sharedVariables: ';
+				  nextPutAll: forClass classVariableDefinitionString;
+				  nextPutAll: ';';
+				  cr ].
+
+		  forClass sharedPools ifNotEmpty: [ :pools | 
+			  s
+				  tab;
+				  nextPutAll: 'sharedPools: { '.
+			  pools
+				  do: [ :p | s nextPutAll: p name ]
+				  separatedBy: [ s nextPutAll: ' . ' ].
+			  s
+				  nextPutAll: ' };';
+				  cr ].
+
+		  forClass tagOn: s.
+
+		  s
+			  tab;
+			  nextPutAll: 'package: ';
+			  nextPut: $';
+			  nextPutAll: forClass package packageName;
+			  nextPut: $' ]
 ]
 
 { #category : #'expanded double dispatch API' }
 FluidClassDefinitionPrinter >> expandedClassDefinitionString [
-	
-	^ String streamContents: [ :s | 
-						| tag |
-						s nextPutAll: 'Object < #', forClass name asSymbol; crtab.
-						
-						s 
-							nextPutAll: 'layout: ';
-							nextPutAll: forClass classLayout class name; 
-							nextPutAll: ';';
-							crtab. 
-						
-						forClass hasTraitComposition 
-							ifTrue: [
-								s 
-									nextPutAll: 'uses: ';
-									nextPutAll: forClass traitCompositionString ]
-							ifFalse: [ s nextPutAll: 'uses: {};'].
-						s crtab.
 
-						s nextPutAll: 'slots: ', forClass slotDefinitionString, ';'; crtab. 
-						s 	
-							nextPutAll: 'sharedVariables: ';
-							nextPutAll: forClass classVariableDefinitionString;
-							nextPutAll: ';'; crtab.
-							
-						s nextPutAll: 'sharedPools: {'.
-						forClass sharedPoolStringOn: s.
-						s nextPutAll: '};' ; crtab.
-						
-						(forClass package classTagForClass: forClass) ifNotNil: [:t | 
-							tag := t name.
-							tag = forClass package name
-								ifFalse:  [
-									s nextPutAll: 'tag: '; 
-					nextPut: $'; 
-					nextPutAll: tag asString ; 
-					nextPutAll: ''';'.
-					s crtab
-				]].
+	^ String streamContents: [ :s | 
+		  | tag |
+		  s
+			  nextPutAll: 'Object < #' , forClass name asSymbol;
+			  cr.
+		  self layoutOn: s.
+			s tab.
+		  forClass hasTraitComposition
+			  ifTrue: [ 
+			
 				
-				s 
-					nextPutAll: 'package: ''';
-					nextPutAll: forClass package packageName;
-					nextPutAll: '''' ]
+				  s
+					  nextPutAll: 'uses: ';
+					  nextPutAll: forClass traitCompositionString ]
+			  ifFalse: [ 
+					
+					s nextPutAll: 'uses: {};' ].
+		  s cr.
+		  self slotsOn: s.
+		  s tab.
+		  s
+			  nextPutAll: 'sharedVariables: ';
+			  nextPutAll: forClass classVariableDefinitionString;
+			  nextPutAll: ';';
+			  crtab.
+		  s nextPutAll: 'sharedPools: {'.
+		  forClass sharedPoolStringOn: s.
+		  s
+			  nextPutAll: '};';
+			  crtab.
+		  (forClass package classTagForClass: forClass) ifNotNil: [ :t | 
+			  tag := t name.
+			  tag = forClass package name ifFalse: [ 
+				  s
+					  nextPutAll: 'tag: ';
+					  nextPut: $';
+					  nextPutAll: tag asString;
+					  nextPutAll: ''';'.
+				  s crtab ] ].
+		  s
+			  nextPutAll: 'package: ''';
+			  nextPutAll: forClass package packageName;
+			  nextPutAll: '''' ]
 ]
 
 { #category : #'expanded double dispatch API' }
@@ -223,6 +214,17 @@ FluidClassDefinitionPrinter >> fullyExpandedDefinitionString [
 ]
 
 { #category : #'definition double dispatch API' }
+FluidClassDefinitionPrinter >> layoutOn: s [
+
+	s
+		tab;
+		nextPutAll: 'layout: ';
+		nextPutAll: forClass classLayout class name;
+		nextPutAll: ';';
+		cr
+]
+
+{ #category : #'definition double dispatch API' }
 FluidClassDefinitionPrinter >> metaclassDefinitionString [ 
 
 	^ String streamContents: [ :s |
@@ -245,6 +247,16 @@ FluidClassDefinitionPrinter >> metaclassDefinitionString [
 				s nextPutAll: 'slots: '.
 				forClass slotDefinitionStringOn: s ].
 		]
+]
+
+{ #category : #'definition double dispatch API' }
+FluidClassDefinitionPrinter >> slotsOn: s [
+
+	s tab.
+	s nextPutAll: 'slots: '.
+	forClass slotDefinitionStringOn: s.
+	s nextPutAll: ';'.
+	s cr
 ]
 
 { #category : #'definition double dispatch API' }
