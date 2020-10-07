@@ -62,24 +62,8 @@ FluidClassDefinitionPrinter >> classDefinitionString [
 				  cr ].
 
 		  forClass slots ifNotEmpty: [ self slotsOn: s ].
-		  forClass classVariables ifNotEmpty: [ 
-			  s
-				  tab;
-				  nextPutAll: 'sharedVariables: ';
-				  nextPutAll: forClass classVariableDefinitionString;
-				  nextPutAll: ';';
-				  cr ].
-
-		  forClass sharedPools ifNotEmpty: [ :pools | 
-			  s
-				  tab;
-				  nextPutAll: 'sharedPools: { '.
-			  pools
-				  do: [ :p | s nextPutAll: p name ]
-				  separatedBy: [ s nextPutAll: ' . ' ].
-			  s
-				  nextPutAll: ' };';
-				  cr ].
+		  forClass classVariables ifNotEmpty: [ self sharedVariablesOn: s ].
+		  forClass sharedPools ifNotEmpty: [ self sharedPoolsOn: s ].
 
 		  forClass tagOn: s.
 
@@ -100,30 +84,19 @@ FluidClassDefinitionPrinter >> expandedClassDefinitionString [
 			  nextPutAll: 'Object < #' , forClass name asSymbol;
 			  cr.
 		  self layoutOn: s.
-			s tab.
+		  s tab.
 		  forClass hasTraitComposition
 			  ifTrue: [ 
-			
-				
 				  s
 					  nextPutAll: 'uses: ';
 					  nextPutAll: forClass traitCompositionString ]
-			  ifFalse: [ 
-					
-					s nextPutAll: 'uses: {};' ].
-		  s cr.
-		  self slotsOn: s.
-		  s tab.
-		  s
-			  nextPutAll: 'sharedVariables: ';
-			  nextPutAll: forClass classVariableDefinitionString;
-			  nextPutAll: ';';
-			  crtab.
-		  s nextPutAll: 'sharedPools: {'.
-		  forClass sharedPoolStringOn: s.
-		  s
-			  nextPutAll: '};';
-			  crtab.
+			  ifFalse: [ s nextPutAll: 'uses: {};' ].
+		  	s cr.
+			self slotsOn: s.
+			self sharedVariablesOn: s.
+			forClass hasTraitComposition.
+			self sharedPoolsOn: s.
+			s tab.
 		  (forClass package classTagForClass: forClass) ifNotNil: [ :t | 
 			  tag := t name.
 			  tag = forClass package name ifFalse: [ 
@@ -213,7 +186,7 @@ FluidClassDefinitionPrinter >> fullyExpandedDefinitionString [
 	^ forClass definitionFullyExpandedButPackage: forClass package packageName
 ]
 
-{ #category : #'definition double dispatch API' }
+{ #category : #'elementary operations' }
 FluidClassDefinitionPrinter >> layoutOn: s [
 
 	s
@@ -249,7 +222,35 @@ FluidClassDefinitionPrinter >> metaclassDefinitionString [
 		]
 ]
 
-{ #category : #'definition double dispatch API' }
+{ #category : #'elementary operations' }
+FluidClassDefinitionPrinter >> sharedPoolsOn: s [
+	| hasPools |
+	hasPools := forClass sharedPools isNotEmpty.
+	s
+		tab;
+		nextPutAll: 'sharedPools: {'.
+	hasPools ifTrue: [ s space ].
+	forClass sharedPools
+		do: [ :p | s nextPutAll: p name ]
+		separatedBy: [ s nextPutAll: ' . ' ].
+	hasPools ifTrue: [ s space ].
+	s
+		nextPutAll: '};';
+		cr
+]
+
+{ #category : #'elementary operations' }
+FluidClassDefinitionPrinter >> sharedVariablesOn: s [
+
+	s
+		tab;
+		nextPutAll: 'sharedVariables: ';
+		nextPutAll: forClass classVariableDefinitionString;
+		nextPutAll: ';';
+		cr
+]
+
+{ #category : #'elementary operations' }
 FluidClassDefinitionPrinter >> slotsOn: s [
 
 	s tab.
