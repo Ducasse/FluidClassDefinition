@@ -1,11 +1,6 @@
 Extension { #name : #ClassDescription }
 
 { #category : #'*FluidClassDefinition' }
-ClassDescription >> asFluidDefinitionString [
-	^ self subclassResponsibility
-]
-
-{ #category : #'*FluidClassDefinition' }
 ClassDescription >> definition [
 	"Answer a String that defines the receiver."
 	
@@ -117,112 +112,22 @@ ClassDescription >> definitionString [
 ]
 
 { #category : #'*FluidClassDefinition' }
-ClassDescription >> definitionWithSlots [
-	"The class definition with a way to specify slots. Shown when the class defines special Slot"
-	^ self instanceSide asFluidDefinitionString
-	
-	"
-	| stream poolString|
-	poolString := self sharedPoolsString.
+ClassDescription >> definitionStringFor: aPrinter [
 
-	stream := (String new: 800) writeStream.
-	superclass 
-		ifNotNil: [stream nextPutAll: superclass name]
-		ifNil: [stream nextPutAll: 'ProtoObject'].
-	stream 
-		nextPutAll: ' subclass: '; 
-		store: self name.
-	self hasTraitComposition ifTrue: [
-		stream 
-			crtab; 
-			nextPutAll: 'uses: ';
-			nextPutAll: self traitCompositionString ].
-			
-	self classLayout isFixedLayout ifFalse: [
-		stream 
-			crtab; 
-			nextPutAll: 'layout: ';
-			nextPutAll: self classLayout class name ].
-	
-	stream 
-		crtab; 
-		nextPutAll: 'slots: ';
-		nextPutAll: self slotDefinitionString.
-		
-	stream 
-		crtab; 
-		nextPutAll: 'classVariables: ';
-		nextPutAll: self classVariableDefinitionString.
-	
-	poolString = '' ifFalse: [
-		stream 
-			crtab; 
-			nextPutAll: 'poolDictionaries: ';
-			store: poolString ].
-		
-	stream 
-		crtab; 
-		nextPutAll: 'package: ';
-		store: self category asString.
-
-	superclass ifNil: [ 
-		stream nextPutAll: '.'; cr.
-		stream nextPutAll: self name.
-		stream space; nextPutAll: 'superclass: nil'. ].
-
-	^ stream contents"
+	^ self subclassResponsibility 
 ]
 
 { #category : #'*FluidClassDefinition' }
-ClassDescription >> definitionWithoutSlots [
+ClassDescription >> expandedDefinitionString [
+	"Return the string of the class definition, each of my subclass may tell the printer how to printer it. A kind of double dispatch since we have multiple printers and multiple entities to be printed."
 
-	| poolString stream |
-	poolString := self sharedPoolsString.
-	stream := (String new: 800) writeStream.
-	superclass
-		ifNotNil: [ stream nextPutAll: superclass name ]
-		ifNil: [ stream nextPutAll: 'ProtoObject' ].
-	
-	stream
-		nextPutAll: self kindOfSubclass;
-		store: self name.
-	self hasTraitComposition ifTrue: [ 
-		stream
-			crtab;
-			nextPutAll: 'uses: ';
-			nextPutAll: self traitCompositionString ].
-	stream
-		crtab;
-		nextPutAll: 'instanceVariableNames: ';
-		store: self instanceVariablesString.
-	stream
-		crtab;
-		nextPutAll: 'classVariableNames: ';
-		store: self classVariablesString.
-	
-	poolString = '' ifFalse: [ 
-		stream 
-			crtab;
-			nextPutAll: 'poolDictionaries: ';
-			store: poolString ].
-	
-	stream
-		crtab;
-		nextPutAll: 'package: ';
-		store: self category asString.
-		
-	superclass ifNil: [ 
-		stream
-			nextPutAll: '.';
-			cr.
-		stream 
-			nextPutAll: self name.
-		stream
-			space;
-			nextPutAll: 'superclass: nil' ].
+	^ self expandedDefinitionStringFor: self definitionPrinter
+]
 
-	^ stream contents
-	
+{ #category : #'*FluidClassDefinition' }
+ClassDescription >> expandedDefinitionStringFor: aPrinter [
+
+	^ self subclassResponsibility
 ]
 
 { #category : #'*FluidClassDefinition' }

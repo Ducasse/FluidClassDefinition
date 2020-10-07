@@ -15,18 +15,3 @@ MetaclassForTraits >> definitionExpanded [
 		s crtab.
 		s nextPutAll: 'slots: ', self slotDefinitionString ]
 ]
-
-{ #category : #'*FluidClassDefinition' }
-MetaclassForTraits >> definitionwithoutSlots [
-	^ String streamContents: [ :s | 
-		s nextPutAll: self instanceSide name;
-			nextPutAll: ' classTrait';
-			cr; tab;
-			nextPutAll: 'uses: ';
-			nextPutAll: composition traitCompositionExpression.
-			
-		self localSlots ifNotEmpty: [ 
-				s crtab;
-					nextPutAll: 'slots: ';
-					nextPutAll: self slotDefinitionString]]
-]

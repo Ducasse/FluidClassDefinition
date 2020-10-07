@@ -35,7 +35,7 @@ FluidClassDefinitionPrinter >> classDefinitionParserClass [
 	^ CDFluidClassDefinitionParser
 ]
 
-{ #category : #'double dispatch API' }
+{ #category : #'definition double dispatch API' }
 FluidClassDefinitionPrinter >> classDefinitionString [ 
 	"Next step
 		- some of the methods defined on classe will have to be moved in this class.
@@ -100,9 +100,132 @@ FluidClassDefinitionPrinter >> classDefinitionString [
 		]
 ]
 
+{ #category : #'expanded double dispatch API' }
+FluidClassDefinitionPrinter >> expandedClassDefinitionString [
+	
+	^ String streamContents: [ :s | 
+						| tag |
+						s nextPutAll: 'Object < #', forClass name asSymbol; crtab.
+						
+						s 
+							nextPutAll: 'layout: ';
+							nextPutAll: forClass classLayout class name; 
+							nextPutAll: ';';
+							crtab. 
+						
+						forClass hasTraitComposition 
+							ifTrue: [
+								s 
+									nextPutAll: 'uses: ';
+									nextPutAll: forClass traitCompositionString ]
+							ifFalse: [ s nextPutAll: 'uses: {};'].
+						s crtab.
+
+						s nextPutAll: 'slots: ', forClass slotDefinitionString, ';'; crtab. 
+						s 	
+							nextPutAll: 'sharedVariables: ';
+							nextPutAll: forClass classVariableDefinitionString;
+							nextPutAll: ';'; crtab.
+							
+						s nextPutAll: 'sharedPools: {'.
+						forClass sharedPoolStringOn: s.
+						s nextPutAll: '};' ; crtab.
+						
+						(forClass package classTagForClass: forClass) ifNotNil: [:t | 
+							tag := t name.
+							tag = forClass package name
+								ifFalse:  [
+									s nextPutAll: 'tag: '; 
+					nextPut: $'; 
+					nextPutAll: tag asString ; 
+					nextPutAll: ''';'.
+					s crtab
+				]].
+				
+				s 
+					nextPutAll: 'package: ''';
+					nextPutAll: forClass package packageName;
+					nextPutAll: '''' ]
+]
+
 { #category : #printing }
 FluidClassDefinitionPrinter >> expandedDefinitionString [
 	^ forClass definitionExpanded 
+]
+
+{ #category : #'expanded double dispatch API' }
+FluidClassDefinitionPrinter >> expandedMetaclassDefinitionString [
+	
+	^ String streamContents: [ :s | 
+						forClass  
+							ifNotNil: [ s nextPutAll: forClass name ]
+							ifNil: [ s nextPutAll: 'ProtoObject ' ].
+						
+						s crtab. 
+						
+						self hasTraitComposition 
+							ifTrue: [
+								s 
+									nextPutAll: 'uses: ';
+									nextPutAll: forClass traitCompositionString;
+									nextPutAll: ';']
+							ifFalse: [ s nextPutAll: 'uses: {};'].
+						s crtab.
+
+						s nextPutAll: 'slots: '.
+						forClass slotDefinitionStringOn: s. 
+						]
+]
+
+{ #category : #'expanded double dispatch API' }
+FluidClassDefinitionPrinter >> expandedTraitDefinitionString [
+	
+	^ String streamContents: [ :s |		
+		| tag |
+		s 
+			nextPutAll: 'Trait  << #';
+			nextPutAll: forClass name;
+			cr.
+
+			forClass hasTraitComposition 
+							ifTrue: [
+								s 
+									nextPutAll: 'uses: ';
+									nextPutAll: forClass traitCompositionString ]
+							ifFalse: [ s nextPutAll: 'uses: {};'].
+						s crtab.
+
+				s nextPutAll: 'slots: ', forClass slotDefinitionString, ';'; crtab. 
+						s 	
+							nextPutAll: 'sharedVariables: ';
+							nextPutAll: forClass classVariableDefinitionString;
+							nextPutAll: ';'; crtab.
+							
+						s nextPutAll: 'sharedPools: {'.
+						forClass sharedPoolStringOn: s.
+						s nextPutAll: '};' ; crtab.
+						
+						(forClass package classTagForClass: forClass) ifNotNil: [:t | 
+							tag := t name.
+							tag = forClass package name
+								ifFalse:  [
+									s nextPutAll: 'tag: '; 
+					nextPut: $'; 
+					nextPutAll: tag asString ; 
+					nextPutAll: ''';'.
+					s crtab
+				]].
+				
+				s 
+					nextPutAll: 'package: ''';
+					nextPutAll: forClass package packageName;
+					nextPutAll: '''' ]
+]
+
+{ #category : #'expanded double dispatch API' }
+FluidClassDefinitionPrinter >> expandedTraitedMetaclassDefinitionString [
+
+	self halt.
 ]
 
 { #category : #printing }
@@ -110,7 +233,7 @@ FluidClassDefinitionPrinter >> fullyExpandedDefinitionString [
 	^ forClass definitionFullyExpandedButPackage: forClass package packageName
 ]
 
-{ #category : #'double dispatch API' }
+{ #category : #'definition double dispatch API' }
 FluidClassDefinitionPrinter >> metaclassDefinitionString [ 
 
 	^ String streamContents: [ :s |
@@ -135,7 +258,7 @@ FluidClassDefinitionPrinter >> metaclassDefinitionString [
 		]
 ]
 
-{ #category : #'double dispatch API' }
+{ #category : #'definition double dispatch API' }
 FluidClassDefinitionPrinter >> traitDefinitionString [ 
 
 	^ String streamContents: [ :s |		
@@ -170,7 +293,7 @@ FluidClassDefinitionPrinter >> traitDefinitionString [
 		]
 ]
 
-{ #category : #'double dispatch API' }
+{ #category : #'definition double dispatch API' }
 FluidClassDefinitionPrinter >> traitedMetaclassDefinitionString [
 
 	^ String streamContents: 

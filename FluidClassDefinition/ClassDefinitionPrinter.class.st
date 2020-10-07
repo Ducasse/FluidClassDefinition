@@ -137,6 +137,15 @@ ClassDefinitionPrinter >> definitionString [
 	^ forClass definitionStringFor: self
 ]
 
+{ #category : #printing }
+ClassDefinitionPrinter >> expandedDefinitionString [
+	"The method is part of the double dispatch. It is an extra starting point. 
+	Each entity will select the right definition and call me back.
+	Normally this method is not used because the main point is the class...."
+	
+	^ forClass expandedDefinitionStringFor: self
+]
+
 { #category : #accessing }
 ClassDefinitionPrinter >> for: aClass [ 
 	forClass := aClass

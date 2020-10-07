@@ -1,67 +1,6 @@
 Extension { #name : #Class }
 
 { #category : #'*FluidClassDefinition' }
-Class >> asFluidDefinitionString [
-	^ String streamContents: [ :s |
-		superclass 
-			ifNotNil: [s nextPutAll: superclass name]
-			ifNil: [s nextPutAll: 'nil'].
-		s 
-			nextPutAll: ' < #';
-			nextPutAll: name;
-			cr.
-		
-		self classLayout isFixedLayout ifFalse: [
-			s 
-				tab; 
-				nextPutAll: 'layout: ';
-				nextPutAll: self classLayout class name;
-				nextPutAll: ';';
-				cr ].
-		
-		self hasTraitComposition ifTrue: [
-			s 
-				tab; 
-				nextPutAll: 'uses: ';
-				nextPutAll: self traitCompositionString ;
-				nextPutAll: ';';
-				cr ].
-		
-		self slots ifNotEmpty: [ 
-					s tab.
-					s nextPutAll: 'slots: '.
-					self slotDefinitionStringOn: s. 
-					s nextPutAll: ';'.
-					s cr ].
-		self classVariables ifNotEmpty: [  
-				s 
-					tab;
-					nextPutAll: 'sharedVariables: ';
-					nextPutAll: self classVariableDefinitionString;
-					nextPutAll: ';';
-					cr
-				].
-			
-		self sharedPools ifNotEmpty: [:pools |
-			s 
-				tab ; 
-				nextPutAll: 'sharedPools: { '.
-			pools do: 	[ :p | s nextPutAll: p name ] separatedBy: [ s nextPutAll: ' . ' ].
-			s	nextPutAll: ' };' ;
-				cr ].	
-			
-		self tagOn: s.
-				
-		s 	
-			tab;
-			nextPutAll: 'package: '; 
-			nextPut: $';
-			nextPutAll: self package packageName;
-			nextPut: $'
-		]
-]
-
-{ #category : #'*FluidClassDefinition' }
 Class >> classVariableDefinitionString [
 	"Answer a string that evaluates to the definition of the class Variables"
 	
@@ -80,15 +19,15 @@ Class >> classVariableDefinitionString [
 ]
 
 { #category : #'*FluidClassDefinition' }
-Class >> definitionString [ 
-
-	^ self definitionStringFor: self definitionPrinter
-]
-
-{ #category : #'*FluidClassDefinition' }
 Class >> definitionStringFor: aPrinter [
 
 	^ aPrinter classDefinitionString 
+]
+
+{ #category : #'*FluidClassDefinition' }
+Class >> expandedDefinitionStringFor: aPrinter [
+
+	^ aPrinter expandedClassDefinitionString 
 ]
 
 { #category : #'*FluidClassDefinition' }

@@ -1,31 +1,6 @@
 Extension { #name : #Metaclass }
 
 { #category : #'*FluidClassDefinition' }
-Metaclass >> asFluidDefinitionString [
-	"to remove"
-	^ String streamContents: [ :s |
-		
-		superclass 
-			ifNotNil: [ s nextPutAll: self name ]
-			ifNil: [ s nextPutAll: 'ProtoObject ' ].
-		
-		self hasTraitComposition ifTrue: [
-			s 
-				crtab; 
-				nextPutAll: 'uses: ';
-				nextPutAll: self traitCompositionString ;
-				nextPutAll: ';';
-				cr ].
-		
-		self slots ifNotEmpty: 
-			[ 
-				s crtab.
-				s nextPutAll: 'slots: '.
-				self slotDefinitionStringOn: s ].
-		]
-]
-
-{ #category : #'*FluidClassDefinition' }
 Metaclass >> definitionExpanded [
 	"This definition presents all the receiver state also the empty one so that the user can just type and empty elements will be ignored by the builder and parser. 
 	"
@@ -60,4 +35,10 @@ Metaclass >> definitionExpanded [
 Metaclass >> definitionStringFor: aPrinter [
 
 	^ aPrinter metaclassDefinitionString 
+]
+
+{ #category : #'*FluidClassDefinition' }
+Metaclass >> expandedDefinitionStringFor: aPrinter [
+
+	^ aPrinter for: self ; expandedMetaclassDefinitionString
 ]
