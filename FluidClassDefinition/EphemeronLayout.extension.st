@@ -7,8 +7,3 @@ EphemeronLayout class >> extending: superLayout scope: aScope host: aClass [
 		host: aClass;
 		yourself
 ]
-
-{ #category : #'*FluidClassDefinition' }
-EphemeronLayout class >> kind [ 
-	^ #ephemeron
-]

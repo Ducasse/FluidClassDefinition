@@ -6,8 +6,3 @@ FixedLayout class >> extending: superLayout scope: aScope host: aClass [
 		host: aClass;
 		yourself
 ]
-
-{ #category : #'*FluidClassDefinition' }
-FixedLayout class >> kind [ 
-	^ #normal
-]
