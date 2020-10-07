@@ -67,6 +67,12 @@ OldPharoClassDefinitionPrinter >> classDefinitionString [
 ]
 
 { #category : #delegating }
+OldPharoClassDefinitionPrinter >> expandedDefinitionString [
+	"We do not support expanded on old Pharo syntax"
+	^ self definitionString 
+]
+
+{ #category : #delegating }
 OldPharoClassDefinitionPrinter >> metaclassDefinitionString [ 
 	"Next step
 		- some of the methods defined on classe will have to be moved in this class.

@@ -148,11 +148,6 @@ FluidClassDefinitionPrinter >> expandedClassDefinitionString [
 					nextPutAll: '''' ]
 ]
 
-{ #category : #printing }
-FluidClassDefinitionPrinter >> expandedDefinitionString [
-	^ forClass definitionExpanded 
-]
-
 { #category : #'expanded double dispatch API' }
 FluidClassDefinitionPrinter >> expandedMetaclassDefinitionString [
 	
@@ -163,7 +158,7 @@ FluidClassDefinitionPrinter >> expandedMetaclassDefinitionString [
 						
 						s crtab. 
 						
-						self hasTraitComposition 
+						forClass hasTraitComposition 
 							ifTrue: [
 								s 
 									nextPutAll: 'uses: ';
@@ -220,12 +215,6 @@ FluidClassDefinitionPrinter >> expandedTraitDefinitionString [
 					nextPutAll: 'package: ''';
 					nextPutAll: forClass package packageName;
 					nextPutAll: '''' ]
-]
-
-{ #category : #'expanded double dispatch API' }
-FluidClassDefinitionPrinter >> expandedTraitedMetaclassDefinitionString [
-
-	self halt.
 ]
 
 { #category : #printing }
