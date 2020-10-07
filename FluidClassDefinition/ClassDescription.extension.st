@@ -1,14 +1,6 @@
 Extension { #name : #ClassDescription }
 
 { #category : #'*FluidClassDefinition' }
-ClassDescription >> definition [
-	"Answer a String that defines the receiver."
-	
-	^ self definitionString
-	
-]
-
-{ #category : #'*FluidClassDefinition' }
 ClassDescription >> definitionFullyExpanded [
 	"This definition propose all the with an empty arguments so that the user can just type and empty elements will be ignored by the builder and parser. Should check that this is true and write tests."
 	
@@ -73,28 +65,4 @@ ClassDescription >> expandedDefinitionString [
 ClassDescription >> expandedDefinitionStringFor: aPrinter [
 
 	^ self subclassResponsibility
-]
-
-{ #category : #'*FluidClassDefinition' }
-ClassDescription >> slotDefinitionsOn: aStream [
-	"Write on the arg aStream an executable description of my Slots"
-
-	| useFull |
-	aStream nextPutAll: '{'.
-	self localSlots
-		do: [ :slot | 
-			aStream space.
-			aStream nextPutAll: slot definitionString.
-			useFull := slot needsFullDefinition.
-			aStream space ]
-		separatedBy: [ 
-			aStream nextPutAll: '.'.
-			useFull ifTrue: [ 
-				aStream
-					cr;
-					tab;
-					tab;
-					tab;
-					tab ] ].
-	aStream nextPutAll: '}'
 ]
