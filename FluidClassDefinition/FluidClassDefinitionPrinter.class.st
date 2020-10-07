@@ -66,6 +66,26 @@ FluidClassDefinitionPrinter >> classDefinitionString [
 		  self packageOn: s ]
 ]
 
+{ #category : #'elementary operations' }
+FluidClassDefinitionPrinter >> classVariableDefinitionsOn: aStream [ 
+	"Answer a string that evaluates to the definition of the class Variables"
+	
+		| fullDef |
+		forClass classVariables 
+			ifEmpty: [ aStream nextPutAll: '{}' ]
+			ifNotEmpty:[  :clsVars|
+		aStream nextPutAll: '{'.
+		clsVars do: [:global |
+				aStream space. 
+				aStream nextPutAll: global definitionString.
+				fullDef := global needsFullDefinition.
+				aStream space.]				
+			separatedBy: [ 
+				aStream nextPutAll: '.'.  
+				fullDef ifTrue: [ aStream cr;tab;tab;tab;tab ]].
+		aStream nextPutAll: '}'. ]
+]
+
 { #category : #'expanded double dispatch API' }
 FluidClassDefinitionPrinter >> expandedClassDefinitionString [
 
@@ -113,7 +133,7 @@ FluidClassDefinitionPrinter >> expandedMetaclassDefinitionString [
 						s crtab.
 
 						s nextPutAll: 'slots: '.
-						forClass slotDefinitionStringOn: s. 
+						forClass slotDefinitionsOn: s. 
 						]
 ]
 
@@ -142,7 +162,7 @@ FluidClassDefinitionPrinter >> expandedTraitDefinitionString [
 							nextPutAll: ';'; crtab.
 							
 						s nextPutAll: 'sharedPools: {'.
-						forClass sharedPoolStringOn: s.
+						self sharedPoolsOn: s.
 						s nextPutAll: '};' ; crtab.
 						
 						(forClass package classTagForClass: forClass) ifNotNil: [:t | 
@@ -199,7 +219,7 @@ FluidClassDefinitionPrinter >> metaclassDefinitionString [
 			[ 
 				s crtab.
 				s nextPutAll: 'slots: '.
-				forClass slotDefinitionStringOn: s ].
+				forClass slotDefinitionsOn: s ].
 		]
 ]
 
@@ -216,16 +236,16 @@ FluidClassDefinitionPrinter >> packageOn: s [
 
 { #category : #'elementary operations' }
 FluidClassDefinitionPrinter >> sharedPoolsOn: s [
-	| hasPools |
-	hasPools := forClass sharedPools isNotEmpty.
+
 	s
 		tab;
 		nextPutAll: 'sharedPools: {'.
-	hasPools ifTrue: [ s space ].
 	forClass sharedPools
-		do: [ :p | s nextPutAll: p name ]
-		separatedBy: [ s nextPutAll: ' . ' ].
-	hasPools ifTrue: [ s space ].
+		do: [ :p | 
+			s space.
+			s nextPutAll: p name.
+			s space ]
+		separatedBy: [ s nextPutAll: '.' ].
 	s
 		nextPutAll: '};';
 		cr
@@ -236,10 +256,35 @@ FluidClassDefinitionPrinter >> sharedVariablesOn: s [
 
 	s
 		tab;
-		nextPutAll: 'sharedVariables: ';
-		nextPutAll: forClass classVariableDefinitionString;
+		nextPutAll: 'sharedVariables: '.
+	self classVariableDefinitionsOn: s.
+	s  
 		nextPutAll: ';';
 		cr
+]
+
+{ #category : #'elementary operations' }
+FluidClassDefinitionPrinter >> slotDefinitionsOn: aStream [
+	"Write on the arg aStream an executable description of my Slots"
+
+	| useFull |
+	aStream nextPutAll: '{'.
+	forClass localSlots
+		do: [ :slot | 
+			aStream space.
+			aStream nextPutAll: slot definitionString.
+			useFull := slot needsFullDefinition.
+			aStream space ]
+		separatedBy: [ 
+			aStream nextPutAll: '.'.
+			useFull ifTrue: [ 
+				aStream
+					cr;
+					tab;
+					tab;
+					tab;
+					tab ] ].
+	aStream nextPutAll: '}'
 ]
 
 { #category : #'elementary operations' }
@@ -247,7 +292,7 @@ FluidClassDefinitionPrinter >> slotsOn: s [
 
 	s tab.
 	s nextPutAll: 'slots: '.
-	forClass slotDefinitionStringOn: s.
+	self slotDefinitionsOn: s.
 	s nextPutAll: ';'.
 	s cr
 ]
@@ -297,7 +342,7 @@ FluidClassDefinitionPrinter >> traitDefinitionString [
 		forClass slots ifNotEmpty: [ 
 					s tab.
 					s nextPutAll: 'slots: '.
-					forClass slotDefinitionStringOn: s.
+					forClass slotDefinitionsOn: s.
 					s nextPutAll: ';'.
 					s cr ].
 				
@@ -328,5 +373,5 @@ FluidClassDefinitionPrinter >> traitedMetaclassDefinitionString [
 			strm
 				crtab;
 				nextPutAll: 'slots: '.
-			forClass slotDefinitionStringOn: strm	]]
+			forClass slotDefinitionsOn: strm	]]
 ]

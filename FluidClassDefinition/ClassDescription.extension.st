@@ -76,33 +76,7 @@ ClassDescription >> expandedDefinitionStringFor: aPrinter [
 ]
 
 { #category : #'*FluidClassDefinition' }
-ClassDescription >> sharedPoolString [
-	"Answer a string of my shared pools separated by spaces."
-
-	^String streamContents: [ :stream | 
-		self sharedPoolStringOn: stream ]
-]
-
-{ #category : #'*FluidClassDefinition' }
-ClassDescription >> sharedPoolStringOn: aStream [
-	"Answer a string of my shared pools separated by spaces."
-
-		self sharedPools 
-			do:  [ :p | aStream space. 
-							aStream nextPutAll: p name.
-							aStream space ] 
-			separatedBy: [ aStream nextPutAll: '.' ]
-]
-
-{ #category : #'*FluidClassDefinition' }
-ClassDescription >> slotDefinitionString [
-	"Answer a string that contains an executable description of my Slots"
-	
-	^String streamContents: [ :str | self slotDefinitionStringOn: str]
-]
-
-{ #category : #'*FluidClassDefinition' }
-ClassDescription >> slotDefinitionStringOn: aStream [
+ClassDescription >> slotDefinitionsOn: aStream [
 	"Write on the arg aStream an executable description of my Slots"
 
 	| useFull |
