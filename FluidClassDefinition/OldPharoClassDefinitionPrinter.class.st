@@ -72,6 +72,16 @@ OldPharoClassDefinitionPrinter >> expandedDefinitionString [
 	^ self definitionString 
 ]
 
+{ #category : #printing }
+OldPharoClassDefinitionPrinter >> fullyExpandedDefinitionStringInPackage: aString [
+
+	^ String streamContents: [ :s |
+			s nextPutAll: 'Object subclass: #MyClass' ; crtab.
+			s nextPutAll: 'instanceVariableNames: '''' '; crtab. 
+			s nextPutAll: 'classVariableNames: '''''; crtab.
+			s nextPutAll: 'package: ''', aString, '''' ]
+]
+
 { #category : #delegating }
 OldPharoClassDefinitionPrinter >> metaclassDefinitionString [ 
 	"Next step

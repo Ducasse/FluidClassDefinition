@@ -8,34 +8,6 @@ ClassDescription >> definitionFullyExpanded [
 ]
 
 { #category : #'*FluidClassDefinition' }
-ClassDescription >> definitionFullyExpandedButPackage: aString [
-	"This definition propose all the with an empty arguments so that the user can just type and empty elements will be ignored by the builder and parser. Should check that this is true and write tests. 
-	"
-	"For now I will check here for Slot 
-	"
-	^ Slot showSlotClassDefinition 
-		ifTrue: [
-				String streamContents: [ :s |
-						s nextPutAll: 'Object < #MyClass'; crtab.
-						s nextPutAll: 'layout: FixedLayout;'; crtab.
-						s nextPutAll: 'uses: {};'; crtab.
-						s nextPutAll: 'slots: {};'; crtab. 
-						s nextPutAll: 'sharedVariables: {};'; crtab.
-						s nextPutAll: 'sharedPools: {};'; crtab.
-						s nextPutAll: 'tag: '''' ;';crtab.
-						s nextPutAll: 'package: ''', aString, '''' ] 
-					]
-		ifFalse: [  
-				String streamContents: [ :s |
-						s nextPutAll: 'Object subclass: #MyClass' ; crtab.
-						s nextPutAll: 'instanceVariableNames: '''' '; crtab. 
-						s nextPutAll: 'classVariableNames: '''''; crtab.
-						s nextPutAll: 'package: ''', aString, '''' ] 				
-				]
-
-]
-
-{ #category : #'*FluidClassDefinition' }
 ClassDescription >> definitionPrinter [
 	"Return the printer"
 	^ ClassDefinitionPrinter for: self
@@ -65,4 +37,11 @@ ClassDescription >> expandedDefinitionString [
 ClassDescription >> expandedDefinitionStringFor: aPrinter [
 
 	^ self subclassResponsibility
+]
+
+{ #category : #'*FluidClassDefinition' }
+ClassDescription >> fullyExpandedDefinitionString [
+	"This definition propose all the with an empty arguments so that the user can just type and empty elements will be ignored by the builder and parser. Should check that this is true and write tests."
+	
+	^ self definitionPrinter fullyExpandedDefinitionStringInPackage: 'MyPackage'
 ]

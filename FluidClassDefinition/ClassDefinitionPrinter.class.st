@@ -150,3 +150,8 @@ ClassDefinitionPrinter >> expandedDefinitionString [
 ClassDefinitionPrinter >> for: aClass [ 
 	forClass := aClass
 ]
+
+{ #category : #printing }
+ClassDefinitionPrinter >> fullyExpandedDefinitionStringInPackage: aPackageName [
+	^ self subclassResponsibility 
+]

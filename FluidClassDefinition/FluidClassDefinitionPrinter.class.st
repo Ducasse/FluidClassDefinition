@@ -184,7 +184,22 @@ FluidClassDefinitionPrinter >> expandedTraitDefinitionString [
 
 { #category : #printing }
 FluidClassDefinitionPrinter >> fullyExpandedDefinitionString [
-	^ forClass definitionFullyExpandedButPackage: forClass package packageName
+	^ forClass fullyExpandedDefinitionStringInPackage: forClass package packageName
+]
+
+{ #category : #printing }
+FluidClassDefinitionPrinter >> fullyExpandedDefinitionStringInPackage: aPackageName [
+
+	^ String streamContents: [ :s |
+						s nextPutAll: 'Object < #MyClass'; crtab.
+						s nextPutAll: 'layout: FixedLayout;'; crtab.
+						s nextPutAll: 'uses: {};'; crtab.
+						s nextPutAll: 'slots: {};'; crtab. 
+						s nextPutAll: 'sharedVariables: {};'; crtab.
+						s nextPutAll: 'sharedPools: {};'; crtab.
+						s nextPutAll: 'tag: '''' ;';crtab.
+						s nextPutAll: 'package: ''', aPackageName, '''' ] 
+					
 ]
 
 { #category : #'elementary operations' }
