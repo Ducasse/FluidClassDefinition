@@ -133,7 +133,7 @@ FluidClassDefinitionPrinter >> expandedMetaclassDefinitionString [
 						s crtab.
 
 						s nextPutAll: 'slots: '.
-						forClass slotDefinitionsOn: s. 
+						self slotDefinitionsOn: s. 
 						]
 ]
 
@@ -184,7 +184,8 @@ FluidClassDefinitionPrinter >> expandedTraitDefinitionString [
 
 { #category : #printing }
 FluidClassDefinitionPrinter >> fullyExpandedDefinitionString [
-	^ forClass fullyExpandedDefinitionStringInPackage: forClass package packageName
+	
+	^ self fullyExpandedDefinitionStringInPackage: forClass package packageName
 ]
 
 { #category : #printing }

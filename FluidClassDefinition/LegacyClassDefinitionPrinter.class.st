@@ -11,7 +11,7 @@ LegacyClassDefinitionPrinter >> definitionString [
 
 { #category : #delegating }
 LegacyClassDefinitionPrinter >> expandedDefinitionString [
-	"We do not support expansion on legacy syntax"
+	"We do not support expansion on legacy syntax so we shortcut the double dispatch call."
 	^ self definitionString
 ]
 

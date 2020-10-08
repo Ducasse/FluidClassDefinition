@@ -9,5 +9,5 @@ Metaclass >> definitionStringFor: aPrinter [
 { #category : #'*FluidClassDefinition' }
 Metaclass >> expandedDefinitionStringFor: aPrinter [
 
-	^ aPrinter for: self ; expandedMetaclassDefinitionString
+	^ aPrinter expandedMetaclassDefinitionString
 ]

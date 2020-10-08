@@ -16,5 +16,5 @@ Trait >> definitionStringFor: aPrinter [
 { #category : #'*FluidClassDefinition' }
 Trait >> expandedDefinitionStringFor: aPrinter [
 
-	^ aPrinter for: self ; expandedTraitDefinitionString 
+	^ aPrinter expandedTraitDefinitionString 
 ]
