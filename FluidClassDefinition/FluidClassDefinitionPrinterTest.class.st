@@ -200,7 +200,7 @@ FluidClassDefinitionPrinterTest >> testFullyExpandedSimple [
 
 { #category : #'tests - fully expanded' }
 FluidClassDefinitionPrinterTest >> testFullyExpandedTrait [
-
+	self halt.
 	self 
 		assert: (self fullyExpandedForClass: Trait) equals: 'Trait << #TMyTrait
 	uses: {};
