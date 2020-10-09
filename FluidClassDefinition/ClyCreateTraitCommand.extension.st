@@ -5,7 +5,7 @@ ClyCreateTraitCommand >> execute [
 	| traitDefinition category resultTrait |
 	category := package name.
 	classTag ifNotNil: [ category := category , '-' , classTag ].
-	traitDefinition := ClassDefinitionPrinter new fullyExpandedDefinitionStringInPackage: category.
+	traitDefinition := ClassDefinitionPrinter new traitDefinitionTemplateInPackage: category.
 	traitDefinition := UIManager default
 		                   multiLineRequest: 'Define trait definition:'
 		                   initialAnswer: traitDefinition

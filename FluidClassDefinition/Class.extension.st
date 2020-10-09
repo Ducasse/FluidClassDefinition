@@ -11,9 +11,3 @@ Class >> expandedDefinitionStringFor: aPrinter [
 
 	^ aPrinter expandedClassDefinitionString 
 ]
-
-{ #category : #'*FluidClassDefinition' }
-Class >> fullyExpandedDefinitionStringFor: aPrinter [
-
-	^ aPrinter for: self ;  fullyExpandedClassDefinitionStringInPackage: self package packageName
-]

@@ -66,6 +66,20 @@ FluidClassDefinitionPrinter >> classDefinitionString [
 		  self packageOn: s ]
 ]
 
+{ #category : #printing }
+FluidClassDefinitionPrinter >> classDefinitionTemplateInPackage: aPackageName [
+
+		^ String streamContents: [ :s |
+						s nextPutAll: 'Object < #MyClass'; crtab.
+						s nextPutAll: 'layout: FixedLayout;'; crtab.
+						s nextPutAll: 'uses: {};'; crtab.
+						s nextPutAll: 'slots: {};'; crtab. 
+						s nextPutAll: 'sharedVariables: {};'; crtab.
+						s nextPutAll: 'sharedPools: {};'; crtab.
+						s nextPutAll: 'tag: '''' ;';crtab.
+						s nextPutAll: 'package: ''', aPackageName, '''' ] 
+]
+
 { #category : #'elementary operations' }
 FluidClassDefinitionPrinter >> classVariableDefinitionsOn: aStream [ 
 	"Answer a string that evaluates to the definition of the class Variables"
@@ -180,42 +194,6 @@ FluidClassDefinitionPrinter >> expandedTraitDefinitionString [
 					nextPutAll: 'package: ''';
 					nextPutAll: forClass package packageName;
 					nextPutAll: '''' ]
-]
-
-{ #category : #printing }
-FluidClassDefinitionPrinter >> fullyExpandedClassDefinitionStringInPackage: aPackageName [
-
-		^ String streamContents: [ :s |
-						s nextPutAll: 'Object < #MyClass'; crtab.
-						s nextPutAll: 'layout: FixedLayout;'; crtab.
-						s nextPutAll: 'uses: {};'; crtab.
-						s nextPutAll: 'slots: {};'; crtab. 
-						s nextPutAll: 'sharedVariables: {};'; crtab.
-						s nextPutAll: 'sharedPools: {};'; crtab.
-						s nextPutAll: 'tag: '''' ;';crtab.
-						s nextPutAll: 'package: ''', aPackageName, '''' ] 
-]
-
-{ #category : #printing }
-FluidClassDefinitionPrinter >> fullyExpandedTraitDefinitionStringInPackage: aPackageName [
-	
-	^ String streamContents: [ :s | 
-		  s
-			  nextPutAll: 'Trait << #TMyTrait';
-			  crtab.
-		  s
-			  nextPutAll: 'uses: {};';
-			  crtab.
-		  s
-			  nextPutAll: 'slots: {};';
-			  crtab.
-		  s
-			  nextPutAll: 'tag: '''' ;';
-			  crtab.
-		  s
-			  nextPutAll: 'package: ''';
-			  nextPutAll: aPackageName;
-			  nextPutAll: '''' ]
 ]
 
 { #category : #'elementary operations' }
@@ -386,6 +364,28 @@ FluidClassDefinitionPrinter >> traitDefinitionString [
 			nextPutAll: forClass package packageName;
 			nextPut: $'
 		]
+]
+
+{ #category : #printing }
+FluidClassDefinitionPrinter >> traitDefinitionTemplateInPackage: aPackageName [
+	
+	^ String streamContents: [ :s | 
+		  s
+			  nextPutAll: 'Trait << #TMyTrait';
+			  crtab.
+		  s
+			  nextPutAll: 'uses: {};';
+			  crtab.
+		  s
+			  nextPutAll: 'slots: {};';
+			  crtab.
+		  s
+			  nextPutAll: 'tag: '''' ;';
+			  crtab.
+		  s
+			  nextPutAll: 'package: ''';
+			  nextPutAll: aPackageName;
+			  nextPutAll: '''' ]
 ]
 
 { #category : #'definition double dispatch API' }

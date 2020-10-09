@@ -11,9 +11,3 @@ Metaclass >> expandedDefinitionStringFor: aPrinter [
 
 	^ aPrinter expandedMetaclassDefinitionString
 ]
-
-{ #category : #'*FluidClassDefinition' }
-Metaclass >> fullyExpandedDefinitionStringInPackage: aPrinter [
-
-	^ aPrinter for: self ; fullyExpandedMetaclassDefinitionStringInPackage: self package packageName
-]

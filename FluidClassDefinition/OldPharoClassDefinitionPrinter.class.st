@@ -66,26 +66,20 @@ OldPharoClassDefinitionPrinter >> classDefinitionString [
 	^ stream contents
 ]
 
-{ #category : #delegating }
-OldPharoClassDefinitionPrinter >> expandedDefinitionString [
-	"We do not support expanded on old Pharo syntax so we shortcut the double dispatch call."
-	^ self definitionString 
-]
-
-{ #category : #delegating }
-OldPharoClassDefinitionPrinter >> fullyExpandedDefinitionString [
-	"We do not support expanded on old Pharo syntax so we shortcut the double dispatch call."
-	^ self definitionString 
-]
-
-{ #category : #printing }
-OldPharoClassDefinitionPrinter >> fullyExpandedDefinitionStringInPackage: aString [
+{ #category : #template }
+OldPharoClassDefinitionPrinter >> classDefinitionTemplateInPackage: aString [
 
 	^ String streamContents: [ :s |
 			s nextPutAll: 'Object subclass: #MyClass' ; crtab.
 			s nextPutAll: 'instanceVariableNames: '''' '; crtab. 
 			s nextPutAll: 'classVariableNames: '''''; crtab.
 			s nextPutAll: 'package: ''', aString, '''' ]
+]
+
+{ #category : #delegating }
+OldPharoClassDefinitionPrinter >> expandedDefinitionString [
+	"We do not support expanded on old Pharo syntax so we shortcut the double dispatch call."
+	^ self definitionString 
 ]
 
 { #category : #delegating }
@@ -125,6 +119,17 @@ OldPharoClassDefinitionPrinter >> traitDefinitionString [
 		s tab; nextPutAll: ' package: ';
 			nextPutAll: forClass category asString printString
 	]
+]
+
+{ #category : #template }
+OldPharoClassDefinitionPrinter >> traitDefinitionTemplateInPackage: aString [
+
+	^ String streamContents: [ :s |
+			s nextPutAll: 'Trait named: #TMyTraits
+	 uses: {}
+	 package: '.
+			s nextPutAll: aString ]
+ 
 ]
 
 { #category : #delegating }

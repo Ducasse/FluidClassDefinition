@@ -32,14 +32,3 @@ ClassDescription >> expandedDefinitionStringFor: aPrinter [
 
 	^ self subclassResponsibility
 ]
-
-{ #category : #'*FluidClassDefinition' }
-ClassDescription >> fullyExpandedDefinitionString [
-	"Return the string of the class definition, each of my subclass may tell the printer how to printer it. A kind of double dispatch since we have multiple printers and multiple entities to be printed."
-
-	^ self fullyExpandedDefinitionStringFor: (self definitionPrinter for: self)
-]
-
-{ #category : #'*FluidClassDefinition' }
-ClassDescription >> fullyExpandedDefinitionStringFor: aPrinter [
-]

@@ -137,17 +137,3 @@ ClassDefinitionPrinter >> expandedDefinitionString [
 ClassDefinitionPrinter >> for: aClass [ 
 	forClass := aClass
 ]
-
-{ #category : #printing }
-ClassDefinitionPrinter >> fullyExpandedDefinitionString [
-	"The method is part of the double dispatch. It is an extra starting point. 
-	Each entity will select the right definition and call me back.
-	Normally this method is not used because the main point is the class...."
-	
-	^ forClass fullyExpandedDefinitionStringFor: self
-]
-
-{ #category : #printing }
-ClassDefinitionPrinter >> fullyExpandedDefinitionStringInPackage: aPackageName [
-	^ self subclassResponsibility 
-]
