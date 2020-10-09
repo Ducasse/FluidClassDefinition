@@ -19,9 +19,8 @@ CommonClassDefinitionPrinterTest >> setUp [
 ]
 
 { #category : #'tests - classes' }
-CommonClassDefinitionPrinterTest >> tearDown [ 
-	
-	Slot showSlotClassDefinition: slotuse.
-	super tearDown.
-	
+CommonClassDefinitionPrinterTest >> tearDown [
+
+	ClassDefinitionPrinter showFluidClassDefinition: slotuse.
+	super tearDown
 ]

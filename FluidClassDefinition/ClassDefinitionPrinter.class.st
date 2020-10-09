@@ -83,12 +83,12 @@ ClassDefinitionPrinter class >> legacy [
 ]
 
 { #category : #'instance creation' }
-ClassDefinitionPrinter class >> new [ 
-	| instance |
-	instance :=  self showFluidClassDefinition 
-		ifTrue: [ self fluid ]
-		ifFalse: [ self oldPharo ].
-	^ instance
+ClassDefinitionPrinter class >> new [
+
+	^ self showFluidClassDefinition
+			ifTrue: [ self fluid ]
+			ifFalse: [ self oldPharo ]
+	
 ]
 
 { #category : #'instance creation' }
@@ -110,22 +110,9 @@ ClassDefinitionPrinter class >> showFluidClassDefinition: aBoolean [
 ]
 
 { #category : #configure }
-ClassDefinitionPrinter class >> showSlotClassDefinition [
-
-	^ ShowFluidClassDefinition ifNil: [ ShowFluidClassDefinition := false ]
-]
-
-{ #category : #configure }
-ClassDefinitionPrinter class >> showSlotClassDefinition: aBoolean [
- 
-	ShowFluidClassDefinition := aBoolean
-	
-]
-
-{ #category : #configure }
 ClassDefinitionPrinter class >> toggleShowFluidClassDefinition [
 
-	^ self showFluidClassDefinition: self showFluidClassDefinition not 
+	self showFluidClassDefinition: self showFluidClassDefinition not
 ]
 
 { #category : #printing }

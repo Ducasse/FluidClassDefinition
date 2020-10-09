@@ -2,6 +2,7 @@ Extension { #name : #ClySlotClassDefinitionSwitchMorph }
 
 { #category : #'*FluidClassDefinition' }
 ClySlotClassDefinitionSwitchMorph >> toggle [
+	self halt.
 	ClassDefinitionPrinter toggleShowFluidClassDefinition.
 	ownerTool update
 ]

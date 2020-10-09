@@ -12,9 +12,10 @@ OldPharoClassDefinitionPrinterTest >> forClass: aClass [
 ]
 
 { #category : #'instance creation' }
-OldPharoClassDefinitionPrinterTest >> setUp [ 
+OldPharoClassDefinitionPrinterTest >> setUp [
+
 	super setUp.
-	ClassDefinitionPrinter showSlotClassDefinition: false.
+	ClassDefinitionPrinter showFluidClassDefinition: false
 ]
 
 { #category : #'tests - traits' }

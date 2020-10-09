@@ -26,9 +26,10 @@ FluidClassDefinitionPrinterTest >> fullyExpandedForClass: aClass [
 ]
 
 { #category : #helpers }
-FluidClassDefinitionPrinterTest >> setUp [ 
+FluidClassDefinitionPrinterTest >> setUp [
+
 	super setUp.
-	ClassDefinitionPrinter showSlotClassDefinition: true.
+	ClassDefinitionPrinter showFluidClassDefinition: true
 ]
 
 { #category : #'tests - traits' }
