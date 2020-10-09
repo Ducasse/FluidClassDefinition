@@ -24,7 +24,7 @@ FluidClassBuilderTest >> removeFromSystem [
 
 { #category : #running }
 FluidClassBuilderTest >> setUp [
-
+	super setUp.
 	builder := FluidClassBuilder new 
 		superclassToBuild: Object;
 		classNameToBuild: #Point33;

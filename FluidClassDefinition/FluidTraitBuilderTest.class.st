@@ -9,7 +9,7 @@ Class {
 
 { #category : #running }
 FluidTraitBuilderTest >> setUp [
-
+	super setUp.
 	builder := FluidTraitBuilder new 
 	
 
