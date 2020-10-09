@@ -72,6 +72,12 @@ OldPharoClassDefinitionPrinter >> expandedDefinitionString [
 	^ self definitionString 
 ]
 
+{ #category : #delegating }
+OldPharoClassDefinitionPrinter >> fullyExpandedDefinitionString [
+	"We do not support expanded on old Pharo syntax so we shortcut the double dispatch call."
+	^ self definitionString 
+]
+
 { #category : #printing }
 OldPharoClassDefinitionPrinter >> fullyExpandedDefinitionStringInPackage: aString [
 

@@ -11,3 +11,9 @@ Class >> expandedDefinitionStringFor: aPrinter [
 
 	^ aPrinter expandedClassDefinitionString 
 ]
+
+{ #category : #'*FluidClassDefinition' }
+Class >> fullyExpandedDefinitionStringFor: aPrinter [
+
+	^ aPrinter fullyExpandedClassDefinitionStringInPackage: self package packageName
+]

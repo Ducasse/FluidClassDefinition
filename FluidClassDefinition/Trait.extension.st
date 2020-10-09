@@ -18,3 +18,9 @@ Trait >> expandedDefinitionStringFor: aPrinter [
 
 	^ aPrinter expandedTraitDefinitionString 
 ]
+
+{ #category : #'*FluidClassDefinition' }
+Trait >> fullyExpandedDefinitionStringFor: aPrinter [
+
+	^ aPrinter fullyExpandedTraitDefinitionStringInPackage: self package packageName
+]

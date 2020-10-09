@@ -16,6 +16,12 @@ LegacyClassDefinitionPrinter >> expandedDefinitionString [
 ]
 
 { #category : #delegating }
+LegacyClassDefinitionPrinter >> fullyExpandedDefinitionString [
+	"We do not support expansion on legacy syntax so we shortcut the double dispatch call."
+	^ self definitionString
+]
+
+{ #category : #delegating }
 LegacyClassDefinitionPrinter >> fullyExpandedDefinitionStringInPackage: aString [
 
 	^ String streamContents: [ :s |
