@@ -2,7 +2,8 @@ Extension { #name : #ClassDescription }
 
 { #category : #'*FluidClassDefinition' }
 ClassDescription >> definitionPrinter [
-	"Return the printer"
+	"Return the printer associated with the current class definition format."
+
 	^ ClassDefinitionPrinter for: self
 ]
 

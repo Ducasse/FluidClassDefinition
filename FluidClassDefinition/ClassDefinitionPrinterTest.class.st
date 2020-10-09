@@ -43,3 +43,13 @@ ClassDefinitionPrinterTest >> testOldPharoConfiguration [
 	classVariableNames: ''''
 	package: ''Collections-Sequenceable-Base'''
 ]
+
+{ #category : #tests }
+ClassDefinitionPrinterTest >> testToggleIsWorking [
+
+	| value |
+	value := ClassDefinitionPrinter showFluidClassDefinition.
+	ClassDefinitionPrinter toggleShowFluidClassDefinition.
+	self assert: ClassDefinitionPrinter showFluidClassDefinition equals: value not. 
+	
+]
