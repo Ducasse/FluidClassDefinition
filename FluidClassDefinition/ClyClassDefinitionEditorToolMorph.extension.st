@@ -8,6 +8,12 @@ ClyClassDefinitionEditorToolMorph >> createTextContext [
 ]
 
 { #category : #'*FluidClassDefinition' }
+ClyClassDefinitionEditorToolMorph >> editingText [
+	
+	^ editingClass definitionString
+]
+
+{ #category : #'*FluidClassDefinition' }
 ClyClassDefinitionEditorToolMorph >> parseClassDefinition [
 	^ ClassDefinitionPrinter new classDefinitionParserClass parse: self editingText
 ]
