@@ -1,7 +1,13 @@
 Extension { #name : #TraitedMetaclass }
 
 { #category : #'*FluidClassDefinition' }
-TraitedMetaclass >> definitionStringFor: aPrinter [
+TraitedMetaclass >> definitionStringFor: aConfiguredPrinter [
 
-	^ aPrinter for: self ; traitedMetaclassDefinitionString 
+	^ aConfiguredPrinter traitedMetaclassDefinitionString 
+]
+
+{ #category : #'*FluidClassDefinition' }
+TraitedMetaclass >> fullyExpandedDefinitionStringInPackage: aPrinter [
+
+	^ aPrinter for: self ; fullyExpandedTraitDefinitionStringInPackage: self package packageName
 ]

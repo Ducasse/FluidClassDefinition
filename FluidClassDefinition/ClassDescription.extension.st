@@ -2,7 +2,7 @@ Extension { #name : #ClassDescription }
 
 { #category : #'*FluidClassDefinition' }
 ClassDescription >> definitionPrinter [
-	"Return the printer associated with the current class definition format."
+	"Return a configurated printer associated with the current class definition format."
 
 	^ ClassDefinitionPrinter for: self
 ]
@@ -15,7 +15,7 @@ ClassDescription >> definitionString [
 ]
 
 { #category : #'*FluidClassDefinition' }
-ClassDescription >> definitionStringFor: aPrinter [
+ClassDescription >> definitionStringFor: aConfiguredPrinter [
 
 	^ self subclassResponsibility 
 ]

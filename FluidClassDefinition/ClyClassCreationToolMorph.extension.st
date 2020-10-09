@@ -6,7 +6,7 @@ ClyClassCreationToolMorph >> classTemplate [
 	| template |
 	template := ClassDefinitionPrinter showFluidClassDefinition
 		ifTrue: [ 
-			^ ClassDefinitionPrinter fluid fullyExpandedDefinitionStringInPackage:  self packageName ].
+			^ ClassDefinitionPrinter fluid fullyExpandedClassDefinitionStringInPackage:  self packageName ].
 	 
 template := 'Object subclass: #NameOfSubclass
 	instanceVariableNames: ''''

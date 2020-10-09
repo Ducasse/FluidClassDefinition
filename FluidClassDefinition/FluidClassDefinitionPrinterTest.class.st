@@ -19,13 +19,6 @@ FluidClassDefinitionPrinterTest >> forClass: aClass [
 ]
 
 { #category : #helpers }
-FluidClassDefinitionPrinterTest >> fullyExpandedForClass: aClass [
-	^ (FluidClassDefinitionPrinter for: aClass) fullyExpandedDefinitionString 
-
-
-]
-
-{ #category : #helpers }
 FluidClassDefinitionPrinterTest >> setUp [
 
 	super setUp.
@@ -186,7 +179,7 @@ FluidClassDefinitionPrinterTest >> testExpandedTrait3ClassTrait [
 FluidClassDefinitionPrinterTest >> testFullyExpandedSimple [
 
 	self 
-		assert: (self fullyExpandedForClass: ClassDescription) 
+		assert: (FluidClassDefinitionPrinter new fullyExpandedClassDefinitionStringInPackage: 'Kernel') 
 		equals:  'Object < #MyClass
 	layout: FixedLayout;
 	uses: {};
@@ -200,9 +193,9 @@ FluidClassDefinitionPrinterTest >> testFullyExpandedSimple [
 
 { #category : #'tests - fully expanded' }
 FluidClassDefinitionPrinterTest >> testFullyExpandedTrait [
-	self halt.
+
 	self 
-		assert: (self fullyExpandedForClass: Trait) equals: 'Trait << #TMyTrait
+		assert: (FluidClassDefinitionPrinter new fullyExpandedTraitDefinitionStringInPackage: 'TraitsV2') equals: 'Trait << #TMyTrait
 	uses: {};
 	slots: {};
 	tag: '''' ;

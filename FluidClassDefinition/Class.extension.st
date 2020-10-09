@@ -1,9 +1,9 @@
 Extension { #name : #Class }
 
 { #category : #'*FluidClassDefinition' }
-Class >> definitionStringFor: aPrinter [
+Class >> definitionStringFor: aConfiguredPrinter [
 
-	^ aPrinter classDefinitionString 
+	^ aConfiguredPrinter classDefinitionString 
 ]
 
 { #category : #'*FluidClassDefinition' }
@@ -15,5 +15,5 @@ Class >> expandedDefinitionStringFor: aPrinter [
 { #category : #'*FluidClassDefinition' }
 Class >> fullyExpandedDefinitionStringFor: aPrinter [
 
-	^ aPrinter fullyExpandedClassDefinitionStringInPackage: self package packageName
+	^ aPrinter for: self ;  fullyExpandedClassDefinitionStringInPackage: self package packageName
 ]

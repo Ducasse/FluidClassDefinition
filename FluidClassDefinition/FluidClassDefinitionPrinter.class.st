@@ -182,56 +182,26 @@ FluidClassDefinitionPrinter >> expandedTraitDefinitionString [
 					nextPutAll: '''' ]
 ]
 
-{ #category : #'fully expanded double dispatch' }
+{ #category : #printing }
 FluidClassDefinitionPrinter >> fullyExpandedClassDefinitionStringInPackage: aPackageName [
-	self halt.
-	^ String streamContents: [ :s | 
-		  s
-			  nextPutAll: 'Object < #MyClass';
-			  crtab.
-		  s
-			  nextPutAll: 'layout: FixedLayout;';
-			  crtab.
-		  s
-			  nextPutAll: 'uses: {};';
-			  crtab.
-		  s
-			  nextPutAll: 'slots: {};';
-			  crtab.
-		  s
-			  nextPutAll: 'sharedVariables: {};';
-			  crtab.
-		  s
-			  nextPutAll: 'sharedPools: {};';
-			  crtab.
-		  s
-			  nextPutAll: 'tag: '''' ;';
-			  crtab.
-		  s
-			  nextPutAll: 'package: ''';
-			  nextPutAll: aPackageName;
-			  nextPutAll: '''' ]
+
+		^ String streamContents: [ :s |
+						s nextPutAll: 'Object < #MyClass'; crtab.
+						s nextPutAll: 'layout: FixedLayout;'; crtab.
+						s nextPutAll: 'uses: {};'; crtab.
+						s nextPutAll: 'slots: {};'; crtab. 
+						s nextPutAll: 'sharedVariables: {};'; crtab.
+						s nextPutAll: 'sharedPools: {};'; crtab.
+						s nextPutAll: 'tag: '''' ;';crtab.
+						s nextPutAll: 'package: ''', aPackageName, '''' ] 
 ]
 
 { #category : #printing }
-FluidClassDefinitionPrinter >> fullyExpandedDefinitionString [
-	
-	^ self fullyExpandedDefinitionStringInPackage: forClass package packageName
-]
-
-{ #category : #printing }
-FluidClassDefinitionPrinter >> fullyExpandedDefinitionStringInPackage: aPackageName [
-
-	^ forClass fullyExpandedDefinitionStringInPackage: aPackageName
-					
-]
-
-{ #category : #'fully expanded double dispatch' }
 FluidClassDefinitionPrinter >> fullyExpandedTraitDefinitionStringInPackage: aPackageName [
-	self halt.
+	
 	^ String streamContents: [ :s | 
 		  s
-			  nextPutAll: 'Trait << #MyTrait';
+			  nextPutAll: 'Trait << #TMyTrait';
 			  crtab.
 		  s
 			  nextPutAll: 'uses: {};';

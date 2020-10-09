@@ -8,9 +8,9 @@ Trait class >> << aSymbol [
 ]
 
 { #category : #'*FluidClassDefinition' }
-Trait >> definitionStringFor: aPrinter [
+Trait >> definitionStringFor: aConfiguredPrinter [
 
-	^ aPrinter for: self; traitDefinitionString
+	^ aConfiguredPrinter traitDefinitionString
 ]
 
 { #category : #'*FluidClassDefinition' }
@@ -22,5 +22,5 @@ Trait >> expandedDefinitionStringFor: aPrinter [
 { #category : #'*FluidClassDefinition' }
 Trait >> fullyExpandedDefinitionStringFor: aPrinter [
 
-	^ aPrinter fullyExpandedTraitDefinitionStringInPackage: self package packageName
+	^ aPrinter for: self ; fullyExpandedTraitDefinitionStringInPackage: self package packageName
 ]
