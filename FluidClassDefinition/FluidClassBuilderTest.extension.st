@@ -1,11 +1,4 @@
-Class {
-	#name : #FluidClassBuilderTest,
-	#superclass : #TestCase,
-	#instVars : [
-		'builder'
-	],
-	#category : #'FluidClassDefinition-Builder'
-}
+Extension { #name : #FluidClassBuilderTest }
 
 { #category : #'*FluidClassDefinition' }
 FluidClassBuilderTest >> testInstalledMinimalExceptOneMockClassRecreatorIsMinimal [
